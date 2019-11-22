@@ -1,0 +1,63 @@
+$menu-height: 30px;
+$menu-color: #3C3C3C;
+$menu-text: #B5B5B5;
+$icon-size: $menu-height * 0.8;
+
+.titlebar {
+  width: 100%;
+  height: $menu-height;
+  background-color: $menu-color;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  padding: 0;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+}
+
+.menu-button {
+  color: $menu-text;
+  height: $menu-height;
+  width: 1.5 * $menu-height;
+  margin: 0;
+  -webkit-app-region: no-drag;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.menu-button:hover {
+    background-color: #4B4B4B;
+}
+
+.close-window:hover {
+    background-color: rgb(177, 7, 7);
+}
+
+.draggable-bar {
+  background-color: transparent;
+  display:flex;
+  flex: 1;
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
+  justify-content: center;
+  align-content: center;
+}
+
+.draggable-bar span {
+    color: $menu-text;
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+
+.titlebar-img {
+    align-self: center;
+    width: $icon-size;
+    height: $icon-size;
+    margin: 0px 0px 0px $icon-size/4;
+    -webkit-app-region: drag;
+    -webkit-user-select: none;
+}

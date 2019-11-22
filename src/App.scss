@@ -1,0 +1,153 @@
+$menu-hover: #2a2d2e;
+$menu-selected: #37373d;
+$menuwidth: 100px;
+$menuitemcol: #fff;
+$bgcolor: #1e1e1e;
+$menu-col: #252526;
+$input-bg: #292929;
+
+.App {
+  text-align: center;
+  color: white;
+  -webkit-app-region: no-drag;
+}
+
+.App-logo {
+  height: 40vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #09d3ac;
+}
+
+.menu {
+  width: $menuwidth;
+  height: 100%;
+  position: fixed;
+  background-color: $menu-col;
+  overflow: hidden;
+}
+
+.menu-item {
+  display: flex;
+  text-decoration: none;
+  color: $menuitemcol;
+  padding: 1rem;
+  justify-content: flex-start;
+}
+
+.menu-item:hover {
+  background-color: $menu-hover;
+  text-decoration: none;
+  color: white;
+}
+
+.menu-item.active {
+  background-color: $menu-selected;
+}
+
+.content {
+  margin-left: $menuwidth;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+
+.component-container {
+  width: 90%;
+  height: 100%;
+}
+
+.rbt-input-hint input {
+  color: rgba(255, 255, 255, 0.25) !important;
+}
+
+input[type="text"] {
+  background-color: $input-bg;
+  border-radius: 0px;
+  color: white;
+  border: none;
+}
+
+input[type="text"]:focus {
+  background-color: $input-bg;
+  color: white;
+  border-color: #175b89;
+  box-shadow: 0 0 0 0.1rem #175b89;
+}
+
+button[type="submit"] {
+  border-radius: 0px;
+}
+
+.dropdown-menu {
+  background-color: $menu-col;
+}
+
+.dropdown-item {
+  color: white;
+}
+
+.dropdown-item:hover {
+  background-color: $menu-hover;
+  color: white;
+}
+
+.close {
+  color: white;
+}
+
+.close:hover {
+  color: yellow;
+}
+
+.form-label {
+  color: white;
+  font-weight: bold;
+}
+
+h2 {
+  color: rgb(231, 231, 231);
+}
+
+.navbar {
+  padding: 0 1rem 0 0;
+}
+
+.navbar-brand {
+  padding: 0 0 0 0.5rem;
+}
+
+.navbar-dark .nav-item:first-child {
+  border-left: 1px solid black;
+}
+
+.navbar-dark .nav-item {
+  padding: 0 0.25rem 0 0.25rem;
+  border-right: 1px solid black;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: whitesmoke;
+}
+
+.card {
+  background-color: $input-bg;
+  color: white;
+  border-radius: 0;
+}
+
+.list-group-item {
+  background-color: $menu-col;
+}

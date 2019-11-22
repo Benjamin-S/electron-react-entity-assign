@@ -1,0 +1,78 @@
+{
+  "name": "react-electron-express",
+  "version": "0.1.0",
+  "private": true,
+  "main": "public/electron.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "bootstrap": "^4.3.1",
+    "cors": "^2.8.5",
+    "custom-electron-titlebar": "^3.1.0",
+    "electron-is-dev": "^1.1.0",
+    "express": "^4.17.1",
+    "ky": "^0.15.0",
+    "msnodesqlv8": "^0.8.4",
+    "mssql": "^5.1.0",
+    "node-sass": "^4.13.0",
+    "react": "^16.11.0",
+    "react-bootstrap": "^1.0.0-beta.14",
+    "react-bootstrap-typeahead": "^3.4.7",
+    "react-dom": "^16.11.0",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.2.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron-dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-pack": "electron-builder --c.extraMetadata.main=build/electron.js",
+    "preelectron-pack": "yarn build",
+    "copybinding": "copy .\\node_modules\\msnodesqlv8\\bindingdotgyp.old .\\node_modules\\msnodesqlv8\\binding.gyp",
+    "rebuild": "cd .\\node_modules\\.bin\\ && electron-rebuild -f -w msnodesqlv8 --module-dir ..\\..\\",
+    "movenode": "move .\\node_modules\\msnodesqlv8\\bin\\win32-x64-69\\msnodesqlv8.node .\\node_modules\\msnodesqlv8\\lib\\bin\\msnodesqlv8.node",
+    "postyarn": "yarn copybinding && yarn rebuild && yarn movenode"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "concurrently": "^5.0.0",
+    "cross-env": "^6.0.3",
+    "electron": "^7.1.2",
+    "electron-builder": "^22.1.0",
+    "electron-rebuild": "^1.8.6",
+    "wait-on": "^3.3.0"
+  },
+  "build": {
+    "appId": "com.electron.ree",
+    "productName": "Entity Assignment",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*",
+      "./src/*.js",
+      "./src/*.png"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": "portable",
+      "icon": "build/icon.png"
+    }
+  },
+  "homepage": "./"
+}
