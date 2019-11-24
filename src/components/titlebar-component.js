@@ -42,7 +42,7 @@ export default class Titlebar extends Component {
 
     render() {
         ipcRenderer.on('window_unmaximized', (event, arg) => {
-            if (this.state.maximized == true) {
+            if (this.state.maximized === true) {
                 this.setState({
                     maximized: false
                 });
@@ -50,7 +50,7 @@ export default class Titlebar extends Component {
         });
 
         ipcRenderer.on('window_maximized', (event, arg) => {
-            if (this.state.maximized == false) {
+            if (this.state.maximized === false) {
                 this.setState({
                     maximized: true
                 });
@@ -59,7 +59,7 @@ export default class Titlebar extends Component {
 
         return (
             <div className="titlebar">
-                {this.props.icon ? <img src={this.props.icon} className="titlebar-img"></img> : null}
+                {this.props.icon ? <img src={this.props.icon} alt="" className="titlebar-img"></img> : null}
                 <div className="draggable-bar"><span>{this.props.titletext}</span></div>
                 <div className="menu-button" onClick={this.minimizeWindow}><i className="codicon codicon-chrome-minimize"></i></div>
                 <div className="menu-button" onClick={this.restoreWindow}>{this.state.maximized ? <i className="codicon codicon-chrome-restore"></i> : <i className="codicon codicon-chrome-maximize"></i>}</div>
