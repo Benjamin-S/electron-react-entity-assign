@@ -60,10 +60,11 @@ export default class Titlebar extends Component {
         return (
             <div className="titlebar">
                 {this.props.icon ? <img src={this.props.icon} alt="" className="titlebar-img"></img> : null}
-                <div className="draggable-bar"><span>{this.props.titletext}</span></div>
+                <div className="draggable-bar" />
                 <div className="menu-button" onClick={this.minimizeWindow}><i className="codicon codicon-chrome-minimize"></i></div>
                 <div className="menu-button" onClick={this.restoreWindow}>{this.state.maximized ? <i className="codicon codicon-chrome-restore"></i> : <i className="codicon codicon-chrome-maximize"></i>}</div>
                 <div className="menu-button close-window" onClick={this.closeWindow}><i className="codicon codicon-chrome-close"></i></div>
+                <span className="titlebar-text">{this.props.titletext}</span>
             </div >
         )
     }

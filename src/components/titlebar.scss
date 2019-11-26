@@ -1,6 +1,6 @@
 $menu-height: 30px;
-$menu-color: #3C3C3C;
-$menu-text: #B5B5B5;
+$menu-color: #3c3c3c;
+$menu-text: #b5b5b5;
 $icon-size: $menu-height * 0.8;
 
 .titlebar {
@@ -10,11 +10,25 @@ $icon-size: $menu-height * 0.8;
   position: relative;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 3;
   padding: 0;
   display: flex;
   justify-content: flex-end;
   flex-direction: row;
+}
+
+.titlebar-text {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  color: $menu-text;
+  font-size: 0.8rem;
+  margin-top: 5px;
+  -webkit-user-select: none;
+  pointer-events: none;
 }
 
 .menu-button {
@@ -29,16 +43,16 @@ $icon-size: $menu-height * 0.8;
 }
 
 .menu-button:hover {
-    background-color: #4B4B4B;
+  background-color: #4b4b4b;
 }
 
 .close-window:hover {
-    background-color: rgb(177, 7, 7);
+  background-color: rgb(177, 7, 7);
 }
 
 .draggable-bar {
   background-color: transparent;
-  display:flex;
+  display: flex;
   flex: 1;
   -webkit-app-region: drag;
   -webkit-user-select: none;
@@ -46,18 +60,11 @@ $icon-size: $menu-height * 0.8;
   align-content: center;
 }
 
-.draggable-bar span {
-    color: $menu-text;
-    font-size: 0.8rem;
-    margin-top: 5px;
-}
-
-
 .titlebar-img {
-    align-self: center;
-    width: $icon-size;
-    height: $icon-size;
-    margin: 0px 0px 0px $icon-size/4;
-    -webkit-app-region: drag;
-    -webkit-user-select: none;
+  align-self: center;
+  width: $icon-size;
+  height: $icon-size;
+  margin: 0px 0px 0px $icon-size/4;
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
 }
