@@ -73,7 +73,8 @@
     "win": {
       "target": "portable",
       "icon": "build/icon.png"
-    }
+    },
+    "compression": "store"
   },
-  "homepage": "./"
+  "homepage": "."
 }

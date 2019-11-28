@@ -8,7 +8,7 @@ import 'react-bootstrap-typeahead/css/Typeahead.css';
 import 'react-bootstrap-typeahead/css/Typeahead-bs4.css';
 import './App.scss';
 
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { HashRouter as Router, Route } from "react-router-dom";
 
 import MainPage from "./components/main-page.component";
 import CreditorCard from "./components/creditor-card.component";
@@ -20,7 +20,7 @@ import { CSSTransition } from 'react-transition-group';
 const routes = [
   { path: '/', name: 'Main', Component: MainPage },
   { path: '/creditors', name: 'Creditors', Component: CreditorCard },
-  { path: '/debtors', name: 'Debtors', Component: DebtorCard }
+  { path: '/debtors', name: 'Debtors', Component: DebtorCard },
 ]
 
 class App extends Component {
@@ -43,7 +43,7 @@ class App extends Component {
       //     </div>
       //   </Route>
       // </Router>
-      <Router>
+      <Router basename="/">
         <>
           <Titlebar titletext="Entity Assign" icon={icon} />
           <Menu />
