@@ -153,7 +153,7 @@ h2 {
   width: 100%;
   color: white;
   text-align: center;
-  margin: 50px $menuwidth 50px $menuwidth*2;
+  margin: 50px $menuwidth 50px $menuwidth * 2;
 }
 
 .button-group {
@@ -204,4 +204,22 @@ h2 {
   opacity: 0;
   transform: scale(0.9);
   transition: opacity 300ms, transform 300ms;
+}
+
+.component-container {
+  padding-left: 20px;
+  padding-right: 10px;
+  padding-bottom: 20px;
+  flex-grow: 1;
+  overflow-x: auto;
+}
+
+::-webkit-scrollbar {
+  background-color: $bgcolor;
+  width: 1em;
+}
+
+::-webkit-scrollbar-thumb:window-inactive,
+::-webkit-scrollbar-thumb {
+  background: $input-bg;
 }

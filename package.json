@@ -1,10 +1,10 @@
 {
   "name": "react-electron-express",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "main": "public/electron.js",
   "author": {
-    "name": "B.Symons"
+    "name": "Benjamin-S"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -73,8 +73,7 @@
     "win": {
       "target": "portable",
       "icon": "build/icon.png"
-    },
-    "compression": "store"
+    }
   },
   "homepage": "."
 }
