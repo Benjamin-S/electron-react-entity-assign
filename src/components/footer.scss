@@ -1,0 +1,27 @@
+$footer-height: 30px;
+$menu-color: #3c3c3c;
+$footer-text: orange;
+$icon-size: $footer-height * 0.8;
+
+.windowFooter {
+  width: 100%;
+  border: black solid 1px;
+  height: $footer-height;
+  background-color: darken($menu-color, 15);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+  padding: 0.5em;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  flex-shrink: 0;
+  //   box-shadow: 0px -1px 2px black;
+}
+
+.windowFooter span {
+  font-size: 0.8em;
+  color: scale-color($footer-text, $lightness: -20%);
+}

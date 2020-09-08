@@ -1,4 +1,5 @@
-@import "./components/menu.scss";
+@import './components/menu.scss';
+@import './components/footer.scss';
 $bgcolor: #1e1e1e;
 $input-bg: #292929;
 
@@ -37,6 +38,7 @@ $input-bg: #292929;
   top: 0;
   bottom: 0;
   padding-top: 30px;
+  padding-bottom: $footer-height;
 }
 
 .component-container {
@@ -48,21 +50,25 @@ $input-bg: #292929;
   color: rgba(255, 255, 255, 0.25) !important;
 }
 
-input[type="text"] {
+input[type='text'] {
   background-color: $input-bg;
   border-radius: 0px;
   color: white;
   border: none;
 }
 
-input[type="text"]:focus {
+input[type='text']:focus {
   background-color: $input-bg;
   color: white;
   border-color: #175b89;
   box-shadow: 0 0 0 0.1rem #175b89;
 }
 
-button[type="submit"] {
+button[type='submit'] {
+  border-radius: 0px;
+}
+
+button[type='button'] {
   border-radius: 0px;
 }
 
@@ -222,4 +228,17 @@ h2 {
 ::-webkit-scrollbar-thumb:window-inactive,
 ::-webkit-scrollbar-thumb {
   background: $input-bg;
+}
+
+.modal-content {
+  background-color: $input-bg;
+  color: $menuitemcol;
+}
+
+.modal-header {
+  border-bottom-color: $bgcolor;
+}
+
+.modal-footer {
+  border-top-color: $bgcolor;
 }
