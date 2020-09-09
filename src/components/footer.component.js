@@ -1,11 +1,24 @@
 import React from 'react';
 
-import './footer.scss';
+import '../styles/styles.scss';
 
 function Footer() {
+  function changeTheme(theme) {
+    document.documentElement.className = '';
+    document.documentElement.classList.add(`theme-${theme}`);
+  }
+  function toggleTheme() {
+    document.documentElement.className === 'theme-dark'
+      ? changeTheme('light')
+      : changeTheme('dark');
+  }
+
   return (
     <div className="windowFooter">
-      <span>Testing the footer</span>
+      <i
+        className="codicon codicon-color-mode theme-toggle"
+        onClick={toggleTheme}
+      ></i>
     </div>
   );
 }

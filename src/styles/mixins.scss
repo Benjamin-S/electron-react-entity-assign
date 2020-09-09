@@ -1,0 +1,44 @@
+// @mixin generateThemeJSExports($themeName, $newThemeMap) {
+//   // creates/adds to list of theme names
+//   $themes: append($themes, $themeName, $separator: comma) !global;
+
+//   // exports theme variables
+//   :export {
+//     themes: $themes;
+//     @each $key, $value in $newThemeMap {
+//       theme_#{$themeName}_#{$key}: $value;
+//     }
+//   }
+// }
+
+/**
+ * theme-aware - Change color of a css property based on the currently active theme
+ *
+ * @param  {key}     CSS property
+ * @param  {color}   Color name defined in the themes under _color-palette.scss
+ *
+ * @example - @include theme-aware('background', 'color-background');
+ * @returns - background: #FFF;
+ */
+@mixin theme-aware($key, $color) {
+  @each $theme-name, $theme-color in $themes {
+    .theme-#{$theme-name} & {
+      #{$key}: map-get(map-get($themes, $theme-name), $color);
+    }
+  }
+}
+
+@mixin linx($link, $visit, $hover, $active) {
+  a {
+    color: $link;
+    &:visited {
+      color: $visit;
+    }
+    &:hover {
+      color: $hover;
+    }
+    &:active {
+      color: $active;
+    }
+  }
+}

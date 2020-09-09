@@ -1,0 +1,404 @@
+@import 'colors';
+@import 'mixins';
+
+$menuwidth: 160px;
+$footer-height: 30px;
+$menu-height: 30px;
+$icon-size: $menu-height * 0.8;
+
+body {
+  @include theme-aware('background-color', 'background');
+}
+
+.content {
+  @include theme-aware('background-color', 'background');
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5 {
+  @include theme-aware('color', 'formText');
+}
+
+.menu {
+  width: $menuwidth;
+  height: 100%;
+  position: fixed;
+  @include theme-aware('background-color', 'menuBg');
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-item {
+  display: flex;
+  text-decoration: none;
+  @include theme-aware('color', 'textMenu');
+  padding: 1rem;
+}
+
+.menu-item:hover {
+  @include theme-aware('background-color', 'menuHover');
+  // background-color: $menu-hover;
+  text-decoration: none;
+  @include theme-aware('color', 'textDark');
+}
+
+.menu-item.active {
+  @include theme-aware('background-color', 'menuSelected');
+}
+
+.server-status {
+  color: blue;
+  margin-top: auto;
+  padding: 0 0 5px 5px;
+  font-size: small;
+}
+
+.App {
+  text-align: center;
+  color: white;
+  -webkit-app-region: no-drag;
+}
+
+.App-logo {
+  height: 40vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #09d3ac;
+}
+
+.content {
+  margin-left: $menuwidth;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  padding-top: 30px;
+  padding-bottom: $footer-height;
+}
+
+.component-container {
+  width: 90%;
+  height: 100%;
+}
+
+.rbt-input-hint input {
+  color: rgba(255, 255, 255, 0.25) !important;
+}
+
+input[type='text'] {
+  // background-color: $input-bg;
+  @include theme-aware('background-color', 'formBg');
+  @include theme-aware('color', 'formText');
+  border-radius: 0px;
+  // color: white;
+  border: none;
+}
+
+input[type='text']:focus {
+  // background-color: $input-bg;
+  @include theme-aware('background-color', 'formBg');
+  @include theme-aware('color', 'formText');
+  // color: white;
+  border-color: #175b89;
+  box-shadow: 0 0 0 0.1rem #175b89;
+}
+
+button[type='submit'] {
+  border-radius: 0px;
+}
+
+button[type='button'] {
+  border-radius: 0px;
+}
+
+.dropdown-menu {
+  @include theme-aware('background-color', 'formBg');
+}
+
+.dropdown-item {
+  @include theme-aware('color', 'formText');
+}
+
+.dropdown-item:hover {
+  @include theme-aware('background-color', 'menuHover');
+  // background-color: $menu-hover;
+  @include theme-aware('color', 'textDark');
+  // color: white;
+}
+
+.close {
+  color: white;
+}
+
+.close:hover {
+  color: yellow;
+}
+
+.form-label {
+  @include theme-aware('color', 'textDark');
+  font-weight: bold;
+}
+
+h2 {
+  color: rgb(231, 231, 231);
+}
+
+.navbar {
+  padding: 0 1rem 0 0;
+}
+
+.navbar-brand {
+  padding: 0 0 0 0.5rem;
+}
+
+.navbar-dark .nav-item:first-child {
+  border-left: 1px solid black;
+}
+
+.navbar-dark .nav-item {
+  padding: 0 0.25rem 0 0.25rem;
+  border-right: 1px solid black;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  // color: whitesmoke;
+  @include theme-aware('color', 'borderDark');
+}
+
+.card {
+  @include theme-aware('background-color', 'formBg');
+  @include theme-aware('color', 'formText');
+  border-radius: 0;
+}
+
+.list-group-item {
+  @include theme-aware('background-color', 'formBg');
+}
+
+.main-page {
+  display: flex;
+  @include theme-aware('background-color', 'background');
+  // background: repeating-linear-gradient(
+  //   -45deg,
+  //   rgba(54, 54, 54, 0.5),
+  //   rgba(54, 54, 54, 0.5) 20px,
+  //   rgba(124, 0, 0, 0.5) 20px,
+  //   rgba(129, 0, 0, 0.5) 30px
+  // );
+  overflow: hidden;
+  position: relative;
+  left: -$menuwidth;
+  min-width: calc(100vw + #{$menuwidth});
+  z-index: 2;
+  bottom: 0;
+}
+
+.main-page-content {
+  display: flex;
+  flex-flow: column wrap;
+  margin-top: 50px;
+  align-items: center;
+  width: 100%;
+  color: white;
+  text-align: center;
+  margin: 50px $menuwidth 50px $menuwidth * 2;
+}
+
+.button-group {
+  margin: 20px $menuwidth;
+  display: flex;
+  justify-content: space-around;
+}
+
+.main-link {
+  display: flex;
+  text-decoration: none;
+  color: white;
+  padding: 1rem;
+  justify-content: center;
+  background-color: #b91d47;
+  margin: 10px;
+  // padding: 30px;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+  width: 200px;
+  height: 200px;
+  box-shadow: orchid;
+}
+
+.main-link:hover {
+  background-color: rgb(165, 25, 63);
+  text-decoration: none;
+  color: white;
+}
+
+.content-enter {
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+.content-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.content-exit {
+  opacity: 1;
+}
+
+.content-exit-active {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 200ms, transform 300ms;
+}
+
+.component-container {
+  padding-left: 20px;
+  padding-right: 10px;
+  padding-bottom: 20px;
+  flex-grow: 1;
+  overflow-x: auto;
+}
+
+::-webkit-scrollbar {
+  @include theme-aware('background-color', 'background');
+  width: 1em;
+}
+
+::-webkit-scrollbar-thumb:window-inactive,
+::-webkit-scrollbar-thumb {
+  @include theme-aware('background', 'formBg');
+}
+
+.modal-content {
+  @include theme-aware('background-color', 'formBg');
+  @include theme-aware('color', 'formText');
+}
+
+.modal-header {
+  @include theme-aware('border-bottom-color', 'borderDark');
+}
+
+.modal-footer {
+  @include theme-aware('border-top-color', 'borderDark');
+}
+
+.titlebar {
+  width: 100%;
+  height: $menu-height;
+  @include theme-aware('background-color', 'titleBar');
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  padding: 0;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  flex-shrink: 0;
+}
+
+.titlebar-text {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  @include theme-aware('color', 'titleBarText');
+  font-size: 0.8rem;
+  margin-top: 5px;
+  -webkit-user-select: none;
+  pointer-events: none;
+}
+
+.menu-button {
+  @include theme-aware('color', 'titleBarText');
+  height: $menu-height;
+  width: 1.5 * $menu-height;
+  margin: 0;
+  -webkit-app-region: no-drag;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.menu-button:hover {
+  background-color: #4b4b4b;
+}
+
+.close-window:hover {
+  background-color: rgb(177, 7, 7);
+}
+
+.draggable-bar {
+  background-color: transparent;
+  display: flex;
+  flex: 1;
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
+  justify-content: center;
+  align-content: center;
+}
+
+.titlebar-img {
+  align-self: center;
+  width: $icon-size;
+  height: $icon-size;
+  margin: 0px 0px 0px $icon-size/4;
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
+}
+
+.windowFooter {
+  width: 100%;
+  height: $footer-height;
+  @include theme-aware('background-color', 'titleBar');
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+  padding: 0.5em;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  flex-shrink: 0;
+  @include theme-aware('color', 'accent');
+}
+
+.windowFooter span {
+  font-size: 0.8em;
+}
+
+.theme-toggle {
+  cursor: pointer;
+  @include theme-aware('color', 'accent');
+  &:hover {
+    color: pink;
+  }
+}
+
+@import './boostrapOverride.scss';

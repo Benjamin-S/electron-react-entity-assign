@@ -1,0 +1,36 @@
+@import 'functions';
+
+$themes: (
+  dark: (
+    borderDark: color(midnightLacquer),
+    borderLight: color(whiteSmoke),
+    textDark: color(white),
+    textLight: color(black),
+    textMenu: color(white),
+    background: color(midnightLacquer),
+    menuBg: rgb(30, 30, 30),
+    menuSelected: #37373d,
+    menuHover: color(darkRoom),
+    formBg: color(devilsBed),
+    formText: color(white),
+    titleBar: color(darkRoom),
+    titleBarText: color(pinkSwan),
+    accent: rgb(90, 197, 90),
+  ),
+  light: (
+    borderDark: color(whiteSmoke),
+    borderLight: color(midnightLacquer),
+    textDark: color(black),
+    textLight: color(white),
+    textMenu: color(black),
+    background: color(whiteSmoke),
+    menuBg: color(lightPrimary),
+    menuSelected: shade(color(lightPrimary), 20%),
+    menuHover: shade(color(lightPrimary), 10%),
+    formBg: color(white),
+    formText: color(black),
+    titleBar: color(pinkSwan),
+    titleBarText: color(black),
+    accent: rgb(25, 25, 94),
+  ),
+);

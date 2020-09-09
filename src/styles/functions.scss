@@ -1,0 +1,23 @@
+@import './colorDefinitions.scss';
+@use "sass:color";
+
+@function color($colorName) {
+  @return map-get($colors, $colorName);
+}
+
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+
+@function tintCol($color, $percentage) {
+  $temp: adjust-color(
+    $color,
+    $hue: $percentage,
+    $saturation: - ($percentage * 0.5)
+  );
+  @return tint($color, $percentage);
+}

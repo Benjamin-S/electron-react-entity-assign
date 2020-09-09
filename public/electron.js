@@ -144,6 +144,7 @@ function createWindow() {
     minHeight: 500,
     backgroundColor: '#2c2f33',
     frame: false,
+    icon: './icon.png',
     webPreferences: {
       nodeIntegration: true,
     },
