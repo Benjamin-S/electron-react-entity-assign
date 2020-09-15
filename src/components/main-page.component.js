@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import { Modal, Jumbotron } from 'react-bootstrap';
 
-const { ipcRenderer } = window.require('electron');
+// const { ipcRenderer } = window.require('electron');
 
 export default class MainPage extends Component {
   constructor(props) {
@@ -12,20 +13,43 @@ export default class MainPage extends Component {
     };
   }
 
-  componentWillMount() {
-    ipcRenderer.send('populateUsername', 'username');
-  }
+  //   componentWillMount() {
+  //     ipcRenderer.send('populateUsername', 'username');
+  //   }
 
-  componentDidMount() {
-    ipcRenderer.on('populateUsernameReply', (event, arg) => {
-      this.setState({ username: arg });
-    });
-  }
+  //   componentDidMount() {
+  //     ipcRenderer.on('populateUsernameReply', (event, arg) => {
+  //       this.setState({ username: arg });
+  //     });
+  //   }
 
   render() {
+    let welcome_modal = (
+      <Modal show={true} centered={true}>
+        <Modal.Header>
+          <Modal.Title>Multi-Entity Management — Assign Entity App</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>
+            This tool exists as an easy way for St John Ambulance employees to
+            assign creditors/debtors to specific entities in GP.
+          </p>
+          <p>To get started select one of the options below</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <NavLink className="btn btn-primary" to="/creditors">
+            Creditors
+          </NavLink>
+          <NavLink className="btn btn-primary" to="/debtors">
+            Debtors
+          </NavLink>
+        </Modal.Footer>
+      </Modal>
+    );
     return (
-      <div className="main-page">
-        <div className="main-page-content">
+      <div style={{ marginTop: '30px' }}>
+        {welcome_modal}
+        {/* <div className="main-page-content">
           <h3>Multi-Entity Management — Assign Entity App</h3>
           <span>
             This tool exists as an easy way for St John Ambulance employees to
@@ -41,7 +65,7 @@ export default class MainPage extends Component {
             </NavLink>
           </div>
           Welcome {this.state.username}
-        </div>
+        </div> */}
       </div>
     );
   }

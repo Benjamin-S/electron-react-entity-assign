@@ -42,3 +42,7 @@
     }
   }
 }
+
+@mixin focusShadow($color) {
+  @include theme-aware('box-shadow', $color);
+}

@@ -1,36 +1,84 @@
 @import 'functions';
 
+$white: #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black: #000 !default;
+
+$blue: #007bff !default;
+$indigo: #6610f2 !default;
+$purple: #6f42c1 !default;
+$pink: #e83e8c !default;
+$red: #dc3545 !default;
+$orange: #fd7e14 !default;
+$yellow: #ffc107 !default;
+$green: #28a745 !default;
+$teal: #20c997 !default;
+$cyan: #17a2b8 !default;
+
+$primary: $blue !default;
+$secondary: $gray-600 !default;
+$success: $green !default;
+$info: $cyan !default;
+$warning: $yellow !default;
+$danger: $red !default;
+$light: $gray-100 !default;
+$dark: $gray-800 !default;
+
+$midnightLacquer: #121212;
+$devilsBed: #292929;
+$darkRoom: #2a2d2e;
+$revolver: #37373d;
+$whiteSmoke: #f5f5f5;
+$jaguar: #252526;
+$pinkSwan: #b5b5b5;
+$eclipse: #3c3c3c;
+$white: #ffffff;
+$black: #000000;
+$lightPrimary: #62abf8;
+
 $themes: (
   dark: (
-    borderDark: color(midnightLacquer),
-    borderLight: color(whiteSmoke),
-    textDark: color(white),
-    textLight: color(black),
-    textMenu: color(white),
-    background: color(midnightLacquer),
+    borderDark: $midnightLacquer,
+    borderLight: whiteSmoke,
+    textDark: $white,
+    textLight: $black,
+    textMenu: $white,
+    background: $midnightLacquer,
     menuBg: rgb(30, 30, 30),
     menuSelected: #37373d,
-    menuHover: color(darkRoom),
-    formBg: color(devilsBed),
-    formText: color(white),
-    titleBar: color(darkRoom),
-    titleBarText: color(pinkSwan),
+    menuHover: $darkRoom,
+    formBg: $devilsBed,
+    formText: $white,
+    titleBar: $darkRoom,
+    titleBarText: $pinkSwan,
     accent: rgb(90, 197, 90),
+    inputBorder: $gray-400,
+    inputFocus: rgba($dark, 0.25),
   ),
   light: (
-    borderDark: color(whiteSmoke),
-    borderLight: color(midnightLacquer),
-    textDark: color(black),
-    textLight: color(white),
-    textMenu: color(black),
-    background: color(whiteSmoke),
-    menuBg: color(lightPrimary),
-    menuSelected: shade(color(lightPrimary), 20%),
-    menuHover: shade(color(lightPrimary), 10%),
-    formBg: color(white),
-    formText: color(black),
-    titleBar: color(pinkSwan),
-    titleBarText: color(black),
+    borderDark: whiteSmoke,
+    borderLight: $midnightLacquer,
+    textDark: $gray-900,
+    textLight: $white,
+    textMenu: $gray-900,
+    background: whiteSmoke,
+    menuBg: #f8f9fa,
+    menuSelected: shade($lightPrimary, 20%),
+    menuHover: shade($lightPrimary, 10%),
+    formBg: white,
+    formText: $gray-700,
+    titleBar: $pinkSwan,
+    titleBarText: $black,
     accent: rgb(25, 25, 94),
+    inputBorder: $gray-400,
+    inputFocus: rgba($primary, 0.25),
   ),
 );

@@ -133,3 +133,4 @@ sketch
 
 # End of https://www.gitignore.io/api/node,react
 src/prodconfig.js
+src/devconfig.js

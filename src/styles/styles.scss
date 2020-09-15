@@ -58,30 +58,30 @@ h5 {
   font-size: small;
 }
 
-.App {
-  text-align: center;
-  color: white;
-  -webkit-app-region: no-drag;
-}
+// .App {
+//   text-align: center;
+//   color: white;
+//   -webkit-app-region: no-drag;
+// }
 
-.App-logo {
-  height: 40vmin;
-}
+// .App-logo {
+//   height: 40vmin;
+// }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
+// .App-header {
+//   background-color: #282c34;
+//   min-height: 100vh;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   font-size: calc(10px + 2vmin);
+//   color: white;
+// }
 
-.App-link {
-  color: #09d3ac;
-}
+// .App-link {
+//   color: #09d3ac;
+// }
 
 .content {
   margin-left: $menuwidth;
@@ -109,8 +109,8 @@ input[type='text'] {
   // background-color: $input-bg;
   @include theme-aware('background-color', 'formBg');
   @include theme-aware('color', 'formText');
+  @include theme-aware('border-color', 'inputBorder');
   border-radius: 0px;
-  // color: white;
   border: none;
 }
 
@@ -118,9 +118,9 @@ input[type='text']:focus {
   // background-color: $input-bg;
   @include theme-aware('background-color', 'formBg');
   @include theme-aware('color', 'formText');
-  // color: white;
-  border-color: #175b89;
-  box-shadow: 0 0 0 0.1rem #175b89;
+  @include theme-aware('border-color', 'inputFocus');
+  // border-color: #175b89;
+  @include focusShadow('inputFocus');
 }
 
 button[type='submit'] {
@@ -141,9 +141,7 @@ button[type='button'] {
 
 .dropdown-item:hover {
   @include theme-aware('background-color', 'menuHover');
-  // background-color: $menu-hover;
   @include theme-aware('color', 'textDark');
-  // color: white;
 }
 
 .close {
@@ -193,64 +191,6 @@ h2 {
 
 .list-group-item {
   @include theme-aware('background-color', 'formBg');
-}
-
-.main-page {
-  display: flex;
-  @include theme-aware('background-color', 'background');
-  // background: repeating-linear-gradient(
-  //   -45deg,
-  //   rgba(54, 54, 54, 0.5),
-  //   rgba(54, 54, 54, 0.5) 20px,
-  //   rgba(124, 0, 0, 0.5) 20px,
-  //   rgba(129, 0, 0, 0.5) 30px
-  // );
-  overflow: hidden;
-  position: relative;
-  left: -$menuwidth;
-  min-width: calc(100vw + #{$menuwidth});
-  z-index: 2;
-  bottom: 0;
-}
-
-.main-page-content {
-  display: flex;
-  flex-flow: column wrap;
-  margin-top: 50px;
-  align-items: center;
-  width: 100%;
-  color: white;
-  text-align: center;
-  margin: 50px $menuwidth 50px $menuwidth * 2;
-}
-
-.button-group {
-  margin: 20px $menuwidth;
-  display: flex;
-  justify-content: space-around;
-}
-
-.main-link {
-  display: flex;
-  text-decoration: none;
-  color: white;
-  padding: 1rem;
-  justify-content: center;
-  background-color: #b91d47;
-  margin: 10px;
-  // padding: 30px;
-  align-items: center;
-  text-align: center;
-  font-weight: bold;
-  width: 200px;
-  height: 200px;
-  box-shadow: orchid;
-}
-
-.main-link:hover {
-  background-color: rgb(165, 25, 63);
-  text-decoration: none;
-  color: white;
 }
 
 .content-enter {
@@ -312,7 +252,7 @@ h2 {
   position: relative;
   top: 0;
   left: 0;
-  z-index: 3;
+  z-index: 1060;
   padding: 0;
   display: flex;
   justify-content: flex-end;
@@ -391,6 +331,7 @@ h2 {
 
 .windowFooter span {
   font-size: 0.8em;
+  padding: 0 2em;
 }
 
 .theme-toggle {
@@ -399,6 +340,7 @@ h2 {
   &:hover {
     color: pink;
   }
+  padding: 0.5em 1em;
 }
 
 @import './boostrapOverride.scss';

@@ -21,11 +21,12 @@ expressApp.use(cors());
 expressApp.use(bodyParser.json());
 
 const db_config = require('../src/prodconfig');
+const dev_config = require('../src/devconfig');
 
 config = {
   user: db_config.DB_USER,
   password: db_config.DB_PASSWORD,
-  server: db_config.DB_SERVER,
+  server: isDev ? dev_config.DB_SERVER : db_config.DB_SERVER,
   database: db_config.DB_DATABASE,
   pool: {
     max: 10,
@@ -39,7 +40,7 @@ const pool = new sql.ConnectionPool(config, (err) => {
     console.dir('Theres something wrong here. Pool could not be established.');
     console.dir(err);
   } else {
-    console.dir('Connected to MSSQL');
+    console.dir('Connected to MSSQL. Server: ' + pool.server);
   }
 });
 

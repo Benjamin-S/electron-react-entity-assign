@@ -19,6 +19,8 @@ function Footer() {
         className="codicon codicon-color-mode theme-toggle"
         onClick={toggleTheme}
       ></i>
+      <span>Express Server Status</span>
+      <span>SQL Server</span>
     </div>
   );
 }

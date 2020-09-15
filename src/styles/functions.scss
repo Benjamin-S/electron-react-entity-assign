@@ -1,9 +1,4 @@
-@import './colorDefinitions.scss';
 @use "sass:color";
-
-@function color($colorName) {
-  @return map-get($colors, $colorName);
-}
 
 @function tint($color, $percentage) {
   @return mix(white, $color, $percentage);
@@ -20,4 +15,10 @@
     $saturation: - ($percentage * 0.5)
   );
   @return tint($color, $percentage);
+}
+
+@function makeFocusShadow($color) {
+  $val: 0 0 0 0.2rem $color;
+
+  @return $val;
 }

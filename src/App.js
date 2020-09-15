@@ -35,23 +35,6 @@ class App extends Component {
 
   render() {
     return (
-      // <Router basename="">
-      //   <Titlebar titletext="Entity Assign" icon={icon} />
-      //   <Route path="/" exact component={MainPage} />
-      //   {/* <Menu /> */}
-      //   <Route path="/creditors">
-      //     <Menu />
-      //     <div className="content">
-      //       <CreditorCard />
-      //     </div>
-      //   </Route>
-      //   <Route path="/debtors">
-      //     <Menu />
-      //     <div className="content">
-      //       <DebtorCard />
-      //     </div>
-      //   </Route>
-      // </Router>
       <Router basename="/">
         <>
           <Titlebar titletext="Entity Assign" icon={icon} />
