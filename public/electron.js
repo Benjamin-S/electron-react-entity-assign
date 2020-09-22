@@ -126,6 +126,23 @@ mainPageRoutes.post('/debtors/', (req, res) => {
     });
 });
 
+mainPageRoutes.delete('/debtors/', (req, res) => {
+  pool
+    .request()
+    .input('I_vCUSTNMBR', sql.VarChar(20), req.body.debtor)
+    .input('I_vFACILITY', sql.VarChar(10), req.body.entity)
+    .output('O_iErrorState', sql.Int)
+    .output('oErrString', sql.VarChar(255))
+    .execute('fs_BSSIRemoveCustomerRcd')
+    .then((result) => {
+      res.json(result.output);
+    })
+    .catch((err) => {
+      console.dir(err);
+      console.dir(req.body);
+    });
+});
+
 expressApp.use('/', mainPageRoutes);
 
 const server = expressApp.listen(process.env.PORT || port, function () {

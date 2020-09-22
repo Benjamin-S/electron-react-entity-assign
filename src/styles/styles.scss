@@ -343,4 +343,16 @@ h2 {
   padding: 0.5em 1em;
 }
 
+.alert-danger {
+  & p {
+    color: color-yiq($danger);
+  }
+}
+
+.alert-success {
+  & p {
+    color: color-yiq($success);
+  }
+}
+
 @import './boostrapOverride.scss';

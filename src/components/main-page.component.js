@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Modal, Jumbotron } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 // const { ipcRenderer } = window.require('electron');
 
@@ -47,7 +47,7 @@ export default class MainPage extends Component {
       </Modal>
     );
     return (
-      <div style={{ marginTop: '30px' }}>
+      <div>
         {welcome_modal}
         {/* <div className="main-page-content">
           <h3>Multi-Entity Management — Assign Entity App</h3>

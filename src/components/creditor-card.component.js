@@ -7,6 +7,7 @@ import AssignedEntities from './current-entities.component';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+import Container from 'react-bootstrap/Container';
 
 const AsyncTypeahead = asyncContainer(Typeahead);
 
@@ -125,7 +126,7 @@ export default class CreditorCard extends Component {
     }
 
     return (
-      <div className="component-container">
+      <Container fluid style={{ overflowX: 'auto' }}>
         <h2 style={{ marginTop: 10 }}>Assign Creditor to Entity</h2>
 
         {this.state.update_message ? (
@@ -203,7 +204,7 @@ export default class CreditorCard extends Component {
             Assign
           </Button>
         </Form>
-      </div>
+      </Container>
     );
   }
 }

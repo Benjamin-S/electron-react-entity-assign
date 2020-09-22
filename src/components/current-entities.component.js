@@ -10,18 +10,18 @@ export default class AssignedEntities extends Component {
     super(props);
 
     this.updateData = this.updateData.bind(this);
-    this.handleUnassign = this.handleUnassign.bind(this);
+    this.handleUnassignDebtor = this.handleUnassignDebtor.bind(this);
+    this.handleUnassignCreditor = this.handleUnassignCreditor.bind(this);
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
 
     this.state = {
       assigned_entities: [],
       showModal: false,
+      selectedEntity: '',
+      delete_success: false,
+      delete_message: '',
     };
-  }
-
-  componentDidMount() {
-    this.updateData();
   }
 
   updateData() {
@@ -42,32 +42,75 @@ export default class AssignedEntities extends Component {
           this.setState({
             assigned_entities: json.recordset.map((a) => a.ENTITY),
           });
-          console.log(json);
+          // console.log(json);
         });
     }
   }
 
-  handleShow() {
-    this.setState({ showModal: true });
-    console.dir('HandleShow');
+  handleShow(entity) {
+    this.setState({ selectedEntity: entity, showModal: true });
   }
 
   handleClose() {
-    this.setState({ showModal: false });
+    this.setState({ showModal: false, selectedEntity: '' });
   }
 
-  handleUnassign() {}
+  handleUnassignDebtor(entity, debtor) {
+    console.dir('Calling delete on ' + entity + ' for ' + debtor);
+    fetch('http://localhost:4000/debtors/', {
+      method: 'DELETE',
+      body: JSON.stringify({
+        debtor: debtor.toString(),
+        entity: entity.toString(),
+      }),
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+    })
+      .then((result) => result.json())
+      .then((json) => {
+        this.setState({
+          delete_success: json.O_iErrorState === 0 ? true : false,
+          delete_message:
+            json.O_iErrorState === 0
+              ? 'Entity successfully removed.'
+              : 'There was an error removing the entity.',
+        });
+      })
+      .then(
+        this.setState({
+          selectedEntity: '',
+          showModal: false,
+        })
+      )
+      .catch((e) => {
+        console.dir(e.stack || e);
+        this.setState({
+          delete_success: false,
+          delete_message: e,
+        });
+      })
+      .finally(
+        this.props.raiseAlert(
+          this.state.delete_message,
+          this.state.delete_success,
+          true
+        )
+      );
+    return true;
+  }
 
-  componentDidUpdate(prevProps) {
+  handleUnassignCreditor() {}
+
+  componentDidUpdate(prevProps, prevState) {
     if (this.props.creditor !== prevProps.creditor) {
       this.updateData();
     }
     if (this.props.debtor !== prevProps.debtor) {
       this.updateData();
     }
+    if (this.state.assigned_entities !== prevState.assigned_entities) {
+      this.updateData();
+    }
   }
-
-  componentWillUnmount() {}
 
   render() {
     let entity_list = this.state.assigned_entities.map((entity) => (
@@ -77,7 +120,7 @@ export default class AssignedEntities extends Component {
           className="float-right"
           variant="danger"
           size="sm"
-          onClick={this.handleShow}
+          onClick={(e) => this.handleShow(entity, e)}
         >
           Unassign
         </Button>
@@ -94,15 +137,47 @@ export default class AssignedEntities extends Component {
           <Modal.Title>Unassign Entity</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Are you sure you want to unassign this entity?</p>
+          <p>
+            Are you sure you want to unassign entity {this.state.selectedEntity}{' '}
+            for{' '}
+            {this.props.module === 'Debtor'
+              ? this.props.debtor
+              : this.props.creditor}
+            ?
+          </p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={this.handleClose}>
             Close
           </Button>
-          <Button variant="dark" onClick={this.handleUnassign}>
-            Unassign
-          </Button>
+          {this.props.module === 'Debtor' && (
+            <Button
+              variant="dark"
+              onClick={(e) =>
+                this.handleUnassignDebtor(
+                  this.state.selectedEntity,
+                  this.props.debtor,
+                  e
+                )
+              }
+            >
+              Unassign
+            </Button>
+          )}
+          {this.props.module === 'Creditor' && (
+            <Button
+              variant="dark"
+              onClick={(e) =>
+                this.handleUnassignCreditor(
+                  this.state.selectedEntity,
+                  this.props.creditor,
+                  e
+                )
+              }
+            >
+              Unassign
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
     );

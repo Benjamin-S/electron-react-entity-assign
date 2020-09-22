@@ -17,6 +17,7 @@ export default class DebtorCard extends Component {
     this.onChangeEntity = this.onChangeEntity.bind(this);
     this.onChangeGPNumber = this.onChangeGPNumber.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.raiseAlert = this.raiseAlert.bind(this);
 
     this.state = {
       assign_entity: '',
@@ -25,8 +26,9 @@ export default class DebtorCard extends Component {
       errorDebtor: false,
       isLoading: false,
       has_access: [],
-      update_success: '',
+      update_success: false,
       update_message: '',
+      show_alert: false,
     };
   }
 
@@ -84,56 +86,56 @@ export default class DebtorCard extends Component {
       .then((json) => {
         this.setState({
           update_success: json.O_iErrorState === 0 ? true : false,
+          update_message:
+            json.O_iErrorState === 0
+              ? `Successfully assigned ${this.state.assign_debtor} to entity ${this.state.assign_entity}`
+              : `Failed to assign ${this.state.assign_debtor} to entity ${this.state.assign_entity}`,
         });
       })
-      .then(
-        this.setState({
-          assign_debtor: '',
-          assign_entity: '',
-        })
-      )
-      .then(
-        this._typeahead.getInstance().clear(),
-        this._asynctypeahead.getInstance().clear()
-      )
+      // .then(
+      //   this.setState({
+      //     assign_debtor: '',
+      //     assign_entity: '',
+      //   })
+      // )
+      // .then(
+      //   this._typeahead.getInstance().clear(),
+      //   this._asynctypeahead.getInstance().clear()
+      // )
       .catch((e) => {
         console.dir(e.stack || e);
         this.setState({
           update_success: false,
         });
-      });
+      })
+      .finally(this.setState({ show_alert: true }));
 
     return true;
   }
 
-  render() {
-    if (
-      this.state.update_success === true &&
-      this.state.update_message === ''
-    ) {
-      this.setState({
-        update_message: `Successfully assigned ${this.state.assign_debtor} to entity ${this.state.assign_entity}`,
-      });
-    }
-    if (
-      this.state.update_success === false &&
-      this.state.update_message === ''
-    ) {
-      this.setState({
-        update_message: `Failed to assign ${this.state.assign_debtor} to entity ${this.state.assign_entity}`,
-      });
-    }
+  raiseAlert(message, isError) {
+    this.setState({
+      update_success: isError,
+      update_message: message,
+      show_alert: true,
+    });
+  }
 
+  render() {
     return (
       <div className="component-container">
         <h2 style={{ marginTop: 10 }}>Assign Debtor to Entity</h2>
-
-        {this.state.update_message ? (
-          <Alert variant={this.state.update_success ? 'success' : 'danger'}>
-            {this.state.update_message}
-          </Alert>
-        ) : null}
-
+        <Alert
+          variant={this.state.update_success ? 'success' : 'danger'}
+          show={this.state.show_alert}
+          onClose={() => this.setState({ show_alert: false })}
+          dismissible
+        >
+          <Alert.Heading>
+            {this.state.update_success ? 'Success!' : 'Fail!'}
+          </Alert.Heading>
+          {this.state.update_message}
+        </Alert>
         <Form noValidate onSubmit={this.onSubmit} style={{ marginTop: 10 }}>
           <Form.Group controlId="debtorAsync">
             <Form.Label>Debtor</Form.Label>
@@ -174,6 +176,7 @@ export default class DebtorCard extends Component {
           <AssignedEntities
             module="Debtor"
             debtor={this.state.assign_debtor[0]}
+            raiseAlert={this.raiseAlert}
           />
           <Form.Group controlId="formEntity">
             <Form.Label>Entity</Form.Label>
