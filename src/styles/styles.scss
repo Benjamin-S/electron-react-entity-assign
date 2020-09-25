@@ -51,12 +51,12 @@ h5 {
   @include theme-aware('background-color', 'menuSelected');
 }
 
-.server-status {
-  color: blue;
-  margin-top: auto;
-  padding: 0 0 5px 5px;
-  font-size: small;
-}
+// .server-status {
+//   color: blue;
+//   margin-top: auto;
+//   padding: 0 0 5px 5px;
+//   font-size: small;
+// }
 
 // .App {
 //   text-align: center;
@@ -320,7 +320,7 @@ h2 {
   bottom: 0;
   left: 0;
   z-index: 3;
-  padding: 0.5em;
+  // padding: 0.5em;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -332,6 +332,21 @@ h2 {
 .windowFooter span {
   font-size: 0.8em;
   padding: 0 2em;
+  vertical-align: middle;
+}
+
+.server-status {
+  font-size: 1.5em !important;
+  vertical-align: middle;
+  color: $black;
+
+  &.pass {
+    color: $success;
+  }
+
+  &.fail {
+    color: $danger;
+  }
 }
 
 .theme-toggle {

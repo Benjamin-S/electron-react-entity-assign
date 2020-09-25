@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { asyncContainer, Typeahead } from 'react-bootstrap-typeahead';
 import entities from '../shared/entities.js';
 
@@ -10,203 +10,139 @@ import Alert from 'react-bootstrap/Alert';
 
 const AsyncTypeahead = asyncContainer(Typeahead);
 
-export default class DebtorCard extends Component {
-  constructor(props) {
-    super(props);
+const ref = React.createRef();
 
-    this.onChangeEntity = this.onChangeEntity.bind(this);
-    this.onChangeGPNumber = this.onChangeGPNumber.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.raiseAlert = this.raiseAlert.bind(this);
+export default function DebtorCard(props) {
+  const [assignedEntity, setAssignedEntity] = useState('');
+  const [assignedDebtor, setAssignedDebtor] = useState('');
+  const [entityError, setEntityError] = useState(false);
+  const [debtorError, setDebtorError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [updateResult, setUpdateResult] = useState(false);
+  const [updateMessage, setUpdateMessage] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
+  const [debtorOptions, setDebtorOptions] = useState([]);
 
-    this.state = {
-      assign_entity: '',
-      assign_debtor: '',
-      errorEntity: false,
-      errorDebtor: false,
-      isLoading: false,
-      has_access: [],
-      update_success: false,
-      update_message: '',
-      show_alert: false,
-    };
-  }
-
-  onChangeEntity(e) {
-    this.setState({
-      assign_entity: e.target.value,
-    });
-  }
-
-  onChangeGPNumber(e) {
-    this.setState({
-      assign_debtor: e.target.value,
-    });
-  }
-
-  onSubmit(e) {
+  function onSubmit(e) {
     e.preventDefault(); // don't reload the page
 
-    let errorDebtor = '';
-    let errorEntity = '';
-
-    if (!this.state.assign_debtor) {
-      errorDebtor = true;
+    if (!assignedDebtor) {
+      setDebtorError(true);
     }
 
-    if (this.state.assign_entity.length === 0) {
-      errorEntity = true;
+    if (assignedEntity.length === 0) {
+      setEntityError(true);
     }
 
-    // console.log("Debtor Error: " + errorDebtor);
-    // console.log("Entity Error: " + errorEntity);
-
-    if (errorDebtor || errorEntity) {
-      this.setState({ errorDebtor: errorDebtor, errorEntity });
-      return false;
-    }
-
-    // console.log(`Entity to assign: ${this.state.assign_entity}`);
-    // console.log(`GP Number to assign: ${this.state.assign_debtor}`);
-
-    var debtor = this.state.assign_debtor;
-    var entity = this.state.assign_entity;
-
-    var postBody = {
-      debtor: debtor.toString(),
-      entity: entity.toString(),
-    };
+    if (entityError || debtorError) return false;
 
     fetch('http://localhost:4000/debtors/', {
       method: 'POST',
-      body: JSON.stringify(postBody),
+      body: JSON.stringify({
+        debtor: assignedDebtor,
+        entity: assignedEntity,
+      }),
       headers: new Headers({ 'Content-Type': 'application/json' }),
     })
       .then((result) => result.json())
       .then((json) => {
-        this.setState({
-          update_success: json.O_iErrorState === 0 ? true : false,
-          update_message:
-            json.O_iErrorState === 0
-              ? `Successfully assigned ${this.state.assign_debtor} to entity ${this.state.assign_entity}`
-              : `Failed to assign ${this.state.assign_debtor} to entity ${this.state.assign_entity}`,
-        });
+        var didSucceed = json.O_iErrorState === 0;
+        setUpdateResult(didSucceed);
+        setUpdateMessage(
+          didSucceed
+            ? `Successfully assigned ${assignedDebtor} to entity ${assignedEntity}`
+            : `Failed to assign ${assignedDebtor} to entity ${assignedEntity}`
+        );
       })
-      // .then(
-      //   this.setState({
-      //     assign_debtor: '',
-      //     assign_entity: '',
-      //   })
-      // )
-      // .then(
-      //   this._typeahead.getInstance().clear(),
-      //   this._asynctypeahead.getInstance().clear()
-      // )
+      .then(setAssignedEntity(''))
+      .then(ref.current.clear())
       .catch((e) => {
-        console.dir(e.stack || e);
-        this.setState({
-          update_success: false,
-        });
+        console.error(e.stack || e);
+        setUpdateResult(false);
       })
-      .finally(this.setState({ show_alert: true }));
+      .finally(setShowAlert(true));
 
     return true;
   }
 
-  raiseAlert(message, isError) {
-    this.setState({
-      update_success: isError,
-      update_message: message,
-      show_alert: true,
-    });
+  function raiseAlert(message, isError) {
+    setUpdateResult(isError);
+    setUpdateMessage(message);
+    setShowAlert(true);
   }
 
-  render() {
-    return (
-      <div className="component-container">
-        <h2 style={{ marginTop: 10 }}>Assign Debtor to Entity</h2>
-        <Alert
-          variant={this.state.update_success ? 'success' : 'danger'}
-          show={this.state.show_alert}
-          onClose={() => this.setState({ show_alert: false })}
-          dismissible
-        >
-          <Alert.Heading>
-            {this.state.update_success ? 'Success!' : 'Fail!'}
-          </Alert.Heading>
-          {this.state.update_message}
-        </Alert>
-        <Form noValidate onSubmit={this.onSubmit} style={{ marginTop: 10 }}>
-          <Form.Group controlId="debtorAsync">
-            <Form.Label>Debtor</Form.Label>
-            <AsyncTypeahead
-              id="debtor-typeahead"
-              clearButton
-              placeholder="Enter debtor code"
-              isLoading={this.state.isLoading}
-              onSearch={(query) => {
-                this.setState({ isLoading: true });
-                fetch(`http://localhost:4000/debtors/${query}`)
-                  .then((resp) => resp.json())
-                  .then((json) => {
-                    this.setState({
-                      isLoading: false,
-                      debtorOptions: json.recordset,
-                    });
-                    // console.log(json);
-                  });
-              }}
-              onChange={(selected) => {
-                // console.log({ selected })
-                this.setState({
-                  assign_debtor: selected.map((a) => a.CUSTNMBR),
+  return (
+    <div className="component-container">
+      <h2 style={{ marginTop: 10 }}>Assign Debtor to Entity</h2>
+      <Alert
+        variant={updateResult ? 'success' : 'danger'}
+        show={showAlert}
+        onClose={() => setShowAlert(false)}
+        dismissible
+      >
+        <Alert.Heading>{updateResult ? 'Success!' : 'Fail!'}</Alert.Heading>
+        {updateMessage}
+      </Alert>
+      <Form noValidate onSubmit={onSubmit} style={{ marginTop: 10 }}>
+        <Form.Group controlId="debtorAsync">
+          <Form.Label>Debtor</Form.Label>
+          <AsyncTypeahead
+            id="debtor-typeahead"
+            clearButton
+            placeholder="Enter debtor code"
+            isLoading={isLoading}
+            onSearch={(query) => {
+              setIsLoading(true);
+              fetch(`http://localhost:4000/debtors/${query}`)
+                .then((resp) => resp.json())
+                .then((json) => {
+                  setIsLoading(false);
+                  setDebtorOptions(json.recordset);
                 });
-              }}
-              options={this.state.debtorOptions}
-              labelKey={(option) => `${option.CUSTNMBR} - ${option.CUSTNAME}`}
-              isInvalid={this.state.errorDebtor}
-              ref={(ref) => (this._asynctypeahead = ref)}
-            />
-            {this.state.errorDebtor ? (
-              <div className="invalid-feedback forced-feedback d-block">
-                Please enter a valid debtor code.
-              </div>
-            ) : null}
-          </Form.Group>
-          <AssignedEntities
-            module="Debtor"
-            debtor={this.state.assign_debtor[0]}
-            raiseAlert={this.raiseAlert}
+            }}
+            onChange={(selected) => {
+              setAssignedDebtor(selected.map((a) => a.CUSTNMBR));
+            }}
+            options={debtorOptions}
+            labelKey={(option) => `${option.CUSTNMBR} - ${option.CUSTNAME}`}
+            isInvalid={debtorError}
           />
-          <Form.Group controlId="formEntity">
-            <Form.Label>Entity</Form.Label>
-            <Typeahead
-              clearButton
-              id="enetity-typeahead"
-              onChange={(selected) => {
-                // console.log({ selected })
-                this.setState({
-                  assign_entity: selected.map((a) => a.Entity),
-                });
-              }}
-              options={entities}
-              placeholder="Look up an entity by name or entity ID"
-              minLength={2}
-              labelKey={(option) => `${option.Entity} - ${option.Description}`}
-              isInvalid={this.state.errorEntity}
-              ref={(ref) => (this._typeahead = ref)}
-            />
-            {this.state.errorEntity ? (
-              <div className="invalid-feedback forced-feedback d-block">
-                Please enter a valid entity code.
-              </div>
-            ) : null}
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            Assign
-          </Button>
-        </Form>
-      </div>
-    );
-  }
+          {debtorError ? (
+            <div className="invalid-feedback forced-feedback d-block">
+              Please enter a valid debtor code.
+            </div>
+          ) : null}
+        </Form.Group>
+        <AssignedEntities
+          module="Debtor"
+          debtor={assignedDebtor[0]}
+          raiseAlert={raiseAlert}
+        />
+        <Form.Group controlId="formEntity">
+          <Form.Label>Entity</Form.Label>
+          <Typeahead
+            clearButton
+            id="entity-typeahead"
+            onChange={(selected) => {
+              setAssignedEntity(selected.map((a) => a.Entity));
+            }}
+            options={entities}
+            placeholder="Look up an entity by name or entity ID"
+            minLength={2}
+            labelKey={(option) => `${option.Entity} - ${option.Description}`}
+            isInvalid={entityError}
+            ref={ref}
+          />
+          {entityError ? (
+            <div className="invalid-feedback forced-feedback d-block">
+              Please enter a valid entity code.
+            </div>
+          ) : null}
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Assign
+        </Button>
+      </Form>
+    </div>
+  );
 }

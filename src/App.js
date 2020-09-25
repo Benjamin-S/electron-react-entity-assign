@@ -1,9 +1,4 @@
 import React, { Component } from 'react';
-
-// import theme, { getCurrentTheme, initThemeObserver } from './themeColors';
-
-// import logo from './logo.svg';
-
 import icon from './icon.png';
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
