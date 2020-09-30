@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/styles.scss';
-const { ipcRenderer: ipc } = window.require('electron');
+const { ipcRenderer: ipc } = window.require('electron-better-ipc');
+const { is, electronVersion, chromeVersion } = window.require('electron-util');
 
 function Footer() {
   const [sqlServer, setSqlServer] = useState(null);
@@ -16,17 +17,20 @@ function Footer() {
       : changeTheme('dark');
   }
 
-  useEffect(() => {
-    ipc.send('collectSQLServerInfo');
-    ipc.on('collectSQLServerInfoReply', (event, arg) => {
-      setSqlServer(arg);
-    });
-  }, []);
+  async function isServerActive() {
+    const serverStatus = await ipc.callMain('get-express-info');
+    setExpressInfo(serverStatus);
+  }
+
+  async function getSqlDatabase() {
+    const sqlDatabase = await ipc.callMain('get-sql-info');
+    setSqlServer(sqlDatabase);
+  }
 
   useEffect(() => {
-    ipc.send('expressServer');
-    ipc.on('expressServerReply', (event, arg) => [setExpressInfo(arg)]);
-  });
+    getSqlDatabase();
+    isServerActive();
+  }, []);
 
   return (
     <div className="windowFooter">
@@ -46,7 +50,10 @@ function Footer() {
           <i className="codicon codicon-circle-filled server-status fail"></i>
         )}
       </span>
-      <span>SQL Server{sqlServer !== null ? ':' + sqlServer : null}</span>
+      <span>SQL Server{sqlServer !== null ? ': ' + sqlServer : null}</span>
+      <span>Electron Version: {electronVersion}</span>
+      <span>Chrome Version: {chromeVersion}</span>
+      {is.development && <span>DEVELOPMENT</span>}
     </div>
   );
 }

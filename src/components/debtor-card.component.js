@@ -18,30 +18,41 @@ export default function DebtorCard(props) {
   const [entityError, setEntityError] = useState(false);
   const [debtorError, setDebtorError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [updateResult, setUpdateResult] = useState(false);
+  const [updateResult, setUpdateResult] = useState(null);
   const [updateMessage, setUpdateMessage] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const [debtorOptions, setDebtorOptions] = useState([]);
 
-  function onSubmit(e) {
-    e.preventDefault(); // don't reload the page
+  const handleSubmit = (event) => {
+    event.preventDefault(); // don't reload the page
 
-    if (!assignedDebtor) {
+    // Temp local variables as state is not updated immediately.
+    let entityerror, debtorerror;
+
+    if (assignedDebtor === '') {
+      debtorerror = true;
       setDebtorError(true);
     }
 
-    if (assignedEntity.length === 0) {
+    if (assignedEntity === '') {
+      entityerror = true;
       setEntityError(true);
     }
 
-    if (entityError || debtorError) return false;
+    if (entityerror || debtorerror) {
+      return false;
+    }
+
+    let postBody = {
+      debtor: assignedDebtor.toString(),
+      entity: assignedEntity.toString(),
+    };
+
+    console.log(JSON.stringify(postBody));
 
     fetch('http://localhost:4000/debtors/', {
       method: 'POST',
-      body: JSON.stringify({
-        debtor: assignedDebtor,
-        entity: assignedEntity,
-      }),
+      body: JSON.stringify(postBody),
       headers: new Headers({ 'Content-Type': 'application/json' }),
     })
       .then((result) => result.json())
@@ -56,18 +67,24 @@ export default function DebtorCard(props) {
       })
       .then(setAssignedEntity(''))
       .then(ref.current.clear())
+      .then(setShowAlert(true))
       .catch((e) => {
-        console.error(e.stack || e);
+        setUpdateMessage(e.message);
+        console.error(e);
         setUpdateResult(false);
-      })
-      .finally(setShowAlert(true));
+        return false;
+      });
 
     return true;
-  }
+  };
 
-  function raiseAlert(message, isError) {
+  function populateAlertFields(message, isError) {
     setUpdateResult(isError);
     setUpdateMessage(message);
+  }
+
+  async function raiseAlert(message, isError) {
+    await populateAlertFields(message, isError);
     setShowAlert(true);
   }
 
@@ -83,7 +100,7 @@ export default function DebtorCard(props) {
         <Alert.Heading>{updateResult ? 'Success!' : 'Fail!'}</Alert.Heading>
         {updateMessage}
       </Alert>
-      <Form noValidate onSubmit={onSubmit} style={{ marginTop: 10 }}>
+      <Form noValidate onSubmit={handleSubmit} style={{ marginTop: 10 }}>
         <Form.Group controlId="debtorAsync">
           <Form.Label>Debtor</Form.Label>
           <AsyncTypeahead
@@ -96,8 +113,8 @@ export default function DebtorCard(props) {
               fetch(`http://localhost:4000/debtors/${query}`)
                 .then((resp) => resp.json())
                 .then((json) => {
-                  setIsLoading(false);
                   setDebtorOptions(json.recordset);
+                  setIsLoading(false);
                 });
             }}
             onChange={(selected) => {
@@ -114,7 +131,7 @@ export default function DebtorCard(props) {
           ) : null}
         </Form.Group>
         <AssignedEntities
-          module="Debtor"
+          account="Debtor"
           debtor={assignedDebtor[0]}
           raiseAlert={raiseAlert}
         />

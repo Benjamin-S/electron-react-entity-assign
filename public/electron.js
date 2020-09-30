@@ -5,6 +5,7 @@ const path = require('path');
 const { app, BrowserWindow } = require('electron');
 const logger = require('electron-timber');
 const isDev = require('electron-is-dev');
+const { ipcMain: ipc } = require('electron-better-ipc');
 
 const express = require('express');
 
@@ -42,7 +43,9 @@ const createMainWindow = async () => {
     frame: false,
     icon: './icon.png',
     webPreferences: {
+      enableRemoteModule: true,
       nodeIntegration: true,
+      webSecurity: false,
     },
     show: false,
   });
@@ -80,6 +83,8 @@ const createMainWindow = async () => {
   return win;
 };
 
+// No point allowing a user to open a second instance. Will cause issues anyway because
+// the express server will attempt to launch on the same PORT again.
 if (!app.requestSingleInstanceLock()) {
   app.quit();
 }
@@ -94,21 +99,15 @@ app.on('second-instance', () => {
   }
 });
 
-ipcMain.on('populateUsername', (event, args) => {
-  const result = os.userInfo().username;
-  logger.log(result);
-  event.reply('populateUsernameReply', result);
-});
-
-ipcMain.on('collectSQLServerInfo', async (event, args) => {
+ipc.answerRenderer('get-sql-info', async () => {
   const result = await poolPromise;
   logger.log('SQL server is: ' + result.config.server);
-  event.reply('collectSQLServerInfoReply', result.config.server);
+  return result.config.server;
 });
 
-ipcMain.on('expressServer', (event, args) => {
-  const result = server.listening;
-  event.reply('expressServerReply', result);
+ipc.answerRenderer('get-express-info', async () => {
+  const result = await server.listening;
+  return result;
 });
 
 // This method will be called when Electron has finished

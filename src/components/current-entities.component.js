@@ -24,7 +24,7 @@ export default class AssignedEntities extends Component {
   }
 
   updateData() {
-    if (this.props.module === 'Creditor') {
+    if (this.props.module === 'Creditors') {
       fetch(`http://localhost:4000/creditors/entities/${this.props.creditor}`)
         .then((resp) => resp.json())
         .then((json) => {
@@ -34,7 +34,11 @@ export default class AssignedEntities extends Component {
           // console.log(json);
         });
     }
-    if (this.props.module === 'Debtor') {
+
+    if (
+      this.props.module === 'Debtors' &&
+      this.state.assigned_entities.length === 0
+    ) {
       fetch(`http://localhost:4000/debtors/entities/${this.props.debtor}`)
         .then((resp) => resp.json())
         .then((json) => {
@@ -100,10 +104,7 @@ export default class AssignedEntities extends Component {
   handleUnassignCreditor() {}
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.creditor !== prevProps.creditor) {
-      this.updateData();
-    }
-    if (this.props.debtor !== prevProps.debtor) {
+    if (this.props.account !== prevProps.account) {
       this.updateData();
     }
     if (this.state.assigned_entities !== prevState.assigned_entities) {
@@ -138,11 +139,7 @@ export default class AssignedEntities extends Component {
         <Modal.Body>
           <p>
             Are you sure you want to unassign entity {this.state.selectedEntity}{' '}
-            for{' '}
-            {this.props.module === 'Debtor'
-              ? this.props.debtor
-              : this.props.creditor}
-            ?
+            for {this.props.account}
           </p>
         </Modal.Body>
         <Modal.Footer>
@@ -155,7 +152,7 @@ export default class AssignedEntities extends Component {
               onClick={(e) =>
                 this.handleUnassignDebtor(
                   this.state.selectedEntity,
-                  this.props.debtor,
+                  this.props.account,
                   e
                 )
               }
@@ -169,7 +166,7 @@ export default class AssignedEntities extends Component {
               onClick={(e) =>
                 this.handleUnassignCreditor(
                   this.state.selectedEntity,
-                  this.props.creditor,
+                  this.props.account,
                   e
                 )
               }
@@ -188,7 +185,7 @@ export default class AssignedEntities extends Component {
     return (
       <Card style={{ marginBottom: 10 }}>
         <Card.Header as="h6">
-          {this.props.module} already has access to these entities
+          {this.props.account} already has access to these entities
         </Card.Header>
         {this.state.showModal ? unassign_modal : null}
         {entity_list}
