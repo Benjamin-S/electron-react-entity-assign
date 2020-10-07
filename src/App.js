@@ -1,75 +1,64 @@
-import React, { Component } from 'react';
+/* eslint import/no-unassigned-import: "off" */
+/* eslint import/extensions: off */
+
+import React from 'react';
 import icon from './icon.png';
 
-// import 'bootstrap/dist/css/bootstrap.min.css';
+// Import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import 'react-bootstrap-typeahead/css/Typeahead-bs4.css';
-
-import { HashRouter as Router, Route } from 'react-router-dom';
-
-import MainPage from './components/main-page.component';
-import CreditorCard from './components/creditor-card.component';
-import DebtorCard from './components/debtor-card.component';
-import AccountSearch from './components/account-search.component';
-import Menu from './components/menu.component';
-import Titlebar from './components/titlebar-component';
-import { CSSTransition } from 'react-transition-group';
-import Footer from './components/footer.component';
-
 import './styles/styles.scss';
 import './shared/codicon.css';
+
+import {HashRouter as Router, Route} from 'react-router-dom';
+
+import MainPage from './components/main-page';
+import AccountSearch from './components/account-search';
+import Menu from './components/menu';
+import Titlebar from './components/titlebar';
+import Footer from './components/footer';
+
 const routes = [
-  { path: '/', name: 'Main', Component: MainPage },
-  {
-    path: '/creditors',
-    name: 'Creditors',
-    render: (props) => <AccountSearch {...props} accountType="Creditors" />,
-  },
-  {
-    path: '/debtors',
-    name: 'Debtors',
-    render: (props) => <AccountSearch {...props} accountType="Debtors" />,
-  },
+	{path: '/', name: 'Main', Component: MainPage},
+	{
+		path: '/creditors',
+		name: 'Creditors',
+		render: props => <AccountSearch {...props} accountType="Creditors"/>
+	},
+	{
+		path: '/debtors',
+		name: 'Debtors',
+		render: props => <AccountSearch {...props} accountType="Debtors"/>
+	}
 ];
 
-class App extends Component {
-  componentWillMount() {
-    document.documentElement.classList.add(`theme-dark`);
-  }
+class App extends React.Component {
+	componentDidMount() {
+		document.documentElement.classList.add('theme-dark');
+	}
 
-  render() {
-    return (
-      <Router basename="/">
-        <>
-          <Titlebar titletext="Entity Assign" icon={icon} />
-          <Menu />
-          <div className="content">
-            {routes.map((route) => (
-              <Route
-                key={route.path}
-                exact
-                path={route.path}
-                component={route.Component}
-                render={route.render}
-              >
-                {/* {({ match }) => (
-                <CSSTransition
-                  in={match != null}
-                  timeout={200}
-                  classNames="content"
-                  unmountOnExit
-                > */}
-                {/* <route.Component module={route.name} /> */}
-                {/* </CSSTransition>
-              )} */}
-              </Route>
-            ))}
-          </div>
-          <Footer />
-        </>
-      </Router>
-    );
-  }
+	render() {
+		return (
+			<Router basename="/">
+				<>
+					<Titlebar titletext="Entity Assign" icon={icon}/>
+					<Menu/>
+					<div className="content">
+						{routes.map(route => (
+							<Route
+								key={route.path}
+								exact
+								path={route.path}
+								component={route.Component}
+								render={route.render}
+							/>
+						))}
+					</div>
+					<Footer/>
+				</>
+			</Router>
+		);
+	}
 }
 
 export default App;

@@ -1,26 +1,26 @@
 const sql = require('mssql');
 const isDev = require('electron-is-dev');
-const db_config = require('../src/prodconfig');
-const dev_config = require('../src/devconfig');
+const dbConfig = require('../src/prodconfig');
+const devConfig = require('../src/devconfig');
 
-config = {
-  user: db_config.DB_USER,
-  password: db_config.DB_PASSWORD,
-  server: isDev ? dev_config.DB_SERVER : db_config.DB_SERVER,
-  database: db_config.DB_DATABASE,
-  pool: {
-    max: 10,
-    min: 0,
-    idleTimeoutMillis: 30000,
-  },
+const config = {
+	user: dbConfig.DB_USER,
+	password: dbConfig.DB_PASSWORD,
+	server: isDev ? devConfig.DB_SERVER : dbConfig.DB_SERVER,
+	database: dbConfig.DB_DATABASE,
+	pool: {
+		max: 10,
+		min: 0,
+		idleTimeoutMillis: 30000
+	}
 };
 
 const poolPromise = new sql.ConnectionPool(config)
-  .connect()
-  .then((pool) => {
-    console.log('Connected to MSSQL');
-    return pool;
-  })
-  .catch((err) => console.err('Database connection Failed! Bad config: ', err));
+	.connect()
+	.then(pool => {
+		console.log('Connected to MSSQL');
+		return pool;
+	})
+	.catch(error => console.err('Database connection Failed! Bad config: ', error));
 
-module.exports = { sql, poolPromise };
+module.exports = {sql, poolPromise};
