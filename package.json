@@ -1,6 +1,6 @@
 {
 	"name": "multi-entity-management-tool",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"private": true,
 	"main": "public/electron.js",
 	"repository": "Benjamin-S/electron-react-entity-assign",
