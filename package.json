@@ -37,7 +37,7 @@
 		"build": "react-scripts build",
 		"electron-dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
 		"electron-built": "electron . Built",
-		"dist": "electron-builder --windows"
+		"dist": "yarn electron-pack"
 	},
 	"browserslist": {
 		"production": [
