@@ -1,6 +1,8 @@
 os: windows
 language: node_js
 node_js: '12'
+before_script:
+  - export GRADLE_OPTS=-Dorg.gradle.daemon=false
 script:
   - yarn test
   - yarn dist
