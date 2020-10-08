@@ -2,5 +2,5 @@ os: windows
 language: node_js
 node_js: '12'
 script:
-  - npm test
-  - npm run dist
+  - yarn test
+  - yarn dist
