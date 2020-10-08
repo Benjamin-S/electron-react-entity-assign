@@ -36,7 +36,8 @@
 		"electron-pack": "electron-builder --c.extraMetadata.main=build/electron.js",
 		"build": "react-scripts build",
 		"electron-dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
-		"electron-built": "electron . Built"
+		"electron-built": "electron . Built",
+		"dist": "electron-builder --windows"
 	},
 	"browserslist": {
 		"production": [
