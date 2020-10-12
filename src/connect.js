@@ -2,6 +2,7 @@ const sql = require('mssql');
 const isDev = require('electron-is-dev');
 const dbConfig = require('../src/prodconfig');
 const devConfig = require('../src/devconfig');
+const logger = require('electron-timber');
 
 const config = {
 	user: dbConfig.DB_USER,
@@ -14,6 +15,29 @@ const config = {
 		idleTimeoutMillis: 30000
 	}
 };
+
+// Check if environment variables are set and use those instead. Travis config has the encrypted
+// key value pairs included so if possible it should use those as prodconfig is not added to the
+// git repo.
+if (process.env.DB_USER) {
+	logger.log('Env variable for DB_USER found. Using this instead.');
+	config.user = process.env.DB_USER;
+}
+
+if (process.env.DB_PASSWORD) {
+	logger.log('Env variable for DB_PASSWORD found. Using this instead.');
+	config.password = process.env.DB_PASSWORD;
+}
+
+if (process.env.DB_SERVER) {
+	logger.log('Env variable for DB_SERVER found. Using this instead.');
+	config.server = process.env.DB_SERVER;
+}
+
+if (process.env.DB_DATABASE) {
+	logger.log('Env variable for DB_DATABASE found. Using this instead.');
+	config.database = process.env.DB_DATABASE;
+}
 
 const poolPromise = new sql.ConnectionPool(config)
 	.connect()
