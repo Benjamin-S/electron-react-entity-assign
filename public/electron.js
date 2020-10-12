@@ -6,6 +6,7 @@ const {app, BrowserWindow} = require('electron');
 const logger = require('electron-timber');
 const isDev = require('electron-is-dev');
 const {ipcMain: ipc} = require('electron-better-ipc');
+const {autoUpdater} = require('electron-updater');
 
 const express = require('express');
 
@@ -15,6 +16,17 @@ const cors = require('cors');
 
 const router = require('../src/routes');
 const {poolPromise} = require('../src/connect');
+
+app.setAppUserModelId('com.bensymons.mem-tool');
+
+if (!isDev) {
+	const ONE_HOUR = 1000 * 60 * 60;
+	setInterval(() => {
+		autoUpdater.checkForUpdates();
+	}, ONE_HOUR);
+
+	autoUpdater.checkForUpdates();
+}
 
 // Prevent window from being garbage collected
 let mainWindow;
