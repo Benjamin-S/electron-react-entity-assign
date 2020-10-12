@@ -26,7 +26,7 @@ const AccountSearch = props => {
 	const [accountType, setAccountType] = useState(null);
 	const [moduleDict, setModuleDict] = useState({});
 	const [existingEntities, setExistingEntities] = useState([]);
-
+	const [accountStatus, setAccountStatus] = useState('');
 	const [showModal, setShowModal] = useState(false);
 	const [selectedEntity, setSelectedEntity] = useState('');
 
@@ -228,6 +228,7 @@ const AccountSearch = props => {
 						placeholder={'Enter ' + moduleDict.singular + ' code'}
 						isLoading={isLoading}
 						options={accountOptions}
+						searchText="Searching..."
 						labelKey={option =>
 							`${option[moduleDict.id]} - ${option[moduleDict.name]}`}
 						isInvalid={accountError}
@@ -244,6 +245,7 @@ const AccountSearch = props => {
 						}}
 						onChange={selected => {
 							setAssignedAccount(selected.map(a => a[moduleDict.id]));
+							setAccountStatus(selected.map(a => a.STATUS));
 						}}
 					/>
 					{accountError ? (
@@ -252,30 +254,32 @@ const AccountSearch = props => {
 						</div>
 					) : null}
 				</Form.Group>
-				{/* <AssignedEntities
-          module={accountType}
-          account={assignedAccount.toString()}
-          raiseAlert={raiseAlert}
-        /> */}
 				{existingEntities.length !== 0 && (
 					<Card style={{marginBottom: 10}}>
-						<Card.Header as="h6">
-							{moduleDict.singular} already has access to these entities
-						</Card.Header>
 						{showModal ? unassignModal : null}
-						{existingEntities.map(entity => (
-							<ListGroup.Item key={entity}>
-								{entity}
-								<Button
-									className="float-right"
-									variant="danger"
-									size="sm"
-									onClick={event_ => handleShow(entity, event_)}
-								>
-									Unassign
-								</Button>
-							</ListGroup.Item>
-						))}
+						<Card.Body>
+							<Card.Title>
+								{assignedAccount} has access to the following entities
+							</Card.Title>
+							<Card.Subtitle>
+								...and is <span className={accountStatus}>{accountStatus.toString().toLowerCase()}</span> in GP.
+							</Card.Subtitle>
+						</Card.Body>
+						<ListGroup variant="flush">
+							{existingEntities.map(entity => (
+								<ListGroup.Item key={entity}>
+									{entity}
+									<Button
+										className="float-right"
+										variant="danger"
+										size="sm"
+										onClick={event_ => handleShow(entity, event_)}
+									>
+										Unassign
+									</Button>
+								</ListGroup.Item>
+							))}
+						</ListGroup>
 					</Card>
 				)}
 				<Form.Group controlId="formEntity">

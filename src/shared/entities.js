@@ -1,4 +1,5 @@
 const entities = [
+	{Entity: '200', Description: 'Apollo'},
 	{Entity: '402', Description: 'Augusta Sub Centre'},
 	{Entity: '404', Description: 'Beverley Sub Centre'},
 	{Entity: '405', Description: 'Boddington Sub Centre'},

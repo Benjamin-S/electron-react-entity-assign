@@ -370,4 +370,24 @@ h2 {
   }
 }
 
+.card {
+	margin-bottom: 10px;
+
+	& .card-body {
+
+		& .card-title {
+			font-weight: bold;
+		}
+
+		& .card-subtitle span.Active {
+			color: $green;
+		}
+
+		& .card-subtitle span.Inactive {
+			color: $red;
+		}
+	}
+
+}
+
 @import './boostrapOverride.scss';
