@@ -25,7 +25,7 @@ if (!isDev) {
 		autoUpdater.checkForUpdates();
 	}, ONE_HOUR);
 
-	autoUpdater.checkForUpdates();
+	autoUpdater.checkForUpdatesAndNotify();
 }
 
 // Prevent window from being garbage collected
@@ -117,6 +117,11 @@ ipc.answerRenderer('get-express-info', async () => {
 	return result;
 });
 
+ipc.answerRenderer('app_version', async () => {
+	const version = app.getVersion();
+	return version;
+});
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -142,3 +147,15 @@ app.on('activate', async () => {
 	await app.whenReady();
 	mainWindow = await createMainWindow();
 })();
+
+autoUpdater.on('update-available', () => {
+	mainWindow.webContents.send('update_available');
+});
+
+autoUpdater.on('update-downloaded', () => {
+	mainWindow.webContents.send('update_downloaded');
+});
+
+ipc.answerRenderer('restart_app', () => {
+	autoUpdater.quitAndInstall();
+});

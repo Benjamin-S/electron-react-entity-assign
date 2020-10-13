@@ -1,13 +1,11 @@
-/* eslint import/extensions: off */
-
 import React, {useEffect, useState} from 'react';
-import '../styles/styles.scss';
 const {ipcRenderer: ipc} = window.require('electron-better-ipc');
 const {is, electronVersion, chromeVersion} = window.require('electron-util');
 
 const Footer = () => {
 	const [sqlServer, setSqlServer] = useState(null);
 	const [expressInfo, setExpressInfo] = useState(null);
+	const [appVersion, setAppVersion] = useState(null);
 
 	function changeTheme(theme) {
 		document.documentElement.className = '';
@@ -32,9 +30,15 @@ const Footer = () => {
 		setSqlServer(sqlDatabase);
 	}
 
+	async function getAppVersion() {
+		const appVersion = await ipc.callMain('app_version');
+		setAppVersion(appVersion);
+	}
+
 	useEffect(() => {
 		getSqlDatabase();
 		isServerActive();
+		getAppVersion();
 	}, []);
 
 	return (
@@ -55,10 +59,11 @@ const Footer = () => {
 					<i className="codicon codicon-circle-filled server-status fail"/>
 				)}
 			</span>
-			{sqlServer && (<span>SQL Server: + {sqlServer}</span>)}
+			{sqlServer && (<span>SQL Server: {sqlServer}</span>)}
 			<span>Electron Version: {electronVersion}</span>
 			<span>Chrome Version: {chromeVersion}</span>
 			{is.development && <span>DEVELOPMENT</span>}
+			<span className="version">Version: {appVersion}</span>
 		</div>
 	);
 };

@@ -8,6 +8,8 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
+import {Toast} from 'react-bootstrap';
+const {ipcRenderer: ipc} = window.require('electron-better-ipc');
 
 const AsyncTypeahead = asyncContainer(Typeahead);
 
@@ -29,6 +31,11 @@ const AccountSearch = props => {
 	const [accountStatus, setAccountStatus] = useState('');
 	const [showModal, setShowModal] = useState(false);
 	const [selectedEntity, setSelectedEntity] = useState('');
+
+	const [showToast, setShowToast] = useState(false);
+	const [showDownloadToast, setShowDownloadToast] = useState(false);
+	const [appToastMessage, setAppToastMessage] = useState(null);
+	const [appDownloadMessage, setAppDownloadMessage] = useState(null);
 
 	useEffect(() => {
 		// ResetState();
@@ -179,6 +186,21 @@ const AccountSearch = props => {
 		setSelectedEntity('');
 	}
 
+	function handleToastClose() {
+		setShowToast(false);
+	}
+
+	ipc.on('update_available', () => {
+		setAppToastMessage('An update is available and will be now be downloaded in the background.');
+		setShowToast(true);
+	});
+
+	ipc.on('update_downloaded', () => {
+		setShowToast(false);
+		setAppDownloadMessage('Update has been downloaded. Please click the button below to restart the application.');
+		setShowDownloadToast(true);
+	});
+
 	const unassignModal = (
 		<Modal centered show={showModal} onHide={handleClose}>
 			<Modal.Header closeButton>
@@ -205,8 +227,37 @@ const AccountSearch = props => {
 		</Modal>
 	);
 
+	const updateToast = (
+		<Toast animation className="updateToast" show={showToast} onClose={() => handleToastClose()}>
+			<Toast.Header>
+				<img src="../icon.png" width="20" height="20" className="rounded mr-2" alt=""/>
+				<strong className="mr-auto">Update is available!</strong>
+			</Toast.Header>
+			<Toast.Body>{appToastMessage}</Toast.Body>
+		</Toast>
+	);
+
+	const downloadToast = (
+		<Toast animation className="downloadToast" show={showDownloadToast} onClose={() => setShowDownloadToast(false)}>
+			<Toast.Header>
+				<img src="../icon.png" width="20" height="20" className="rounded mr-2" alt=""/>
+				<strong className="mr-auto">Download complete!</strong>
+			</Toast.Header>
+			<Toast.Body>
+				<p>
+					{appDownloadMessage}
+				</p>
+				<Button onClick={() => ipc.callMain('restart_app')}>Restart App</Button>
+			</Toast.Body>
+		</Toast>
+	);
+
 	return (
 		<div className="component-container">
+			<div className="toast-div">
+				{appToastMessage && updateToast}
+				{appDownloadMessage && downloadToast}
+			</div>
 			<h2 style={{marginTop: 10}}>Assign {moduleDict.singular} to Entity</h2>
 			<Alert
 				dismissible

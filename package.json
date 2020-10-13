@@ -82,6 +82,15 @@
 						"**//*.scss"
 					]
 				}
+			],
+			"import/extensions": [
+				"error",
+				{
+					"allow": [
+						"**/*.css",
+						"**/*.scss"
+					]
+				}
 			]
 		},
 		"parser": "babel-eslint"
@@ -103,7 +112,7 @@
 			"buildResources": "assets"
 		},
 		"win": {
-			"target": "portable",
+			"target": "nsis",
 			"icon": "build/icon.png"
 		}
 	},

@@ -332,7 +332,13 @@ h2 {
 .windowFooter span {
   font-size: 0.8em;
   padding: 0 2em;
-  vertical-align: middle;
+	vertical-align: middle;
+	display: flex;
+
+	&.version {
+		margin-left: auto;
+	}
+
 }
 
 .server-status {
@@ -386,6 +392,20 @@ h2 {
 		& .card-subtitle span.Inactive {
 			color: $red;
 		}
+	}
+
+}
+
+.toast-div {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	z-index: 100;
+	margin-right: 10px;
+	margin-bottom: 10px;
+
+	& .toast .toast-body p {
+		color: $gray-800;
 	}
 
 }
