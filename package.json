@@ -1,7 +1,7 @@
 {
 	"name": "multi-entity-management-tool",
 	"productName": "Entity Assignment",
-	"version": "0.1.5",
+	"version": "1.0.0",
 	"description": "Entity Assignment tool for Dynamics GP",
 	"private": true,
 	"repository": "Benjamin-S/electron-react-entity-assign",
