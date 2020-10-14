@@ -1,13 +1,29 @@
 {
 	"name": "multi-entity-management-tool",
+	"productName": "Entity Assignment",
 	"version": "0.1.5",
+	"description": "Entity Assignment tool for Dynamics GP",
 	"private": true,
-	"main": "public/electron.js",
 	"repository": "Benjamin-S/electron-react-entity-assign",
 	"author": {
 		"name": "Benjamin Symons",
 		"email": "mail@bensymons.com",
 		"url": "https://bensymons.com"
+	},
+	"main": "public/electron.js",
+	"engines": {
+		"node": ">=12"
+	},
+	"scripts": {
+		"postinstall": "electron-builder install-app-deps",
+		"lint": "xo",
+		"test": "yarn lint",
+		"start": "react-scripts start",
+		"pack": "yarn reactbuild && electron-builder --c.extraMetadata.main=build/electron.js",
+		"dist": "electron-builder --windows",
+		"release": "np",
+		"reactbuild": "react-scripts build",
+		"development": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\""
 	},
 	"dependencies": {
 		"body-parser": "^1.19.0",
@@ -25,20 +41,7 @@
 		"react-bootstrap-typeahead": "^3.4.7",
 		"react-dom": "^16.11.0",
 		"react-router-dom": "^5.1.2",
-		"react-scripts": "3.2.0",
-		"react-transition-group": "^4.3.0"
-	},
-	"scripts": {
-		"postinstall": "electron-builder install-app-deps",
-		"lint": "xo",
-		"test": "yarn lint",
-		"start": "react-scripts start",
-		"release": "np",
-		"electron-pack": "electron-builder --c.extraMetadata.main=build/electron.js",
-		"build": "react-scripts build",
-		"electron-dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
-		"electron-built": "electron . Built",
-		"dist": "yarn build && yarn electron-pack"
+		"react-scripts": "3.2.0"
 	},
 	"browserslist": {
 		"production": [
@@ -62,6 +65,7 @@
 		"eslint-config-xo-react": "^0.23.0",
 		"eslint-plugin-react": "^7.21.3",
 		"eslint-plugin-react-hooks": "^4.1.2",
+		"husky": "^4.3.0",
 		"node-sass": "^4.13.0",
 		"np": "^6.5.0",
 		"wait-on": "^3.3.0",
@@ -74,6 +78,7 @@
 			"browser"
 		],
 		"rules": {
+			"promise/prefer-await-to-then": "off",
 			"import/no-unassigned-import": [
 				"error",
 				{
@@ -100,21 +105,26 @@
 		"releaseDraft": false
 	},
 	"build": {
-		"appId": "com.bensymons.mem-tool",
-		"productName": "Entity Assignment",
 		"files": [
 			"build/**/*",
 			"node_modules/**/*",
 			"./src/*.js",
 			"./src/*.png"
 		],
+		"appId": "com.bensymons.mem-tool",
 		"directories": {
 			"buildResources": "assets"
 		},
 		"win": {
+			"publish": "github",
 			"target": "nsis",
 			"icon": "build/icon.png"
 		}
 	},
-	"homepage": "."
+	"homepage": ".",
+	"husky": {
+		"hooks": {
+			"pre-push": "yarn test"
+		}
+	}
 }
