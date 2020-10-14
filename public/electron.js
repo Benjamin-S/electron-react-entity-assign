@@ -16,8 +16,13 @@ const cors = require('cors');
 
 const router = require('../src/routes');
 const {poolPromise} = require('../src/connect');
+const config = require('../src/prodconfig');
 
 app.setAppUserModelId('com.bensymons.mem-tool');
+
+if (config && !process.env.GH_TOKEN) {
+	process.env.GH_TOKEN = config.GH_TOKEN;
+}
 
 if (!isDev) {
 	const ONE_HOUR = 1000 * 60 * 60;
