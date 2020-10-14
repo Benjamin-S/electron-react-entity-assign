@@ -1,7 +1,7 @@
 {
 	"name": "multi-entity-management-tool",
 	"productName": "Entity Assignment",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Entity Assignment tool for Dynamics GP",
 	"private": true,
 	"repository": "Benjamin-S/electron-react-entity-assign",
@@ -19,8 +19,8 @@
 		"lint": "xo",
 		"test": "yarn lint",
 		"start": "react-scripts start",
-		"pack": "yarn reactbuild && electron-builder --c.extraMetadata.main=build/electron.js",
-		"dist": "electron-builder --windows",
+		"elec-pack": "yarn reactbuild && electron-builder --c.extraMetadata.main=build/electron.js",
+		"dist": "electron-builder --windows --publish always",
 		"release": "np",
 		"reactbuild": "react-scripts build",
 		"development": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\""
@@ -101,7 +101,7 @@
 		"parser": "babel-eslint"
 	},
 	"np": {
-		"publish": false,
+		"publish": true,
 		"releaseDraft": false
 	},
 	"build": {
