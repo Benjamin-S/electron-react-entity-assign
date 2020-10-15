@@ -365,7 +365,8 @@ const AccountSearch = props => {
 };
 
 AccountSearch.propTypes = {
-	accountType: PropTypes.string.isRequired
+	accountType: PropTypes.string.isRequired,
+	icon: PropTypes.string.isRequired
 };
 
 export default AccountSearch;
