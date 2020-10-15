@@ -24,6 +24,19 @@ if (config && !process.env.GH_TOKEN) {
 	process.env.GH_TOKEN = config.GH_TOKEN;
 }
 
+autoUpdater.setFeedURL({
+	provider: 'github',
+	repo: 'electron-react-entity-assign',
+	owner: 'Benjamin-S',
+	private: true,
+	token: process.env.GH_TOKEN
+});
+
+(async () => {
+	const updateAvailable = await autoUpdater.checkForUpdates();
+	logger.log(updateAvailable);
+})();
+
 if (!isDev) {
 	const ONE_HOUR = 1000 * 60 * 60;
 	setInterval(() => {
