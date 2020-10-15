@@ -32,11 +32,6 @@ autoUpdater.setFeedURL({
 	token: process.env.GH_TOKEN
 });
 
-(async () => {
-	const updateAvailable = await autoUpdater.checkForUpdates();
-	logger.log(updateAvailable);
-})();
-
 if (!isDev) {
 	const ONE_HOUR = 1000 * 60 * 60;
 	setInterval(() => {

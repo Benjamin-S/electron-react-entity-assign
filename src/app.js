@@ -23,12 +23,12 @@ const routes = [
 	{
 		path: '/creditors',
 		name: 'Creditors',
-		render: props => <AccountSearch {...props} accountType="Creditors"/>
+		render: props => <AccountSearch {...props} icon={icon} accountType="Creditors"/>
 	},
 	{
 		path: '/debtors',
 		name: 'Debtors',
-		render: props => <AccountSearch {...props} accountType="Debtors"/>
+		render: props => <AccountSearch {...props} icon={icon} accountType="Debtors"/>
 	}
 ];
 
