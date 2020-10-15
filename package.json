@@ -22,6 +22,7 @@
 		"elec-pack": "yarn reactbuild && electron-builder --c.extraMetadata.main=build/electron.js",
 		"dist": "electron-builder --windows --publish always",
 		"release": "np",
+		"reldist": "yarn release && yarn dist",
 		"reactbuild": "react-scripts build",
 		"development": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\""
 	},
