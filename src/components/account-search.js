@@ -1,3 +1,5 @@
+/* eslint import/extensions: off */
+
 import React, {useEffect, useState} from 'react';
 import {asyncContainer, Typeahead} from 'react-bootstrap-typeahead';
 import entities from '../shared/entities';
@@ -230,7 +232,7 @@ const AccountSearch = props => {
 	const updateToast = (
 		<Toast animation className="updateToast" show={showToast} onClose={() => handleToastClose()}>
 			<Toast.Header>
-				<img src="../icon.png" width="20" height="20" className="rounded mr-2" alt=""/>
+				<img src={props.icon} width="20" height="20" className="rounded mr-2" alt=""/>
 				<strong className="mr-auto">Update is available!</strong>
 			</Toast.Header>
 			<Toast.Body>{appToastMessage}</Toast.Body>
@@ -240,7 +242,7 @@ const AccountSearch = props => {
 	const downloadToast = (
 		<Toast animation className="downloadToast" show={showDownloadToast} onClose={() => setShowDownloadToast(false)}>
 			<Toast.Header>
-				<img src="../icon.png" width="20" height="20" className="rounded mr-2" alt=""/>
+				<img src={props.icon} width="20" height="20" className="rounded mr-2" alt=""/>
 				<strong className="mr-auto">Download complete!</strong>
 			</Toast.Header>
 			<Toast.Body>
