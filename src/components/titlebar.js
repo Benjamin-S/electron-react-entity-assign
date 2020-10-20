@@ -2,8 +2,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../styles/styles.scss';
-import '../shared/codicon.css';
 const {remote} = window.require('electron');
 const {BrowserWindow} = remote;
 const {ipcRenderer} = window.require('electron');
@@ -65,9 +63,7 @@ export default class Titlebar extends React.Component {
 
 		return (
 			<div className="titlebar">
-				{this.props.icon ? (
-					<img src={this.props.icon} alt="" className="titlebar-img"/>
-				) : null}
+				<div className="window-appicon"/>
 				<div className="draggable-bar"/>
 				<div className="menu-button" onClick={this.minimizeWindow}>
 					<i className="codicon codicon-chrome-minimize"/>

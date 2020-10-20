@@ -5,7 +5,7 @@
 
 @font-face {
 	font-family: "codicon";
-	src: url("./codicon.ttf?c4e66586cd3ad4acc55fc456c0760dec") format("truetype");
+	src: url("./codicon.ttf?669d352dfabff8f6eaa466c8ae820e43") format("truetype");
 }
 
 .codicon[class*='codicon-'] {
@@ -119,6 +119,7 @@
 .codicon-github:before { content: "\ea84" }
 .codicon-terminal:before { content: "\ea85" }
 .codicon-console:before { content: "\ea85" }
+.codicon-repl:before { content: "\ea85" }
 .codicon-zap:before { content: "\ea86" }
 .codicon-symbol-event:before { content: "\ea86" }
 .codicon-error:before { content: "\ea87" }
@@ -203,7 +204,6 @@
 .codicon-collapse-all:before { content: "\eac5" }
 .codicon-color-mode:before { content: "\eac6" }
 .codicon-comment-discussion:before { content: "\eac7" }
-.codicon-compare-changes:before { content: "\eac8" }
 .codicon-credit-card:before { content: "\eac9" }
 .codicon-dash:before { content: "\eacc" }
 .codicon-dashboard:before { content: "\eacd" }
@@ -255,6 +255,7 @@
 .codicon-gist:before { content: "\eafb" }
 .codicon-git-commit:before { content: "\eafc" }
 .codicon-git-compare:before { content: "\eafd" }
+.codicon-compare-changes:before { content: "\eafd" }
 .codicon-git-merge:before { content: "\eafe" }
 .codicon-github-action:before { content: "\eaff" }
 .codicon-github-alt:before { content: "\eb00" }
@@ -302,6 +303,7 @@
 .codicon-paintcan:before { content: "\eb2a" }
 .codicon-pin:before { content: "\eb2b" }
 .codicon-play:before { content: "\eb2c" }
+.codicon-run:before { content: "\eb2c" }
 .codicon-plug:before { content: "\eb2d" }
 .codicon-preserve-case:before { content: "\eb2e" }
 .codicon-preview:before { content: "\eb2f" }
@@ -358,6 +360,8 @@
 .codicon-symbol-misc:before { content: "\eb63" }
 .codicon-symbol-operator:before { content: "\eb64" }
 .codicon-symbol-property:before { content: "\eb65" }
+.codicon-wrench:before { content: "\eb65" }
+.codicon-wrench-subaction:before { content: "\eb65" }
 .codicon-symbol-snippet:before { content: "\eb66" }
 .codicon-tasklist:before { content: "\eb67" }
 .codicon-telescope:before { content: "\eb68" }
@@ -395,14 +399,45 @@
 .codicon-debug-breakpoint-function-unverified:before { content: "\eb87" }
 .codicon-debug-breakpoint-function:before { content: "\eb88" }
 .codicon-debug-breakpoint-function-disabled:before { content: "\eb88" }
-.codicon-debug-breakpoint-stackframe-active:before { content: "\eb89" }
-.codicon-debug-breakpoint-stackframe-dot:before { content: "\eb8a" }
-.codicon-debug-breakpoint-stackframe:before { content: "\eb8b" }
-.codicon-debug-breakpoint-stackframe-focused:before { content: "\eb8b" }
+.codicon-debug-stackframe-active:before { content: "\eb89" }
+.codicon-debug-stackframe-dot:before { content: "\eb8a" }
+.codicon-debug-stackframe:before { content: "\eb8b" }
+.codicon-debug-stackframe-focused:before { content: "\eb8b" }
 .codicon-debug-breakpoint-unsupported:before { content: "\eb8c" }
 .codicon-symbol-string:before { content: "\eb8d" }
 .codicon-debug-reverse-continue:before { content: "\eb8e" }
 .codicon-debug-step-back:before { content: "\eb8f" }
 .codicon-debug-restart-frame:before { content: "\eb90" }
-.codicon-debug-alternate:before { content: "\eb91" }
-.codicon-debug-alt:before { content: "\f101" }
+.codicon-debug-alt:before { content: "\eb91" }
+.codicon-call-incoming:before { content: "\eb92" }
+.codicon-call-outgoing:before { content: "\eb93" }
+.codicon-menu:before { content: "\eb94" }
+.codicon-expand-all:before { content: "\eb95" }
+.codicon-feedback:before { content: "\eb96" }
+.codicon-group-by-ref-type:before { content: "\eb97" }
+.codicon-ungroup-by-ref-type:before { content: "\eb98" }
+.codicon-account:before { content: "\eb99" }
+.codicon-bell-dot:before { content: "\eb9a" }
+.codicon-debug-console:before { content: "\eb9b" }
+.codicon-library:before { content: "\eb9c" }
+.codicon-output:before { content: "\eb9d" }
+.codicon-run-all:before { content: "\eb9e" }
+.codicon-sync-ignored:before { content: "\eb9f" }
+.codicon-pinned:before { content: "\eba0" }
+.codicon-github-inverted:before { content: "\eba1" }
+.codicon-server-process:before { content: "\eba2" }
+.codicon-server-environment:before { content: "\eba3" }
+.codicon-pass:before { content: "\eba4" }
+.codicon-stop-circle:before { content: "\eba5" }
+.codicon-play-circle:before { content: "\eba6" }
+.codicon-record:before { content: "\eba7" }
+.codicon-debug-alt-small:before { content: "\eba8" }
+.codicon-vm-connect:before { content: "\eba9" }
+.codicon-cloud:before { content: "\ebaa" }
+.codicon-merge:before { content: "\ebab" }
+.codicon-export:before { content: "\ebac" }
+.codicon-graph-left:before { content: "\ebad" }
+.codicon-magnet:before { content: "\ebae" }
+.codicon-notebook:before { content: "\ebaf" }
+.codicon-redo:before { content: "\ebb0" }
+.codicon-check-all:before { content: "\ebb1" }

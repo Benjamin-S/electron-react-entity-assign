@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="256" height="256" version="1.1" viewBox="0 0 67.733 67.733" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <title>Icon</title>
+ <defs>
+  <linearGradient id="linearGradient937">
+   <stop stop-color="#2f000f" offset="0"/>
+   <stop stop-color="#980039" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient915" x1="55.033" x2="55.033" y1="76.204" y2="22.229" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#f06" offset="0"/>
+   <stop stop-color="#ff8ebc" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient923" x1="451.19" x2="280.26" y1="31.283" y2="129.97" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#ff7bb0" offset="0"/>
+   <stop stop-color="#ffdce9" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient931" x1="341" x2="341" y1="169.01" y2="364.01" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#8e0039" offset="0"/>
+   <stop stop-color="#520020" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient939" x1="90.254" x2="58.542" y1="81.218" y2="26.292" gradientUnits="userSpaceOnUse" xlink:href="#linearGradient937"/>
+  <linearGradient id="linearGradient947" x1="61.286" x2="44.714" y1="78.978" y2="50.275" gradientUnits="userSpaceOnUse" xlink:href="#linearGradient937"/>
+ </defs>
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title>Icon</dc:title>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g transform="translate(0 -229.27)">
+  <g transform="matrix(.62564 0 0 .62564 -22.581 235.49)">
+   <path d="m44.381 50.802 28.651-16.541 17.19 29.775-28.651 16.542z" fill="url(#linearGradient947)"/>
+   <path d="m104.55-0.47711 31.516 54.587-45.842 26.467-31.516-54.587z" fill="url(#linearGradient939)"/>
+   <path d="m44.381 17.719v16.542l31.516 54.587 14.325 8.2709v-16.541l-31.516-54.587zm28.651 16.542 17.19 29.775v-19.85zm-28.651 16.541v19.85l17.19 9.925z" fill="url(#linearGradient915)" stroke-width=".16035"/>
+   <path transform="scale(.26458)" d="m514.26 66.969-173.26 100.03-2e-3 75.023 173.26-100.03zm0 137.54-173.26 100.03v62.518l173.26-100.03z" fill="url(#linearGradient931)"/>
+   <path transform="scale(.26458)" d="m341-33.062-173.26 100.03 54.145 31.26 173.26-100.03zm108.29 62.52-173.26 100.03 64.971 37.512 173.26-100.03z" fill="url(#linearGradient923)"/>
+  </g>
+ </g>
+</svg>

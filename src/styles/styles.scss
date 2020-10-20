@@ -1,17 +1,18 @@
-@import 'colors';
-@import 'mixins';
+@import "colors";
+@import "mixins";
+@import "./boostrapOverride.scss";
 
 $menuwidth: 160px;
-$footer-height: 30px;
+$footer-height: 22px;
 $menu-height: 30px;
 $icon-size: $menu-height * 0.8;
 
 body {
-  @include theme-aware('background-color', 'background');
+	@include theme-aware("background-color", "background");
 }
 
 .content {
-  @include theme-aware('background-color', 'background');
+	@include theme-aware("background-color", "background");
 }
 
 p,
@@ -20,367 +21,380 @@ h2,
 h3,
 h4,
 h5 {
-  @include theme-aware('color', 'formText');
+	@include theme-aware("color", "formText");
 }
 
 .menu {
-  width: $menuwidth;
-  height: 100%;
-  position: fixed;
-  @include theme-aware('background-color', 'menuBg');
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+	width: $menuwidth;
+	height: 100%;
+	position: fixed;
+	@include theme-aware("background-color", "menuBg");
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
 }
 
 .menu-item {
-  display: flex;
-  text-decoration: none;
-  @include theme-aware('color', 'textMenu');
-  padding: 1rem;
+	display: flex;
+	text-decoration: none;
+	@include theme-aware("color", "textMenu");
+	padding: 1rem;
 }
 
 .menu-item:hover {
-  @include theme-aware('background-color', 'menuHover');
-  // background-color: $menu-hover;
-  text-decoration: none;
-  @include theme-aware('color', 'textDark');
+	@include theme-aware("background-color", "menuHover");
+	// background-color: $menu-hover;
+	text-decoration: none;
+	@include theme-aware("color", "textDark");
 }
 
 .menu-item.active {
-  @include theme-aware('background-color', 'menuSelected');
+	@include theme-aware("background-color", "menuSelected");
 }
 
-// .server-status {
-//   color: blue;
-//   margin-top: auto;
-//   padding: 0 0 5px 5px;
-//   font-size: small;
-// }
-
-// .App {
-//   text-align: center;
-//   color: white;
-//   -webkit-app-region: no-drag;
-// }
-
-// .App-logo {
-//   height: 40vmin;
-// }
-
-// .App-header {
-//   background-color: #282c34;
-//   min-height: 100vh;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-//   font-size: calc(10px + 2vmin);
-//   color: white;
-// }
-
-// .App-link {
-//   color: #09d3ac;
-// }
-
 .content {
-  margin-left: $menuwidth;
-  display: flex;
-  justify-content: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  padding-top: 30px;
-  padding-bottom: $footer-height;
+	margin-left: $menuwidth;
+	display: flex;
+	justify-content: center;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	padding-top: 30px;
+	padding-bottom: $footer-height;
 }
 
 .component-container {
-  width: 90%;
-  height: 100%;
+	width: 90%;
+	height: 100%;
 }
 
 .rbt-input-hint input {
-  color: rgba(255, 255, 255, 0.25) !important;
+	color: rgba(255, 255, 255, 0.25) !important;
 }
 
-input[type='text'] {
-  // background-color: $input-bg;
-  @include theme-aware('background-color', 'formBg');
-  @include theme-aware('color', 'formText');
-  @include theme-aware('border-color', 'inputBorder');
-  border-radius: 0px;
-  border: none;
+input[type="text"] {
+	// background-color: $input-bg;
+	@include theme-aware("background-color", "formBg");
+	@include theme-aware("color", "formText");
+	@include theme-aware("border-color", "inputBorder");
+	border-radius: 0px;
+	border: none;
 }
 
-input[type='text']:focus {
-  // background-color: $input-bg;
-  @include theme-aware('background-color', 'formBg');
-  @include theme-aware('color', 'formText');
-  @include theme-aware('border-color', 'inputFocus');
-  // border-color: #175b89;
-  @include focusShadow('inputFocus');
+input[type="text"]:focus {
+	// background-color: $input-bg;
+	@include theme-aware("background-color", "formBg");
+	@include theme-aware("color", "formText");
+	@include theme-aware("border-color", "inputFocus");
+	// border-color: #175b89;
+	@include focusShadow("inputFocus");
 }
 
-button[type='submit'] {
-  border-radius: 0px;
+button[type="submit"] {
+	border-radius: 0px;
 }
 
-button[type='button'] {
-  border-radius: 0px;
+button[type="button"] {
+	border-radius: 0px;
 }
 
 .dropdown-menu {
-  @include theme-aware('background-color', 'formBg');
+	@include theme-aware("background-color", "formBg");
 }
 
 .dropdown-item {
-  @include theme-aware('color', 'formText');
+	@include theme-aware("color", "formText");
 }
 
 .dropdown-item:hover {
-  @include theme-aware('background-color', 'menuHover');
-  @include theme-aware('color', 'textDark');
+	@include theme-aware("background-color", "menuHover");
+	@include theme-aware("color", "textDark");
 }
 
 .close {
-  color: white;
+	color: white;
 }
 
 .close:hover {
-  color: yellow;
+	color: yellow;
 }
 
 .form-label {
-  @include theme-aware('color', 'textDark');
-  font-weight: bold;
+	@include theme-aware("color", "textDark");
+	font-weight: bold;
 }
 
 h2 {
-  color: rgb(231, 231, 231);
+	color: rgb(231, 231, 231);
 }
 
 .navbar {
-  padding: 0 1rem 0 0;
+	padding: 0 1rem 0 0;
 }
 
 .navbar-brand {
-  padding: 0 0 0 0.5rem;
+	padding: 0 0 0 0.5rem;
 }
 
 .navbar-dark .nav-item:first-child {
-  border-left: 1px solid black;
+	border-left: 1px solid black;
 }
 
 .navbar-dark .nav-item {
-  padding: 0 0.25rem 0 0.25rem;
-  border-right: 1px solid black;
+	padding: 0 0.25rem 0 0.25rem;
+	border-right: 1px solid black;
 }
 
 .navbar-dark .navbar-nav .nav-link {
-  // color: whitesmoke;
-  @include theme-aware('color', 'borderDark');
+	// color: whitesmoke;
+	@include theme-aware("color", "borderDark");
 }
 
 .card {
-  @include theme-aware('background-color', 'formBg');
-  @include theme-aware('color', 'formText');
-  border-radius: 0;
+	@include theme-aware("background-color", "formBg");
+	@include theme-aware("color", "formText");
+	border-radius: 0;
 }
 
 .list-group-item {
-  @include theme-aware('background-color', 'formBg');
+	@include theme-aware("background-color", "formBg");
 }
 
 .content-enter {
-  opacity: 0;
-  transform: scale(0.98);
+	opacity: 0;
+	transform: scale(0.98);
 }
 
 .content-enter-active {
-  opacity: 1;
-  transform: translateX(0);
-  transition: opacity 300ms, transform 300ms;
+	opacity: 1;
+	transform: translateX(0);
+	transition: opacity 300ms, transform 300ms;
 }
 
 .content-exit {
-  opacity: 1;
+	opacity: 1;
 }
 
 .content-exit-active {
-  opacity: 0;
-  transform: scale(0.98);
-  transition: opacity 200ms, transform 300ms;
+	opacity: 0;
+	transform: scale(0.98);
+	transition: opacity 200ms, transform 300ms;
 }
 
 .component-container {
-  padding-left: 20px;
-  padding-right: 10px;
-  padding-bottom: 20px;
-  flex-grow: 1;
-  overflow-x: auto;
+	padding-left: 20px;
+	padding-right: 10px;
+	padding-bottom: 20px;
+	flex-grow: 1;
+	overflow-x: auto;
 }
 
 ::-webkit-scrollbar {
-  @include theme-aware('background-color', 'background');
-  width: 1em;
+	@include theme-aware("background-color", "background");
+	width: 1em;
 }
 
 ::-webkit-scrollbar-thumb:window-inactive,
 ::-webkit-scrollbar-thumb {
-  @include theme-aware('background', 'formBg');
+	@include theme-aware("background", "formBg");
 }
 
 .modal-content {
-  @include theme-aware('background-color', 'formBg');
-  @include theme-aware('color', 'formText');
+	@include theme-aware("background-color", "formBg");
+	@include theme-aware("color", "formText");
 }
 
 .modal-header {
-  @include theme-aware('border-bottom-color', 'borderDark');
+	@include theme-aware("border-bottom-color", "borderDark");
 }
 
 .modal-footer {
-  @include theme-aware('border-top-color', 'borderDark');
+	@include theme-aware("border-top-color", "borderDark");
 }
 
 .titlebar {
-  width: 100%;
-  height: $menu-height;
-  @include theme-aware('background-color', 'titleBar');
-  position: relative;
-  top: 0;
-  left: 0;
-  z-index: 1060;
-  padding: 0;
-  display: flex;
-  justify-content: flex-end;
-  flex-direction: row;
-  flex-shrink: 0;
+	width: 100%;
+	height: $menu-height;
+	@include theme-aware("background-color", "toolbar-background");
+	position: relative;
+	top: 0;
+	left: 0;
+	z-index: 1060;
+	padding: 0;
+	display: flex;
+	justify-content: flex-end;
+	flex-direction: row;
+	flex-shrink: 0;
+
+	& .window-appicon {
+		width: 35px;
+		height: 100%;
+		position: relative;
+		z-index: 3000;
+		background-image: url(../Icon.svg);
+		background-size: 16px;
+		background-repeat: no-repeat;
+		background-position: 50%;
+		flex-shrink: 0;
+	}
 }
 
 .titlebar-text {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  text-align: center;
-  @include theme-aware('color', 'titleBarText');
-  font-size: 0.8rem;
-  margin-top: 5px;
-  -webkit-user-select: none;
-  pointer-events: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	text-align: center;
+	@include theme-aware("color", "toolbar-text");
+	font-size: 0.8rem;
+	margin-top: 5px;
+	-webkit-user-select: none;
+	pointer-events: none;
 }
 
 .menu-button {
-  @include theme-aware('color', 'titleBarText');
-  height: $menu-height;
-  width: 1.5 * $menu-height;
-  margin: 0;
-  -webkit-app-region: no-drag;
-  align-items: center;
-  justify-content: center;
-  display: flex;
+	@include theme-aware("color", "toolbar-text");
+	height: $menu-height;
+	width: 1.5 * $menu-height;
+	margin: 0;
+	-webkit-app-region: no-drag;
+	align-items: center;
+	justify-content: center;
+	display: flex;
 }
 
 .menu-button:hover {
-  background-color: #4b4b4b;
+	background-color: rgba(0, 0, 0, 0.1);
 }
 
 .close-window:hover {
-  background-color: rgb(177, 7, 7);
+	background-color: rgba(232, 17, 35, 0.9);
+	color: $white;
 }
 
 .draggable-bar {
-  background-color: transparent;
-  display: flex;
-  flex: 1;
-  -webkit-app-region: drag;
-  -webkit-user-select: none;
-  justify-content: center;
-  align-content: center;
+	background-color: transparent;
+	display: flex;
+	flex: 1;
+	-webkit-app-region: drag;
+	-webkit-user-select: none;
+	justify-content: center;
+	align-content: center;
 }
 
 .titlebar-img {
-  align-self: center;
-  width: $icon-size;
-  height: $icon-size;
-  margin: 0px 0px 0px $icon-size/4;
-  -webkit-app-region: drag;
-  -webkit-user-select: none;
+	align-self: center;
+	width: 35px;
+	height: 100%;
+	margin: 0px 0px 0px $icon-size/4;
+	-webkit-app-region: drag;
+	-webkit-user-select: none;
+}
+
+.first-visible-item {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.left-items {
+	display: flex;
+	flex-grow: 1;
+}
+
+.right-items {
+	display: flex;
+	flex-direction: row-reverse;
+	flex-wrap: wrap;
+}
+
+.items-container {
+	& .footer-item {
+		display: inline-block;
+		line-height: $footer-height;
+		height: 100%;
+		vertical-align: top;
+		max-width: 40vw;
+
+		& > :first-child {
+			margin-left: 3px;
+			margin-right: 3px;
+		}
+
+		& span.codicon {
+			text-align: center;
+			font-size: 14px;
+			color: inherit;
+		}
+
+		&.has-background-color {
+			& > :first-child {
+				margin-left: 0;
+				margin-right: 0;
+				padding-left: 10px;
+				padding-right: 10px;
+			}
+		}
+		& > button:hover {
+			background-color: rgba(255, 255, 255, 0.12);
+		}
+	}
+	& button {
+		color: rgb(255, 255, 255);
+		cursor: pointer;
+		display: flex;
+		height: 100%;
+		padding: 0 5px;
+		white-space: pre;
+		align-items: center;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		outline-width: 0;
+		border: none;
+		background-color: inherit;
+	}
 }
 
 .windowFooter {
-  width: 100%;
-  height: $footer-height;
-  @include theme-aware('background-color', 'titleBar');
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 3;
-  // padding: 0.5em;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: row;
-  flex-shrink: 0;
-  @include theme-aware('color', 'accent');
-}
-
-.windowFooter span {
-  font-size: 0.8em;
-  padding: 0 2em;
-	vertical-align: middle;
+	width: 100%;
+	height: $footer-height;
+	@include theme-aware("background-color", "footer-background");
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 3;
 	display: flex;
-
-	&.version {
-		margin-left: auto;
-	}
-
-}
-
-.server-status {
-  font-size: 1.5em !important;
-  vertical-align: middle;
-  color: $black;
-
-  &.pass {
-    color: $success;
-  }
-
-  &.fail {
-    color: $danger;
-  }
+	color: $white;
+	font-size: 12px;
 }
 
 .theme-toggle {
-  cursor: pointer;
-  @include theme-aware('color', 'accent');
-  &:hover {
-    color: pink;
-  }
-  padding: 0.5em 1em;
+	cursor: pointer;
+	@include theme-aware("color", "accent");
+	&:hover {
+		color: pink;
+	}
+	padding: 0.5em 1em;
 }
 
 .alert-danger {
-  & p {
-    color: color-yiq($danger);
-  }
+	& p {
+		color: color-yiq($danger);
+	}
 }
 
 .alert-success {
-  & p {
-    color: color-yiq($success);
-  }
+	& p {
+		color: color-yiq($success);
+	}
 }
 
 .card {
 	margin-bottom: 10px;
 
 	& .card-body {
-
 		& .card-title {
 			font-weight: bold;
 		}
@@ -393,7 +407,6 @@ h2 {
 			color: $red;
 		}
 	}
-
 }
 
 .toast-div {
@@ -407,7 +420,4 @@ h2 {
 	& .toast .toast-body p {
 		color: $gray-800;
 	}
-
 }
-
-@import './boostrapOverride.scss';
