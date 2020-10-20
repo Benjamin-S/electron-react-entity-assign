@@ -18,7 +18,6 @@ export default class Titlebar extends React.Component {
 	};
 
 	static propTypes = {
-		icon: PropTypes.string.isRequired,
 		titletext: PropTypes.string.isRequired
 	};
 
