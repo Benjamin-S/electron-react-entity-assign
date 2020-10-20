@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 const {ipcRenderer: ipc} = window.require('electron-better-ipc');
-const {is, electronVersion, chromeVersion} = window.require('electron-util');
+const {electronVersion, chromeVersion} = window.require('electron-util');
 
 const Footer = () => {
 	const [sqlServer, setSqlServer] = useState(null);
@@ -43,11 +43,51 @@ const Footer = () => {
 
 	return (
 		<div className="windowFooter">
-			<i
-				className="codicon codicon-color-mode theme-toggle"
-				onClick={toggleTheme}
-			/>
-			<span>
+			<div className="left-items items-container">
+				<div className="footer-item first-visible-item has-background-color" style={{backgroundColor: 'rgb(22, 130, 93)'}}>
+					<button type="button" style={{color: 'white'}} onClick={toggleTheme}>
+						<span className="codicon codicon-color-mode"/>
+					</button>
+				</div>
+				<div className="footer-item">
+					<button type="button">
+						Express Server Status:{' '}
+						{expressInfo === null && (
+							<span className="codicon codicon-issues"/>
+						)}
+						{expressInfo === true && (
+							<span className="codicon codicon-pass"/>
+						)}
+						{expressInfo === false && (
+							<span className="codicon codicon-error"/>
+						)}
+					</button>
+				</div>
+				<div className="footer-item">
+					<button type="button">
+						SQL Server: {sqlServer}
+					</button>
+				</div>
+				<div className="footer-item">
+					<button type="button">
+						Electron Version: {electronVersion}
+					</button>
+				</div>
+				<div className="footer-item">
+					<button type="button">
+						Chrome Version: {chromeVersion}
+					</button>
+				</div>
+
+			</div>
+			<div className="right-items items-container">
+				<div className="footer-item">
+					<button type="button">
+						Version: {appVersion}
+					</button>
+				</div>
+			</div>
+			{/* <span>
 				Express Server Status:{' '}
 				{expressInfo === null && (
 					<i className="codicon codicon-circle-filled server-status"/>
@@ -63,7 +103,7 @@ const Footer = () => {
 			<span>Electron Version: {electronVersion}</span>
 			<span>Chrome Version: {chromeVersion}</span>
 			{is.development && <span>DEVELOPMENT</span>}
-			<span className="version">Version: {appVersion}</span>
+			<span className="version">Version: {appVersion}</span> */}
 		</div>
 	);
 };
