@@ -1,12 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {NavLink} from 'react-router-dom';
-import {Modal} from 'react-bootstrap';
+import {FormCheck, Modal} from 'react-bootstrap';
+import FormCheckInput from 'react-bootstrap/esm/FormCheckInput';
+import FormCheckLabel from 'react-bootstrap/esm/FormCheckLabel';
 
-// Const { ipcRenderer } = window.require('electron');
+const {ipcRenderer: ipc} = window.require('electron');
 
-export default class MainPage extends React.Component {
-	render() {
-		const welcomeModal = (
+const MainPage = () => {
+	const [skipWelcome, setSkipWelcome] = useState(false);
+
+	const handleWelcomeCheck = async () => {
+		setSkipWelcome(!skipWelcome);
+		const updateStore = await ipc.invoke('setStoreValue', 'skipWelcome', !skipWelcome);
+		console.log(updateStore);
+	};
+
+	return (
+		<div>
 			<Modal show centered>
 				<Modal.Header>
 					<Modal.Title>Multi-Entity Management — Assign Entity App</Modal.Title>
@@ -19,6 +29,13 @@ export default class MainPage extends React.Component {
 					<p>To get started select one of the options below</p>
 				</Modal.Body>
 				<Modal.Footer>
+					<FormCheck style={{marginRight: 'auto'}}>
+						<FormCheckInput
+							id="skipWelcomeCheckbox"
+							className="small" type="checkbox" checked={skipWelcome}
+							onChange={event => handleWelcomeCheck(event)}/>
+						<FormCheckLabel className="small text-muted">Do not show this window again</FormCheckLabel>
+					</FormCheck>
 					<NavLink className="btn btn-primary" to="/creditors">
 						Creditors
 					</NavLink>
@@ -27,7 +44,8 @@ export default class MainPage extends React.Component {
 					</NavLink>
 				</Modal.Footer>
 			</Modal>
-		);
-		return <div>{welcomeModal}</div>;
-	}
-}
+		</div>
+	);
+};
+
+export default MainPage;

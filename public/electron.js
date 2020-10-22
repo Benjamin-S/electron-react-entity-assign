@@ -1,22 +1,22 @@
 console.time('init');
 
 // Modules to control application life and create native browser window
-const path = require('path');
 const {app, BrowserWindow} = require('electron');
 const logger = require('electron-timber');
 const isDev = require('electron-is-dev');
 const {ipcMain: ipc} = require('electron-better-ipc');
 const {autoUpdater} = require('electron-updater');
-
-const express = require('express');
+const unhandled = require('electron-unhandled');
+const Store = require('electron-store');
 
 const port = 4000;
-const bodyParser = require('body-parser');
-const cors = require('cors');
 
 const router = require('../src/routes');
 const {poolPromise} = require('../src/connect');
 const config = require('../src/prodconfig');
+
+const store = new Store();
+unhandled();
 
 app.setAppUserModelId('com.bensymons.mem-tool');
 
@@ -46,7 +46,11 @@ let mainWindow;
 let server;
 
 const createMainWindow = async () => {
+	const express = require('express');
+	const bodyParser = require('body-parser');
+	const cors = require('cors');
 	const expressApp = express();
+
 	expressApp.use(cors());
 	expressApp.use(bodyParser.json());
 	expressApp.use('/', router);
@@ -70,6 +74,8 @@ const createMainWindow = async () => {
 		},
 		show: false
 	});
+
+	const path = require('path');
 
 	win.on('ready-to-show', () => {
 		logger.log('Ready to show');
@@ -133,6 +139,15 @@ ipc.answerRenderer('get-express-info', async () => {
 ipc.answerRenderer('app_version', async () => {
 	const version = app.getVersion();
 	return version;
+});
+
+ipc.handle('getStoreValue', (event, key) => {
+	return store.get(key);
+});
+
+ipc.handle('setStoreValue', (event, key, value) => {
+	store.set(key, value);
+	return store.get(key);
 });
 
 // This method will be called when Electron has finished
