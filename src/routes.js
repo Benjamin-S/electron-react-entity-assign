@@ -33,7 +33,8 @@ router.get('/creditors/:id', async (request, response) => {
 				CASE RTRIM(VENDSTTS)
 				WHEN 1 THEN 'Active'
 				WHEN 2 THEN 'Inactive'
-				END as STATUS FROM PM00200 WITH(NOLOCK) WHERE VENDORID LIKE '${request.params.id}%'`
+				END as STATUS FROM PM00200 WITH(NOLOCK) WHERE VENDORID LIKE '${request.params.id}%'
+				OR VENDORID = '${request.params.id}'`
 			);
 		response.json(result);
 	} catch (error) {
@@ -107,7 +108,7 @@ router.get('/debtors/:id', async (request, response) => {
 		const result = await pool
 			.request()
 			.query(
-				`SELECT RTRIM(CUSTNMBR) as CUSTNMBR, RTRIM(CUSTNAME) as CUSTNAME, CASE INACTIVE WHEN 0 THEN 'Active' WHEN 1 THEN 'Inactive' END AS STATUS FROM RM00101 WITH(NOLOCK) WHERE CUSTNMBR LIKE '${request.params.id}%'`
+				`SELECT RTRIM(CUSTNMBR) as CUSTNMBR, RTRIM(CUSTNAME) as CUSTNAME, CASE INACTIVE WHEN 0 THEN 'Active' WHEN 1 THEN 'Inactive' END AS STATUS FROM RM00101 WITH(NOLOCK) WHERE CUSTNMBR LIKE '${request.params.id}%' OR CUSTNMBR = '${request.params.id}'`
 			);
 		response.json(result);
 	} catch (error) {
