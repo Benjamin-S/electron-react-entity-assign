@@ -44,7 +44,7 @@ const Footer = () => {
 	return (
 		<div className="windowFooter">
 			<div className="left-items items-container">
-				<div className="footer-item first-visible-item has-background-color" style={{backgroundColor: 'rgb(22, 130, 93)'}}>
+				<div className="footer-item first-visible-item has-background-color" title="Toggle light/dark theme" style={{backgroundColor: 'rgb(22, 130, 93)'}}>
 					<button type="button" style={{color: 'white'}} onClick={toggleTheme}>
 						<span className="codicon codicon-color-mode"/>
 					</button>
