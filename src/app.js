@@ -17,6 +17,7 @@ import AccountSearch from './components/account-search';
 import Menu from './components/menu';
 import Titlebar from './components/titlebar';
 import Footer from './components/footer';
+// Import SideToolbar from './components/side-toolbar';
 const {ipcRenderer: ipc} = window.require('electron-better-ipc');
 
 class App extends React.Component {
@@ -34,19 +35,22 @@ class App extends React.Component {
 				<Router basename="/">
 					<>
 						<Titlebar titletext="Entity Assign" icon={icon}/>
-						<Menu/>
-						<div className="content">
-							<Switch>
-								<Route exact path="/">
-									{this.state.skipWelcome ? <Redirect to="/creditors"/> : <MainPage/>}
-								</Route>
-								<Route exact path="/creditors">
-									<AccountSearch icon={icon} accountType="Creditors"/>
-								</Route>
-								<Route exact path="/debtors">
-									<AccountSearch icon={icon} accountType="Debtors"/>
-								</Route>
-							</Switch>
+						<div className="applicationView">
+							{/* <SideToolbar/> */}
+							<Menu/>
+							<div className="content">
+								<Switch>
+									<Route exact path="/">
+										{this.state.skipWelcome ? <Redirect to="/creditors"/> : <MainPage/>}
+									</Route>
+									<Route exact path="/creditors">
+										<AccountSearch icon={icon} accountType="Creditors"/>
+									</Route>
+									<Route exact path="/debtors">
+										<AccountSearch icon={icon} accountType="Debtors"/>
+									</Route>
+								</Switch>
+							</div>
 						</div>
 						<Footer/>
 					</>
