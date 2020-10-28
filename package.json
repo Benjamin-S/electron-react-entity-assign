@@ -18,7 +18,7 @@
 		"postinstall": "electron-builder install-app-deps",
 		"format": "prettier --write src/**/*.ts{,x}",
 		"lint": "tsc --noEmit && eslint src/**/*.ts{,x}",
-		"test": "",
+		"test": "yarn lint",
 		"start": "react-scripts start",
 		"elec-pack": "yarn reactbuild && electron-builder --c.extraMetadata.main=build/electron.js",
 		"dist": "electron-builder --windows --publish always",
@@ -144,10 +144,5 @@
 			"icon": "build/icon.png"
 		}
 	},
-	"homepage": ".",
-	"husky": {
-		"hooks": {
-			"pre-push": "yarn test"
-		}
-	}
+	"homepage": "."
 }
