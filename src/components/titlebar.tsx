@@ -1,19 +1,26 @@
-/* eslint import/extensions: off */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 const {remote} = window.require('electron');
 const {BrowserWindow} = remote;
 const {ipcRenderer} = window.require('electron');
 
-export default class Titlebar extends React.Component {
-	constructor() {
-		super();
 
+type Props = {
+	titleText: string;
+	image: string;
+};
+
+type States = {
+	maximized: boolean;
+}
+
+class Titlebar extends React.Component<Props, States> {
+	constructor(props: Props) {
+		super(props);
 		this.restoreWindow = this.restoreWindow.bind(this);
 	}
 
-	state = {
+	state: States = {
 		maximized: false
 	};
 
@@ -82,3 +89,5 @@ export default class Titlebar extends React.Component {
 		);
 	}
 }
+
+export default Titlebar;
