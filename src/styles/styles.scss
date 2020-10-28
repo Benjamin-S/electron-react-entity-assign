@@ -7,10 +7,17 @@ $menuwidth: 160px;
 $footer-height: 22px;
 $menu-height: 30px;
 $icon-size: $menu-height * 0.8;
-$sidebar-width: 48px;
+// $sidebar-width: 48px;
+$sidebar-width: 0px;
 
 body {
 	@include theme-aware("background-color", "background");
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	-webkit-user-select: none;
 }
 
 .content {
