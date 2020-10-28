@@ -18,7 +18,7 @@
 		"postinstall": "electron-builder install-app-deps",
 		"format": "prettier --write src/**/*.ts{,x}",
 		"lint": "tsc --noEmit && eslint src/**/*.ts{,x}",
-		"test": "yarn lint",
+		"test": "",
 		"start": "react-scripts start",
 		"elec-pack": "yarn reactbuild && electron-builder --c.extraMetadata.main=build/electron.js",
 		"dist": "electron-builder --windows --publish always",
