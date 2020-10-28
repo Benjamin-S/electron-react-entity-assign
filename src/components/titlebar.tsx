@@ -5,27 +5,23 @@ const {BrowserWindow} = remote;
 const {ipcRenderer} = window.require('electron');
 
 
-type Props = {
+type TitlebarProps = {
 	titleText: string;
-	image: string;
+	icon: string;
 };
 
-type States = {
+type TitlebarStates = {
 	maximized: boolean;
 }
 
-class Titlebar extends React.Component<Props, States> {
-	constructor(props: Props) {
+class Titlebar extends React.Component<TitlebarProps, TitlebarStates> {
+	constructor(props: TitlebarProps) {
 		super(props);
 		this.restoreWindow = this.restoreWindow.bind(this);
 	}
 
-	state: States = {
+	state: TitlebarStates = {
 		maximized: false
-	};
-
-	static propTypes = {
-		titletext: PropTypes.string.isRequired
 	};
 
 	minimizeWindow() {
@@ -84,7 +80,7 @@ class Titlebar extends React.Component<Props, States> {
 				<div className="menu-button close-window" onClick={this.closeWindow}>
 					<i className="codicon codicon-chrome-close"/>
 				</div>
-				<span className="titlebar-text">{this.props.titletext}</span>
+				<span className="titlebar-text">{this.props.titleText}</span>
 			</div>
 		);
 	}

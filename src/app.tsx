@@ -31,10 +31,11 @@ class App extends React.Component {
 		}
 
 		render() {
+
 			return (
 				<Router basename="/">
 					<>
-						<Titlebar titletext="Entity Assign" icon={icon}/>
+						<Titlebar titleText="Entity Assign" icon={icon}/>
 						<div className="applicationView">
 							{/* <SideToolbar/> */}
 							<Menu/>
@@ -44,10 +45,10 @@ class App extends React.Component {
 										{this.state.skipWelcome ? <Redirect to="/creditors"/> : <MainPage/>}
 									</Route>
 									<Route exact path="/creditors">
-										<AccountSearch icon={icon} accountType="Creditors"/>
+										<AccountSearch iconProp={icon} accountTypeProp="Creditors"/>
 									</Route>
 									<Route exact path="/debtors">
-										<AccountSearch icon={icon} accountType="Debtors"/>
+										<AccountSearch iconProp={icon} accountTypeProp="Debtors"/>
 									</Route>
 								</Switch>
 							</div>

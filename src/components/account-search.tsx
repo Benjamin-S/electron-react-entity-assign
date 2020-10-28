@@ -1,7 +1,7 @@
 /* eslint import/extensions: off */
 
-import React, {useEffect, useState} from 'react';
-import {asyncContainer, Typeahead} from 'react-bootstrap-typeahead';
+import React, {Ref, useEffect, useRef, useState} from 'react';
+import {AsyncTypeahead, Typeahead, TypeaheadLabelKey} from 'react-bootstrap-typeahead';
 import entities from '../shared/entities';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -13,11 +13,26 @@ import PropTypes from 'prop-types';
 import {Toast} from 'react-bootstrap';
 const {ipcRenderer: ipc} = window.require('electron-better-ipc');
 
-const AsyncTypeahead = asyncContainer(Typeahead);
+// const AsyncTypeahead = asyncContainer(Typeahead);
+type Entities = {
+	Entity: string;
+	Description: string;
+}
+// const ref:React.RefObject<Typeahead<>> = React.createRef();
 
-const ref = React.createRef();
+type AccountSearchProps = {
+	accountTypeProp: string;
+	iconProp: string;
+};
 
-const AccountSearch = props => {
+type ModuleDict = {
+	singular: string;
+	variation: string;
+	id: string;
+	name: string;
+}
+
+const AccountSearch = ({accountTypeProp, iconProp}:AccountSearchProps) => {
 	const [assignedEntity, setAssignedEntity] = useState('');
 	const [assignedAccount, setAssignedAccount] = useState('');
 	const [entityError, setEntityError] = useState(false);
@@ -27,8 +42,8 @@ const AccountSearch = props => {
 	const [updateMessage, setUpdateMessage] = useState('');
 	const [showAlert, setShowAlert] = useState(false);
 	const [accountOptions, setAccountOptions] = useState([]);
-	const [accountType, setAccountType] = useState(null);
-	const [moduleDict, setModuleDict] = useState({});
+	const [accountType, setAccountType] = useState<string | null>(null);
+	const [moduleDict, setModuleDict] = useState<ModuleDict>({singular: '', variation: '', id: '', name: ''});
 	const [existingEntities, setExistingEntities] = useState([]);
 	const [accountStatus, setAccountStatus] = useState('');
 	const [showModal, setShowModal] = useState(false);
@@ -39,10 +54,12 @@ const AccountSearch = props => {
 	const [appToastMessage, setAppToastMessage] = useState(null);
 	const [appDownloadMessage, setAppDownloadMessage] = useState(null);
 
+	const typeaheadRef = useRef(null);
+
 	useEffect(() => {
 		// ResetState();
-		setAccountType(props.accountType);
-	}, [props]);
+		setAccountType(accountTypeProp);
+	}, [accountTypeProp]);
 
 	useEffect(() => {
 		if (accountType !== null) {
@@ -51,7 +68,7 @@ const AccountSearch = props => {
 			)
 				.then(resp => resp.json())
 				.then(json => {
-					setExistingEntities(json.recordset.map(a => a.ENTITY));
+					setExistingEntities(json.recordset.map((a: { ENTITY: any; }) => a.ENTITY));
 				});
 		}
 	}, [assignedAccount, accountType, assignedEntity]);
@@ -78,7 +95,7 @@ const AccountSearch = props => {
 
 	useEffect(() => {}, [assignedEntity]);
 
-	function onSubmit(event_) {
+	async function onSubmit(event_: Event) {
 		event_.preventDefault(); // Don't reload the page
 
 		// Local variables to account for setState not being updated instantly.
@@ -103,33 +120,45 @@ const AccountSearch = props => {
 			return false;
 		}
 
-		const postBody = {};
-		postBody[moduleDict.singular.toLowerCase()] = assignedAccount.toString();
-		postBody.entity = assignedEntity.toString();
+		type Payload = { [id: string]: any}
 
-		fetch(`http://localhost:4000/${accountType.toLowerCase()}/`, {
+
+		let modulePostingData = moduleDict.singular.toLowerCase();
+
+		let postBody: Payload = {
+			entity: assignedEntity
+		};
+
+		postBody[modulePostingData as keyof Payload] = assignedAccount;
+
+
+		let accountTypeName:string = accountType === null?"": accountType.toLowerCase();
+
+		const result = await fetch(`http://localhost:4000/${accountTypeName}/`, {
 			method: 'POST',
 			body: JSON.stringify(postBody),
 			headers: new Headers({'Content-Type': 'application/json'})
-		})
-			.then(result => result.json())
-			.then(json => {
-				const didSucceed = json.O_iErrorState === 0;
-				setUpdateResult(didSucceed);
-				setUpdateMessage(
+		});
+
+		const jsonResult = await result.json();
+		const didSucceed = jsonResult.O_iErrorState === 0;
+		setUpdateResult(didSucceed);
+		setUpdateMessage(
 					didSucceed ?
 						`Successfully assigned ${assignedAccount} to entity ${assignedEntity}` :
 						`Failed to assign ${assignedAccount} to entity ${assignedEntity}`
 				);
-			})
-			.then(setAssignedEntity(''))
-			.then(ref.current.clear())
-			.catch(error => {
-				console.error(error.stack || error);
-				setUpdateResult(false);
-			})
-			.finally(setShowAlert(true));
-
+		setAssignedEntity('');
+		try{
+			if(typeaheadRef !== null && typeaheadRef.current !== null){
+				typeaheadRef.current.clear();
+			}
+		}
+		catch(error) {
+			console.error(error.stack || error);
+			setUpdateResult(false);
+		};
+		setShowAlert(true);
 		return true;
 	}
 
@@ -232,7 +261,7 @@ const AccountSearch = props => {
 	const updateToast = (
 		<Toast animation className="updateToast" show={showToast} onClose={() => handleToastClose()}>
 			<Toast.Header>
-				<img src={props.icon} width="20" height="20" className="rounded mr-2" alt=""/>
+				<img src={iconProp} width="20" height="20" className="rounded mr-2" alt=""/>
 				<strong className="mr-auto">Update is available!</strong>
 			</Toast.Header>
 			<Toast.Body>{appToastMessage}</Toast.Body>
@@ -338,7 +367,7 @@ const AccountSearch = props => {
 				<Form.Group controlId="formEntity">
 					<Form.Label>Entity</Form.Label>
 					<Typeahead
-						ref={ref}
+						ref={typeaheadRef}
 						clearButton
 						id="entity-typeahead"
 						options={entities}
@@ -362,11 +391,6 @@ const AccountSearch = props => {
 			</Form>
 		</div>
 	);
-};
-
-AccountSearch.propTypes = {
-	accountType: PropTypes.string.isRequired,
-	icon: PropTypes.string.isRequired
 };
 
 export default AccountSearch;

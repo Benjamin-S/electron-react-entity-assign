@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	DB_USER: '',
 	DB_PASSWORD: '',
 	DB_SERVER: '',
