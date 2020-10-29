@@ -1,11 +1,13 @@
 /* eslint new-cap:off */
 
+import { Request, Response } from "express";
+
 const express = require('express');
 const router = express.Router();
 const {poolPromise, sql} = require('./connect');
 const logger = require('electron-timber');
 
-router.get('/creditors/entities/:id', async (request, response) => {
+router.get('/creditors/entities/:id', async (request:Request, response:Response) => {
 	try {
 		const pool = await poolPromise;
 		const result = await pool
@@ -22,7 +24,7 @@ router.get('/creditors/entities/:id', async (request, response) => {
 	}
 });
 
-router.get('/creditors/:id', async (request, response) => {
+router.get('/creditors/:id', async (request:Request, response:Response) => {
 	try {
 		const pool = await poolPromise;
 		const result = await pool
@@ -45,7 +47,7 @@ router.get('/creditors/:id', async (request, response) => {
 	}
 });
 
-router.post('/creditors/', async (request, response) => {
+router.post('/creditors/', async (request:Request, response:Response) => {
 	try {
 		const pool = await poolPromise;
 		const result = await pool
@@ -65,7 +67,7 @@ router.post('/creditors/', async (request, response) => {
 	}
 });
 
-router.delete('/creditors/', async (request, response) => {
+router.delete('/creditors/', async (request:Request, response:Response) => {
 	try {
 		const pool = await poolPromise;
 		const result = await pool
@@ -85,7 +87,7 @@ router.delete('/creditors/', async (request, response) => {
 	}
 });
 
-router.get('/debtors/entities/:id', async (request, response) => {
+router.get('/debtors/entities/:id', async (request:Request, response:Response) => {
 	try {
 		const pool = await poolPromise;
 		const result = await pool
@@ -102,7 +104,7 @@ router.get('/debtors/entities/:id', async (request, response) => {
 	}
 });
 
-router.get('/debtors/:id', async (request, response) => {
+router.get('/debtors/:id', async (request:Request, response:Response) => {
 	try {
 		const pool = await poolPromise;
 		const result = await pool
@@ -119,7 +121,7 @@ router.get('/debtors/:id', async (request, response) => {
 	}
 });
 
-router.post('/debtors/', async (request, response) => {
+router.post('/debtors/', async (request:Request, response:Response) => {
 	try {
 		const pool = await poolPromise;
 		const result = await pool
@@ -139,7 +141,7 @@ router.post('/debtors/', async (request, response) => {
 	}
 });
 
-router.delete('/debtors/', async (request, response) => {
+router.delete('/debtors/', async (request:Request, response:Response) => {
 	try {
 		const pool = await poolPromise;
 		const result = await pool
