@@ -31,10 +31,18 @@ class App extends React.Component {
 		}
 
 		render() {
+<<<<<<< HEAD
 			return (
 				<Router basename="/">
 					<>
 						<Titlebar titletext="Entity Assign" icon={icon}/>
+=======
+
+			return (
+				<Router basename="/">
+					<>
+						<Titlebar titleText="Entity Assign" icon={icon}/>
+>>>>>>> 88527ca86e0cb0ad7006fa6ced487422c600d4e1
 						<div className="applicationView">
 							{/* <SideToolbar/> */}
 							<Menu/>
@@ -44,10 +52,17 @@ class App extends React.Component {
 										{this.state.skipWelcome ? <Redirect to="/creditors"/> : <MainPage/>}
 									</Route>
 									<Route exact path="/creditors">
+<<<<<<< HEAD
 										<AccountSearch icon={icon} accountType="Creditors"/>
 									</Route>
 									<Route exact path="/debtors">
 										<AccountSearch icon={icon} accountType="Debtors"/>
+=======
+										<AccountSearch iconProp={icon} accountTypeProp="Creditors"/>
+									</Route>
+									<Route exact path="/debtors">
+										<AccountSearch iconProp={icon} accountTypeProp="Debtors"/>
+>>>>>>> 88527ca86e0cb0ad7006fa6ced487422c600d4e1
 									</Route>
 								</Switch>
 							</div>

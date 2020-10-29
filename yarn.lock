@@ -1820,6 +1820,13 @@
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.4.tgz#15925414e0ad2cd765bfef58842f7e26a7accb24"
   integrity sha512-1HcDas8SEj4z1Wc696tH56G8OlRaH/sqZOynNNB+HF0WOeXPaxTtbYzJY2oEfiUxjSKjhCKr+MvR7dCHcEelug==
 
+"@types/react-bootstrap-typeahead@^3.4.6":
+  version "3.4.6"
+  resolved "https://registry.yarnpkg.com/@types/react-bootstrap-typeahead/-/react-bootstrap-typeahead-3.4.6.tgz#b97709ad10670ad277b2c7b2f0e6368f890bf849"
+  integrity sha512-3vrWrPNb2G+ieyWB1VtEPZH6E4NBcd2cVsacb6oUhBNU/D/ZYnUqnbmeTIKzIVXqEkdPtgARG45W1x7tUV9DGA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-dom@^16.9.9":
   version "16.9.9"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.9.9.tgz#d2d0a6f720a0206369ccbefff752ba37b9583136"
