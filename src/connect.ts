@@ -1,14 +1,14 @@
-const sql = require('mssql');
-const isDev = require('electron-is-dev');
-const dbConfig = require('../src/prodconfig');
-const devConfig = require('../src/devconfig');
-const logger = require('electron-timber');
+import sql from 'mssql';
+import isDev from 'electron-is-dev';
+import databaseConfig from '../src/prodconfig';
+import developmentConfig from '../src/devconfig';
+import logger from 'electron-timber';
 
 const config = {
-	user: dbConfig.DB_USER,
-	password: dbConfig.DB_PASSWORD,
-	server: isDev ? devConfig.DB_SERVER : dbConfig.DB_SERVER,
-	database: dbConfig.DB_DATABASE,
+	user: databaseConfig.DB_USER,
+	password: databaseConfig.DB_PASSWORD,
+	server: isDev ? developmentConfig.DB_SERVER : databaseConfig.DB_SERVER,
+	database: databaseConfig.DB_DATABASE,
 	pool: {
 		max: 10,
 		min: 0,
@@ -39,12 +39,12 @@ if (process.env.DB_DATABASE) {
 	config.database = process.env.DB_DATABASE;
 }
 
-const poolPromise = new sql.ConnectionPool(config)
+export const poolPromise = new sql.ConnectionPool(config)
 	.connect()
-	.then(pool => {
+	.then((pool: any) => {
 		console.log('Connected to MSSQL');
 		return pool;
 	})
-	.catch(error => console.err('Database connection Failed! Bad config: ', error));
-
-module.exports = {sql, poolPromise};
+	.catch((error: Error) =>
+		console.error('Database connection Failed! Bad config:', error)
+	);

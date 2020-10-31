@@ -1,3 +1,3 @@
-module.exports = {
-  DB_SERVER: 'DC1TSTSQL006',
+export default {
+	DB_SERVER: 'DC1TSTSQL006'
 };

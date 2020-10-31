@@ -11,7 +11,11 @@ const MainPage = () => {
 
 	const handleWelcomeCheck = async () => {
 		setSkipWelcome(!skipWelcome);
-		const updateStore = await ipc.invoke('setStoreValue', 'skipWelcome', !skipWelcome);
+		const updateStore = await ipc.invoke(
+			'setStoreValue',
+			'skipWelcome',
+			!skipWelcome
+		);
 		console.log(updateStore);
 	};
 
@@ -32,9 +36,14 @@ const MainPage = () => {
 					<FormCheck style={{marginRight: 'auto'}}>
 						<FormCheckInput
 							id="skipWelcomeCheckbox"
-							className="small" type="checkbox" checked={skipWelcome}
-							onChange={event => handleWelcomeCheck(event)}/>
-						<FormCheckLabel className="small text-muted">Do not show this window again</FormCheckLabel>
+							className="small"
+							type="checkbox"
+							checked={skipWelcome}
+							onChange={(event: React.FormEvent) => handleWelcomeCheck()}
+						/>
+						<FormCheckLabel className="small text-muted">
+							Do not show this window again
+						</FormCheckLabel>
 					</FormCheck>
 					<NavLink className="btn btn-primary" to="/creditors">
 						Creditors

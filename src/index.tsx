@@ -5,4 +5,4 @@ import ReactDOM from 'react-dom';
 import './index.scss';
 import App from './app';
 
-ReactDOM.render(<App/>, document.querySelector('#root'));
+ReactDOM.render(<App />, document.querySelector('#root'));

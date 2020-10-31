@@ -2,23 +2,23 @@ import React, {useEffect, useState} from 'react';
 const {ipcRenderer: ipc} = window.require('electron-better-ipc');
 const {electronVersion, chromeVersion} = window.require('electron-util');
 
-const Footer = () => {
-	const [sqlServer, setSqlServer] = useState(null);
-	const [expressInfo, setExpressInfo] = useState(null);
-	const [appVersion, setAppVersion] = useState(null);
+function changeTheme(theme: string) {
+	document.documentElement.className = '';
+	document.documentElement.classList.add(`theme-${theme}`);
+}
 
-	function changeTheme(theme) {
-		document.documentElement.className = '';
-		document.documentElement.classList.add(`theme-${theme}`);
+function toggleTheme() {
+	if (document.documentElement.className === 'theme-dark') {
+		changeTheme('light');
+	} else {
+		changeTheme('dark');
 	}
+}
 
-	function toggleTheme() {
-		if (document.documentElement.className === 'theme-dark') {
-			changeTheme('light');
-		} else {
-			changeTheme('dark');
-		}
-	}
+function Footer(): JSX.Element {
+	const [sqlServer, setSqlServer] = useState();
+	const [expressInfo, setExpressInfo] = useState();
+	const [appVersion, setAppVersion] = useState();
 
 	async function isServerActive() {
 		const serverStatus = await ipc.callMain('get-express-info');
@@ -44,47 +44,40 @@ const Footer = () => {
 	return (
 		<div className="windowFooter">
 			<div className="left-items items-container">
-				<div className="footer-item first-visible-item has-background-color" title="Toggle light/dark theme" style={{backgroundColor: 'rgb(22, 130, 93)'}}>
+				<div
+					className="footer-item first-visible-item has-background-color"
+					title="Toggle light/dark theme"
+					style={{backgroundColor: 'rgb(22, 130, 93)'}}
+				>
 					<button type="button" style={{color: 'white'}} onClick={toggleTheme}>
-						<span className="codicon codicon-color-mode"/>
+						<span className="codicon codicon-color-mode" />
 					</button>
 				</div>
 				<div className="footer-item">
 					<button type="button">
 						Express Server Status:{' '}
 						{expressInfo === null && (
-							<span className="codicon codicon-issues"/>
+							<span className="codicon codicon-issues" />
 						)}
-						{expressInfo === true && (
-							<span className="codicon codicon-pass"/>
-						)}
+						{expressInfo === true && <span className="codicon codicon-pass" />}
 						{expressInfo === false && (
-							<span className="codicon codicon-error"/>
+							<span className="codicon codicon-error" />
 						)}
 					</button>
 				</div>
 				<div className="footer-item">
-					<button type="button">
-						SQL Server: {sqlServer}
-					</button>
+					<button type="button">SQL Server: {sqlServer}</button>
 				</div>
 				<div className="footer-item">
-					<button type="button">
-						Electron Version: {electronVersion}
-					</button>
+					<button type="button">Electron Version: {electronVersion}</button>
 				</div>
 				<div className="footer-item">
-					<button type="button">
-						Chrome Version: {chromeVersion}
-					</button>
+					<button type="button">Chrome Version: {chromeVersion}</button>
 				</div>
-
 			</div>
 			<div className="right-items items-container">
 				<div className="footer-item">
-					<button type="button">
-						Version: {appVersion}
-					</button>
+					<button type="button">Version: {appVersion}</button>
 				</div>
 			</div>
 			{/* <span>
@@ -106,6 +99,6 @@ const Footer = () => {
 			<span className="version">Version: {appVersion}</span> */}
 		</div>
 	);
-};
+}
 
 export default Footer;

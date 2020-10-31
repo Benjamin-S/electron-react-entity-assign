@@ -1,43 +1,45 @@
 /* eslint new-cap:off */
 
-import { Request, Response } from "express";
+import {Request, Response} from 'express';
 
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const {poolPromise, sql} = require('./connect');
-const logger = require('electron-timber');
+import {poolPromise} from './connect';
+import sql from 'mssql';
+import logger from 'electron-timber';
 
-router.get('/creditors/entities/:id', async (request:Request, response:Response) => {
-	try {
-		const pool = await poolPromise;
-		const result = await pool
-			.request()
-			.query(
-				`SELECT RTRIM(BSSI_FACILITY_ID) AS ENTITY FROM B3900220 WITH(NOLOCK) WHERE VENDORID = '${request.params.id}'`
-			);
-		response.json(result);
-	} catch (error) {
-		response.status(500);
-		response.send(error.message);
-		logger.error(error);
-		logger.log(error.message);
+router.get(
+	'/creditors/entities/:id',
+	async (request: Request, response: Response) => {
+		try {
+			const pool = await poolPromise;
+			const result = await pool
+				.request()
+				.query(
+					`SELECT RTRIM(BSSI_FACILITY_ID) AS ENTITY FROM B3900220 WITH(NOLOCK) WHERE VENDORID = '${request.params.id}'`
+				);
+			response.json(result);
+		} catch (error) {
+			response.status(500);
+			response.send(error.message);
+			logger.error(error);
+			logger.log(error.message);
+		}
 	}
-});
+);
 
-router.get('/creditors/:id', async (request:Request, response:Response) => {
+router.get('/creditors/:id', async (request: Request, response: Response) => {
 	try {
 		const pool = await poolPromise;
-		const result = await pool
-			.request()
-			.query(
-				`SELECT RTRIM(VENDORID) AS VENDORID,
-				RTRIM(VENDNAME) AS VENDNAME,
+		const result = await pool.request().query(
+			`SELECT RTRIM(VENDORID) AS AccountId,
+				RTRIM(VENDNAME) AS AccountName,
 				CASE RTRIM(VENDSTTS)
 				WHEN 1 THEN 'Active'
 				WHEN 2 THEN 'Inactive'
-				END as STATUS FROM PM00200 WITH(NOLOCK) WHERE VENDORID LIKE '${request.params.id}%'
+				END as AccountStatus FROM PM00200 WITH(NOLOCK) WHERE VENDORID LIKE '${request.params.id}%'
 				OR VENDORID = '${request.params.id}'`
-			);
+		);
 		response.json(result);
 	} catch (error) {
 		response.status(500);
@@ -47,7 +49,7 @@ router.get('/creditors/:id', async (request:Request, response:Response) => {
 	}
 });
 
-router.post('/creditors/', async (request:Request, response:Response) => {
+router.post('/creditors/', async (request: Request, response: Response) => {
 	try {
 		const pool = await poolPromise;
 		const result = await pool
@@ -67,7 +69,7 @@ router.post('/creditors/', async (request:Request, response:Response) => {
 	}
 });
 
-router.delete('/creditors/', async (request:Request, response:Response) => {
+router.delete('/creditors/', async (request: Request, response: Response) => {
 	try {
 		const pool = await poolPromise;
 		const result = await pool
@@ -87,14 +89,37 @@ router.delete('/creditors/', async (request:Request, response:Response) => {
 	}
 });
 
-router.get('/debtors/entities/:id', async (request:Request, response:Response) => {
+router.get(
+	'/debtors/entities/:id',
+	async (request: Request, response: Response) => {
+		try {
+			const pool = await poolPromise;
+			const result = await pool
+				.request()
+				.query(
+					`SELECT RTRIM(BSSI_FACILITY_ID) AS ENTITY FROM B3900270 WITH(NOLOCK) WHERE CUSTNMBR = '${request.params.id}'`
+				);
+			response.json(result);
+		} catch (error) {
+			response.status(500);
+			response.send(error.message);
+			logger.error(error);
+			logger.log(error.message);
+		}
+	}
+);
+
+router.get('/debtors/:id', async (request: Request, response: Response) => {
 	try {
 		const pool = await poolPromise;
-		const result = await pool
-			.request()
-			.query(
-				`SELECT RTRIM(BSSI_FACILITY_ID) AS ENTITY FROM B3900270 WITH(NOLOCK) WHERE CUSTNMBR = '${request.params.id}'`
-			);
+		const result = await pool.request().query(
+			`SELECT RTRIM(CUSTNMBR) as CUSTNMBR,
+				RTRIM(CUSTNAME) as AccountId,
+				CASE INACTIVE
+				WHEN 0 THEN 'Active'
+				WHEN 1 THEN 'Inactive'
+				END AS AccountStatus FROM RM00101 WITH(NOLOCK) WHERE CUSTNMBR LIKE '${request.params.id}%' OR CUSTNMBR = '${request.params.id}'`
+		);
 		response.json(result);
 	} catch (error) {
 		response.status(500);
@@ -104,24 +129,7 @@ router.get('/debtors/entities/:id', async (request:Request, response:Response) =
 	}
 });
 
-router.get('/debtors/:id', async (request:Request, response:Response) => {
-	try {
-		const pool = await poolPromise;
-		const result = await pool
-			.request()
-			.query(
-				`SELECT RTRIM(CUSTNMBR) as CUSTNMBR, RTRIM(CUSTNAME) as CUSTNAME, CASE INACTIVE WHEN 0 THEN 'Active' WHEN 1 THEN 'Inactive' END AS STATUS FROM RM00101 WITH(NOLOCK) WHERE CUSTNMBR LIKE '${request.params.id}%' OR CUSTNMBR = '${request.params.id}'`
-			);
-		response.json(result);
-	} catch (error) {
-		response.status(500);
-		response.send(error.message);
-		logger.error(error);
-		logger.log(error.message);
-	}
-});
-
-router.post('/debtors/', async (request:Request, response:Response) => {
+router.post('/debtors/', async (request: Request, response: Response) => {
 	try {
 		const pool = await poolPromise;
 		const result = await pool
@@ -141,7 +149,7 @@ router.post('/debtors/', async (request:Request, response:Response) => {
 	}
 });
 
-router.delete('/debtors/', async (request:Request, response:Response) => {
+router.delete('/debtors/', async (request: Request, response: Response) => {
 	try {
 		const pool = await poolPromise;
 		const result = await pool

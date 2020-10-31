@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SideToolbar = () => {
+const SideToolbar = (): JSX.Element => {
 	return (
 		<div className="side-toolbar left">
 			<div className="content">
@@ -8,7 +8,7 @@ const SideToolbar = () => {
 					<ul className="settings-container">
 						<li className="settings-item">
 							<button type="button" className="side-toolbar-label">
-								<span className="codicon codicon-settings-gear"/>
+								<span className="codicon codicon-settings-gear" />
 							</button>
 						</li>
 					</ul>

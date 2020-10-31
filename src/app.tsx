@@ -1,7 +1,7 @@
 /* eslint import/no-unassigned-import: "off" */
 /* eslint import/extensions: off */
 
-import React from 'react';
+import React, {ReactElement} from 'react';
 import icon from './images/icon.png';
 
 // Import 'bootstrap/dist/css/bootstrap.min.css';
@@ -21,43 +21,46 @@ import Footer from './components/footer';
 const {ipcRenderer: ipc} = window.require('electron-better-ipc');
 
 class App extends React.Component {
-		state = {skipWelcome: false};
+	state = {skipWelcome: false};
 
-		async componentDidMount() {
-			document.documentElement.classList.add('theme-dark');
-			const shouldSkipWelcome = await ipc.invoke('getStoreValue', 'skipWelcome');
-			this.setState({skipWelcome: shouldSkipWelcome});
-			console.log('skipWelcome: ' + shouldSkipWelcome);
-		}
+	async componentDidMount(): Promise<void> {
+		document.documentElement.classList.add('theme-dark');
+		const shouldSkipWelcome = await ipc.invoke('getStoreValue', 'skipWelcome');
+		this.setState({skipWelcome: shouldSkipWelcome});
+		console.log('skipWelcome: ' + shouldSkipWelcome);
+	}
 
-		render() {
-
-			return (
-				<Router basename="/">
-					<>
-						<Titlebar titleText="Entity Assign" icon={icon}/>
-						<div className="applicationView">
-							{/* <SideToolbar/> */}
-							<Menu/>
-							<div className="content">
-								<Switch>
-									<Route exact path="/">
-										{this.state.skipWelcome ? <Redirect to="/creditors"/> : <MainPage/>}
-									</Route>
-									<Route exact path="/creditors">
-										<AccountSearch iconProp={icon} accountTypeProp="Creditors"/>
-									</Route>
-									<Route exact path="/debtors">
-										<AccountSearch iconProp={icon} accountTypeProp="Debtors"/>
-									</Route>
-								</Switch>
-							</div>
+	render(): ReactElement {
+		return (
+			<Router basename="/">
+				<>
+					<Titlebar titleText="Entity Assign" icon={icon} />
+					<div className="applicationView">
+						{/* <SideToolbar/> */}
+						<Menu />
+						<div className="content">
+							<Switch>
+								<Route exact path="/">
+									{this.state.skipWelcome ? (
+										<Redirect to="/creditors" />
+									) : (
+										<MainPage />
+									)}
+								</Route>
+								<Route exact path="/creditors">
+									<AccountSearch iconProp={icon} accountTypeProp="Creditors" />
+								</Route>
+								<Route exact path="/debtors">
+									<AccountSearch iconProp={icon} accountTypeProp="Debtors" />
+								</Route>
+							</Switch>
 						</div>
-						<Footer/>
-					</>
-				</Router>
-			);
-		}
+					</div>
+					<Footer />
+				</>
+			</Router>
+		);
+	}
 }
 
 export default App;
