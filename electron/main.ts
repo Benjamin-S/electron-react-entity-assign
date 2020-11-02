@@ -59,7 +59,7 @@ const createServerWindow = async (): Promise<BrowserWindow> => {
 		webPreferences: {nodeIntegration: true}
 	});
 
-	win.loadFile(`file://${path.join(__dirname, '../build/server.html')}`);
+	await win.loadURL(`file://${path.join(__dirname, '../server.html')}`);
 
 	return win;
 };
@@ -165,6 +165,7 @@ app.on('window-all-closed', () => {
 app.on('activate', async () => {
 	if (!serverWindow) {
 		serverWindow = await createServerWindow();
+		logger.log('Server window created');
 	}
 	if (!mainWindow) {
 		mainWindow = await createMainWindow();
@@ -173,6 +174,7 @@ app.on('activate', async () => {
 
 (async () => {
 	await app.whenReady();
+	serverWindow = await createServerWindow();
 	mainWindow = await createMainWindow();
 })();
 

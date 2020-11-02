@@ -1,13 +1,14 @@
-import databaseConfig from './prodconfig';
-import developmentConfig from './devconfig';
-import express, {Request, Response} from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import logger from 'electron-timber';
-import sql from 'mssql';
-import isDev from 'electron-is-dev';
-const expressApp = express();
+import {Request, Response} from 'express';
 
+const developmentConfig = require('./devconfig');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const logger = require('electron-timber');
+const sql = require('mssql');
+const isDev = require('electron-is-dev');
+const databaseConfig = require('./prodconfig');
+const express = require('express');
+const expressApp = express();
 const config = {
 	user: databaseConfig.DB_USER,
 	password: databaseConfig.DB_PASSWORD,
@@ -225,6 +226,6 @@ expressApp.use(cors());
 expressApp.use(bodyParser.json());
 expressApp.use('/', router);
 
-export const server = expressApp.listen(process.env.PORT || port, () => {
+expressApp.listen(process.env.PORT || port, () => {
 	logger.log(`Express server listening on port ${port}`);
 });

@@ -5,7 +5,7 @@
 		"ecmaVersion": 2018,
 		"sourceType": "module",
 		"ecmaFeatures": {"jsx": true},
-		"project": ["./tsconfig.json", "./electron/tsconfig.json"]
+		"project": ["./tsconfig.json", "./electron/tsconfig.json", "./src/server/tsconfig.json"]
 	},
 	"env": {
 		"node":true,
