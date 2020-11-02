@@ -1,8 +1,8 @@
-import sql from 'mssql';
-import isDev from 'electron-is-dev';
-import databaseConfig from '../src/prodconfig';
-import developmentConfig from '../src/devconfig';
-import logger from 'electron-timber';
+import databaseConfig from './prodconfig';
+import developmentConfig from './devconfig';
+import * as isDev from 'electron-is-dev';
+import * as sql from 'mssql';
+import * as logger from 'electron-timber';
 
 const config = {
 	user: databaseConfig.DB_USER,

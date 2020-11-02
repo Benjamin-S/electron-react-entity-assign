@@ -6,7 +6,7 @@ import FormCheckLabel from 'react-bootstrap/esm/FormCheckLabel';
 
 const {ipcRenderer: ipc} = window.require('electron');
 
-const MainPage = () => {
+const MainPage = (): JSX.Element => {
 	const [skipWelcome, setSkipWelcome] = useState(false);
 
 	const handleWelcomeCheck = async () => {
@@ -39,7 +39,7 @@ const MainPage = () => {
 							className="small"
 							type="checkbox"
 							checked={skipWelcome}
-							onChange={(event: React.FormEvent) => handleWelcomeCheck()}
+							onChange={() => handleWelcomeCheck()}
 						/>
 						<FormCheckLabel className="small text-muted">
 							Do not show this window again

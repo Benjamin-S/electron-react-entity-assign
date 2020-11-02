@@ -5,7 +5,7 @@
 		"ecmaVersion": 2018,
 		"sourceType": "module",
 		"ecmaFeatures": {"jsx": true},
-		"project": "./tsconfig.json"
+		"project": ["./tsconfig.json", "./electron/tsconfig.json"]
 	},
 	"env": {
 		"node":true,
@@ -31,7 +31,9 @@
 		"prettier/@typescript-eslint"
 	],
 	"rules": {
-		"@typescript-eslint/no-explicit-any": "off"
+		"@typescript-eslint/no-explicit-any": "off",
+		"unicorn/prevent-abbreviations": "off",
+		"unicorn/import-style": "off"
 	},
 	"overrides": [
 		{

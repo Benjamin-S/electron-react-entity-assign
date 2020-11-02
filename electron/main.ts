@@ -1,28 +1,18 @@
 console.time('init');
 
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron');
-const logger = require('electron-timber');
-const isDev = require('electron-is-dev');
-const {ipcMain: ipc} = require('electron-better-ipc');
-const {autoUpdater} = require('electron-updater');
-const unhandled = require('electron-unhandled');
-const Store = require('electron-store');
-
-const port = 4000;
-
-const router = require('../src/routes');
-const {poolPromise} = require('../src/connect');
-const config = require('../src/prodconfig');
+import path from 'path';
+import {app, BrowserWindow} from 'electron';
+import logger from 'electron-timber';
+import isDev from 'electron-is-dev';
+import {ipcMain as ipc} from 'electron-better-ipc';
+import {autoUpdater} from 'electron-updater';
+import unhandled from 'electron-unhandled';
+import Store from 'electron-store';
 
 const store = new Store();
 unhandled();
-
 app.setAppUserModelId('com.bensymons.mem-tool');
-
-if (config && !process.env.GH_TOKEN) {
-	process.env.GH_TOKEN = config.GH_TOKEN;
-}
 
 autoUpdater.setFeedURL({
 	provider: 'github',
@@ -42,23 +32,9 @@ if (!isDev) {
 }
 
 // Prevent window from being garbage collected
-let mainWindow;
-let server;
+let mainWindow: BrowserWindow;
 
 const createMainWindow = async () => {
-	const express = require('express');
-	const bodyParser = require('body-parser');
-	const cors = require('cors');
-	const expressApp = express();
-
-	expressApp.use(cors());
-	expressApp.use(bodyParser.json());
-	expressApp.use('/', router);
-
-	server = expressApp.listen(process.env.PORT || port, () => {
-		logger.log(`Express server listening on port ${port}`);
-	});
-
 	const win = new BrowserWindow({
 		width: 1200,
 		height: 800,
@@ -75,18 +51,9 @@ const createMainWindow = async () => {
 		show: false
 	});
 
-	const path = require('path');
-
 	win.on('ready-to-show', () => {
 		logger.log('Ready to show');
 		win.show();
-	});
-
-	// Emitted when the window is closed.
-	win.on('closed', () => {
-		logger.log('Closing Application');
-		server.close();
-		mainWindow = undefined;
 	});
 
 	win.on('unmaximize', () => {
@@ -100,9 +67,9 @@ const createMainWindow = async () => {
 	// Built is passed as an argument when serving static built files without the
 	// need to also run the react dev server (faster to restart electron for troubleshooting)
 	await win.loadURL(
-		isDev && process.argv[2] !== 'Built' ?
-			'http://localhost:3000/' :
-			`file://${path.join(__dirname, '../build/index.html')}`
+		isDev && process.argv[2] !== 'Built'
+			? 'http://localhost:3000/'
+			: `file://${path.join(__dirname, '../build/index.html')}`
 	);
 	console.timeEnd('init');
 
@@ -125,27 +92,27 @@ app.on('second-instance', () => {
 	}
 });
 
-ipc.answerRenderer('get-sql-info', async () => {
-	const result = await poolPromise;
-	logger.log('SQL server is: ' + result.config.server);
-	return result.config.server;
-});
+// ipc.answerRenderer('get-sql-info', async () => {
+// 	const result = await poolPromise;
+// 	logger.log('SQL server is: ' + result.config.server);
+// 	return result.config.server;
+// });
 
-ipc.answerRenderer('get-express-info', async () => {
-	const result = await server.listening;
-	return result;
-});
+// ipc.answerRenderer('get-express-info', async () => {
+// 	const result = await server.listening;
+// 	return result;
+// });
 
 ipc.answerRenderer('app_version', async () => {
 	const version = app.getVersion();
 	return version;
 });
 
-ipc.handle('getStoreValue', (event, key) => {
+ipc.handle('getStoreValue', (event: Event, key: string) => {
 	return store.get(key);
 });
 
-ipc.handle('setStoreValue', (event, key, value) => {
+ipc.handle('setStoreValue', (event: Event, key: string, value: any) => {
 	store.set(key, value);
 	return store.get(key);
 });
@@ -161,7 +128,7 @@ ipc.handle('setStoreValue', (event, key, value) => {
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-	server.close();
+	// server.close();
 	app.quit();
 });
 

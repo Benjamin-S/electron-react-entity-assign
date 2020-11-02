@@ -1,12 +1,12 @@
 /* eslint new-cap:off */
 
 import {Request, Response} from 'express';
-
-import express from 'express';
-const router = express.Router();
 import {poolPromise} from './connect';
-import sql from 'mssql';
-import logger from 'electron-timber';
+
+const express = require('express');
+const router = express.Router();
+const sql = require('mssql');
+const logger = require('electron-timber');
 
 router.get(
 	'/creditors/entities/:id',
@@ -169,4 +169,4 @@ router.delete('/debtors/', async (request: Request, response: Response) => {
 	}
 });
 
-module.exports = router;
+export default router;
