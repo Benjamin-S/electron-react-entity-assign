@@ -1,12 +1,64 @@
-/* eslint new-cap:off */
+import databaseConfig from './prodconfig';
+import developmentConfig from './devconfig';
+import express, {Request, Response} from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import logger from 'electron-timber';
+import sql from 'mssql';
+import isDev from 'electron-is-dev';
+const expressApp = express();
 
-import {Request, Response} from 'express';
-import {poolPromise} from './connect';
+const config = {
+	user: databaseConfig.DB_USER,
+	password: databaseConfig.DB_PASSWORD,
+	server: isDev ? developmentConfig.DB_SERVER : databaseConfig.DB_SERVER,
+	database: databaseConfig.DB_DATABASE,
+	pool: {
+		max: 10,
+		min: 0,
+		idleTimeoutMillis: 30000
+	}
+};
 
-const express = require('express');
+// Check if environment variables are set and use those instead. Travis config has the encrypted
+// key value pairs included so if possible it should use those as prodconfig is not added to the
+// git repo.
+if (process.env.DB_USER) {
+	logger.log('Env variable for DB_USER found. Using this instead.');
+	config.user = process.env.DB_USER;
+}
+
+if (process.env.DB_PASSWORD) {
+	logger.log('Env variable for DB_PASSWORD found. Using this instead.');
+	config.password = process.env.DB_PASSWORD;
+}
+
+if (process.env.DB_SERVER) {
+	logger.log('Env variable for DB_SERVER found. Using this instead.');
+	config.server = process.env.DB_SERVER;
+}
+
+if (process.env.DB_DATABASE) {
+	logger.log('Env variable for DB_DATABASE found. Using this instead.');
+	config.database = process.env.DB_DATABASE;
+}
+
+const poolPromise = new sql.ConnectionPool(config)
+	.connect()
+	.then((pool: any) => {
+		console.log('Connected to MSSQL');
+		return pool;
+	})
+	.catch((error: Error) =>
+		console.error('Database connection Failed! Bad config:', error)
+	);
+
+if (databaseConfig && !process.env.GH_TOKEN) {
+	process.env.GH_TOKEN = databaseConfig.GH_TOKEN;
+}
+
+const port = 4000;
 const router = express.Router();
-const sql = require('mssql');
-const logger = require('electron-timber');
 
 router.get(
 	'/creditors/entities/:id',
@@ -169,4 +221,10 @@ router.delete('/debtors/', async (request: Request, response: Response) => {
 	}
 });
 
-export default router;
+expressApp.use(cors());
+expressApp.use(bodyParser.json());
+expressApp.use('/', router);
+
+export const server = expressApp.listen(process.env.PORT || port, () => {
+	logger.log(`Express server listening on port ${port}`);
+});

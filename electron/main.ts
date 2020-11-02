@@ -31,8 +31,38 @@ if (!isDev) {
 	autoUpdater.checkForUpdatesAndNotify();
 }
 
+// Hot Reloading
+if (isDev) {
+	// 'node_modules/.bin/electronPath'
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
+	require('electron-reload')(__dirname, {
+		electron: path.join(
+			__dirname,
+			'..',
+			'..',
+			'node_modules',
+			'.bin',
+			'electron'
+		),
+		forceHardReset: true
+	});
+}
+
 // Prevent window from being garbage collected
 let mainWindow: BrowserWindow;
+let serverWindow: BrowserWindow;
+
+const createServerWindow = async (): Promise<BrowserWindow> => {
+	const win = new BrowserWindow({
+		width: 800,
+		height: 600,
+		webPreferences: {nodeIntegration: true}
+	});
+
+	win.loadFile(`file://${path.join(__dirname, '../build/server.html')}`);
+
+	return win;
+};
 
 const createMainWindow = async () => {
 	const win = new BrowserWindow({
@@ -133,6 +163,9 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', async () => {
+	if (!serverWindow) {
+		serverWindow = await createServerWindow();
+	}
 	if (!mainWindow) {
 		mainWindow = await createMainWindow();
 	}

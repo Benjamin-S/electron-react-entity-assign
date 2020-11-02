@@ -1,7 +1,7 @@
 /* eslint import/no-unassigned-import: "off" */
 /* eslint import/extensions: off */
 
-import React, {ReactElement} from 'react';
+import React from 'react';
 import icon from './images/icon.png';
 
 // Import 'bootstrap/dist/css/bootstrap.min.css';
@@ -30,7 +30,7 @@ class App extends React.Component {
 		console.log('skipWelcome: ' + shouldSkipWelcome);
 	}
 
-	render(): ReactElement {
+	render(): React.ReactElement {
 		return (
 			<Router basename="/">
 				<>
