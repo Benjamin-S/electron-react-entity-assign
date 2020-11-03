@@ -31,22 +31,22 @@ if (!isDev) {
 	autoUpdater.checkForUpdatesAndNotify();
 }
 
-// Hot Reloading
-if (isDev) {
-	// 'node_modules/.bin/electronPath'
-	// eslint-disable-next-line @typescript-eslint/no-var-requires
-	require('electron-reload')(__dirname, {
-		electron: path.join(
-			__dirname,
-			'..',
-			'..',
-			'node_modules',
-			'.bin',
-			'electron'
-		),
-		forceHardReset: true
-	});
-}
+// // Hot Reloading
+// if (isDev) {
+// 	// 'node_modules/.bin/electronPath'
+// 	// eslint-disable-next-line @typescript-eslint/no-var-requires
+// 	require('electron-reload')(__dirname, {
+// 		electron: path.join(
+// 			__dirname,
+// 			'..',
+// 			'..',
+// 			'node_modules',
+// 			'.bin',
+// 			'electron'
+// 		),
+// 		forceHardReset: true
+// 	});
+// }
 
 // Prevent window from being garbage collected
 let mainWindow: BrowserWindow;
@@ -56,10 +56,10 @@ const createServerWindow = async (): Promise<BrowserWindow> => {
 	const win = new BrowserWindow({
 		width: 800,
 		height: 600,
-		webPreferences: {nodeIntegration: true}
+		webPreferences: {nodeIntegration: true, webSecurity: false}
 	});
 
-	await win.loadURL(`file://${path.join(__dirname, '../server.html')}`);
+	await win.loadURL(`file://${path.join(__dirname, '../server/server.html')}`);
 
 	return win;
 };

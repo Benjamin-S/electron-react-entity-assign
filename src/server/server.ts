@@ -1,13 +1,11 @@
 import {Request, Response} from 'express';
-
-const developmentConfig = require('./devconfig');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const logger = require('electron-timber');
-const sql = require('mssql');
-const isDev = require('electron-is-dev');
-const databaseConfig = require('./prodconfig');
-const express = require('express');
+import developmentConfig from './devconfig';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import sql from 'mssql';
+import isDev from 'electron-is-dev';
+import databaseConfig from './prodconfig';
+import express from 'express';
 const expressApp = express();
 const config = {
 	user: databaseConfig.DB_USER,
@@ -25,22 +23,22 @@ const config = {
 // key value pairs included so if possible it should use those as prodconfig is not added to the
 // git repo.
 if (process.env.DB_USER) {
-	logger.log('Env variable for DB_USER found. Using this instead.');
+	console.log('Env variable for DB_USER found. Using this instead.');
 	config.user = process.env.DB_USER;
 }
 
 if (process.env.DB_PASSWORD) {
-	logger.log('Env variable for DB_PASSWORD found. Using this instead.');
+	console.log('Env variable for DB_PASSWORD found. Using this instead.');
 	config.password = process.env.DB_PASSWORD;
 }
 
 if (process.env.DB_SERVER) {
-	logger.log('Env variable for DB_SERVER found. Using this instead.');
+	console.log('Env variable for DB_SERVER found. Using this instead.');
 	config.server = process.env.DB_SERVER;
 }
 
 if (process.env.DB_DATABASE) {
-	logger.log('Env variable for DB_DATABASE found. Using this instead.');
+	console.log('Env variable for DB_DATABASE found. Using this instead.');
 	config.database = process.env.DB_DATABASE;
 }
 
@@ -75,8 +73,8 @@ router.get(
 		} catch (error) {
 			response.status(500);
 			response.send(error.message);
-			logger.error(error);
-			logger.log(error.message);
+			console.error(error);
+			console.log(error.message);
 		}
 	}
 );
@@ -97,8 +95,8 @@ router.get('/creditors/:id', async (request: Request, response: Response) => {
 	} catch (error) {
 		response.status(500);
 		response.send(error.message);
-		logger.error(error);
-		logger.log(error.message);
+		console.error(error);
+		console.log(error.message);
 	}
 });
 
@@ -117,8 +115,8 @@ router.post('/creditors/', async (request: Request, response: Response) => {
 	} catch (error) {
 		response.status(500);
 		response.send(error.message);
-		logger.error(error);
-		logger.log(error.message);
+		console.error(error);
+		console.log(error.message);
 	}
 });
 
@@ -137,8 +135,8 @@ router.delete('/creditors/', async (request: Request, response: Response) => {
 	} catch (error) {
 		response.status(500);
 		response.send(error.message);
-		logger.error(error);
-		logger.log(error.message);
+		console.error(error);
+		console.log(error.message);
 	}
 });
 
@@ -156,8 +154,8 @@ router.get(
 		} catch (error) {
 			response.status(500);
 			response.send(error.message);
-			logger.error(error);
-			logger.log(error.message);
+			console.error(error);
+			console.log(error.message);
 		}
 	}
 );
@@ -177,8 +175,8 @@ router.get('/debtors/:id', async (request: Request, response: Response) => {
 	} catch (error) {
 		response.status(500);
 		response.send(error.message);
-		logger.error(error);
-		logger.log(error.message);
+		console.error(error);
+		console.log(error.message);
 	}
 });
 
@@ -197,8 +195,8 @@ router.post('/debtors/', async (request: Request, response: Response) => {
 	} catch (error) {
 		response.status(500);
 		response.send(error.message);
-		logger.error(error);
-		logger.log(request.body);
+		console.error(error);
+		console.log(request.body);
 	}
 });
 
@@ -217,8 +215,8 @@ router.delete('/debtors/', async (request: Request, response: Response) => {
 	} catch (error) {
 		response.status(500);
 		response.send(error.message);
-		logger.error(error);
-		logger.log(error.message);
+		console.error(error);
+		console.log(error.message);
 	}
 });
 
@@ -227,5 +225,5 @@ expressApp.use(bodyParser.json());
 expressApp.use('/', router);
 
 expressApp.listen(process.env.PORT || port, () => {
-	logger.log(`Express server listening on port ${port}`);
+	console.log(`Express server listening on port ${port}`);
 });

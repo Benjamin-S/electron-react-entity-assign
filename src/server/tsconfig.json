@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 	  "target": "es5",
-	  "module": "esnext",
+	  "module": "ES2015",
 	  "moduleResolution": "node",
 	  "sourceMap": true,
 	  "strict": true,
@@ -9,7 +9,7 @@
 	  "rootDir": "../",
 	  "noEmitOnError": true,
 	  "esModuleInterop": true,
-	  "allowSyntheticDefaultImports": true,
+	  "allowSyntheticDefaultImports": true
 	},
-	"include": ["server.ts", "types/electron-timber.d.ts"]
+	"include": ["server.ts"]
   }
