@@ -4,13 +4,14 @@ console.time('init');
 import path from 'path';
 import {app, BrowserWindow} from 'electron';
 import logger from 'electron-timber';
-import isDev from 'electron-is-dev';
 import {ipcMain as ipc} from 'electron-better-ipc';
 import {autoUpdater} from 'electron-updater';
 import unhandled from 'electron-unhandled';
 import Store from 'electron-store';
+import * as url from 'url';
 
 const store = new Store();
+const isDev = process.env.NODE_ENV === 'development';
 unhandled();
 app.setAppUserModelId('com.bensymons.mem-tool');
 
@@ -31,38 +32,8 @@ if (!isDev) {
 	autoUpdater.checkForUpdatesAndNotify();
 }
 
-// // Hot Reloading
-// if (isDev) {
-// 	// 'node_modules/.bin/electronPath'
-// 	// eslint-disable-next-line @typescript-eslint/no-var-requires
-// 	require('electron-reload')(__dirname, {
-// 		electron: path.join(
-// 			__dirname,
-// 			'..',
-// 			'..',
-// 			'node_modules',
-// 			'.bin',
-// 			'electron'
-// 		),
-// 		forceHardReset: true
-// 	});
-// }
-
 // Prevent window from being garbage collected
 let mainWindow: BrowserWindow;
-let serverWindow: BrowserWindow;
-
-const createServerWindow = async (): Promise<BrowserWindow> => {
-	const win = new BrowserWindow({
-		width: 800,
-		height: 600,
-		webPreferences: {nodeIntegration: true, webSecurity: false}
-	});
-
-	await win.loadURL(`file://${path.join(__dirname, '../server/server.html')}`);
-
-	return win;
-};
 
 const createMainWindow = async () => {
 	const win = new BrowserWindow({
@@ -94,20 +65,19 @@ const createMainWindow = async () => {
 		win.webContents.send('window_maximized', 'Window is maximized!');
 	});
 
-	// Built is passed as an argument when serving static built files without the
-	// need to also run the react dev server (faster to restart electron for troubleshooting)
-	await win.loadURL(
-		isDev && process.argv[2] !== 'Built'
-			? 'http://localhost:3000/'
-			: `file://${path.join(__dirname, '../build/index.html')}`
-	);
+	await win.loadURL(isDev ? 'http://localhost:4000/' : url.format({
+		pathname: path.join(__dirname, './index.html'),
+		protocol: 'file',
+		slashes: true
+	}
+	));
+
 	console.timeEnd('init');
 
 	return win;
 };
 
-// No point allowing a user to open a second instance. Will cause issues anyway because
-// the express server will attempt to launch on the same PORT again.
+// No point allowing a user to open a second instance
 if (!app.requestSingleInstanceLock()) {
 	app.quit();
 }
@@ -122,7 +92,7 @@ app.on('second-instance', () => {
 	}
 });
 
-// ipc.answerRenderer('get-sql-info', async () => {
+// Ipc.answerRenderer('get-sql-info', async () => {
 // 	const result = await poolPromise;
 // 	logger.log('SQL server is: ' + result.config.server);
 // 	return result.config.server;
@@ -151,22 +121,19 @@ ipc.handle('setStoreValue', (event: Event, key: string, value: any) => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 // app.on('ready', async () => {
-// 	console.time('Ready');
+// 	// console.time('Ready');
 // 	mainWindow = await createMainWindow();
-// 	console.timeEnd('Ready');
+// 	// console.timeEnd('Ready');
+
 // });
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-	// server.close();
+	// Server.close();
 	app.quit();
 });
 
 app.on('activate', async () => {
-	if (!serverWindow) {
-		serverWindow = await createServerWindow();
-		logger.log('Server window created');
-	}
 	if (!mainWindow) {
 		mainWindow = await createMainWindow();
 	}
@@ -174,7 +141,6 @@ app.on('activate', async () => {
 
 (async () => {
 	await app.whenReady();
-	serverWindow = await createServerWindow();
 	mainWindow = await createMainWindow();
 })();
 

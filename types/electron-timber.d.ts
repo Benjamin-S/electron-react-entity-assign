@@ -3,12 +3,12 @@ declare module 'electron-timber' {
 	const logger: Timber;
 
 	class Timber {
-		constructor(options?: Record<string, unknown>);
 		_initialOptions: Record<string, unknown>;
 		isEnabled: boolean;
 		name: any;
 		_prefixColor: any;
 		_timers: Map<any, any>;
+		constructor(options?: Record<string, unknown>);
 		get _options(): any;
 		get _console(): Record<string, unknown>;
 		_getPrefix(): any;

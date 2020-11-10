@@ -12,12 +12,12 @@ import Modal from 'react-bootstrap/Modal';
 import {Toast} from 'react-bootstrap';
 const {ipcRenderer: ipc} = window.require('electron-better-ipc');
 
-// const AsyncTypeahead = asyncContainer(Typeahead);
+// Const AsyncTypeahead = asyncContainer(Typeahead);
 type Entities = {
 	Entity: string;
 	Description: string;
 };
-// const ref:React.RefObject<Typeahead<>> = React.createRef();
+// Const ref:React.RefObject<Typeahead<>> = React.createRef();
 
 type Accounts = {
 	Entity: string;
@@ -36,7 +36,7 @@ type ModuleDict = {
 	name: string;
 };
 
-type Payload = {[id: string]: any};
+type Payload = Record<string, any>;
 
 function AccountSearch({
 	accountTypeProp,
@@ -67,11 +67,11 @@ function AccountSearch({
 	const [showDownloadToast, setShowDownloadToast] = useState(false);
 	const [appToastMessage, setAppToastMessage] = useState<string | undefined>();
 	const [appDownloadMessage, setAppDownloadMessage] = useState<
-		string | undefined
+	string | undefined
 	>();
 
 	const typeaheadReference = createRef<
-		Typeahead<{Entity: string; Description: string}>
+	Typeahead<{Entity: string; Description: string}>
 	>();
 
 	useEffect(() => {
@@ -80,17 +80,19 @@ function AccountSearch({
 	}, [accountTypeProp]);
 
 	useEffect(() => {
-		if (accountType !== undefined) {
-			fetch(
-				`http://localhost:4000/${accountType.toLowerCase()}/entities/${assignedAccount}`
-			)
-				.then((resp) => resp.json())
-				.then((json) => {
-					setExistingEntities(
-						json.recordset.map((a: {ENTITY: any}) => a.ENTITY)
-					);
-				});
+		async function getEntities() {
+			if (accountType !== undefined) {
+				const response = await fetch(
+					`http://localhost:4000/${accountType.toLowerCase()}/entities/${assignedAccount}`
+				);
+				const jsonResponse = await response.json();
+				setExistingEntities(
+					jsonResponse.recordset.map((a: {ENTITY: any}) => a.ENTITY)
+				);
+			}
 		}
+
+		getEntities();
 	}, [assignedAccount, accountType, assignedEntity]);
 
 	useEffect(() => {
@@ -113,7 +115,7 @@ function AccountSearch({
 		}
 	}, [accountType]);
 
-	// useEffect(, [assignedEntity]);
+	// UseEffect(, [assignedEntity]);
 
 	async function onSubmit(event_: React.FormEvent) {
 		event_.preventDefault(); // Don't reload the page
@@ -146,7 +148,7 @@ function AccountSearch({
 			entity: assignedEntity
 		};
 
-		postBody[modulePostingData as keyof Payload] = assignedAccount;
+		postBody[modulePostingData] = assignedAccount;
 
 		const accountTypeName: string =
 			accountType === undefined ? '' : accountType.toLowerCase();
@@ -161,24 +163,20 @@ function AccountSearch({
 		const didSucceed = jsonResult.O_iErrorState === 0;
 		setUpdateResult(didSucceed);
 		setUpdateMessage(
-			didSucceed
-				? `Successfully assigned ${assignedAccount} to entity ${assignedEntity}`
-				: `Failed to assign ${assignedAccount} to entity ${assignedEntity}`
+			didSucceed ?
+				`Successfully assigned ${assignedAccount} to entity ${assignedEntity}` :
+				`Failed to assign ${assignedAccount} to entity ${assignedEntity}`
 		);
 		setAssignedEntity('');
 		try {
-			if (
-				typeaheadReference !== undefined &&
-				typeaheadReference.current !== undefined &&
-				typeaheadReference !== null &&
-				typeaheadReference.current !== null
-			) {
+			if (typeaheadReference?.current) {
 				typeaheadReference.current.setState({selected: []});
 			}
-		} catch (error) {
-			console.error(error.stack || error);
+		} catch (error: unknown) {
+			console.error(error);
 			setUpdateResult(false);
 		}
+
 		setShowAlert(true);
 		return true;
 	}
@@ -190,9 +188,9 @@ function AccountSearch({
 	}
 
 	async function handleUnassignAccount(entity: string, account: string) {
-		const deleteBody: Payload = {entity: entity};
+		const deleteBody: Payload = {entity};
 		const deletedAccount = moduleDict.singular.toLowerCase();
-		deleteBody[deletedAccount as keyof Payload] = account;
+		deleteBody[deletedAccount] = account;
 
 		const accountTypeUrl =
 			accountType === undefined ? '' : accountType.toLowerCase();
@@ -208,20 +206,21 @@ function AccountSearch({
 			const didSucceed = jsonResult.O_iErrorState === 0;
 			setUpdateResult(didSucceed);
 			setUpdateMessage(
-				didSucceed
-					? 'Entity successfully removed.'
-					: 'There was an error removing the entity.'
+				didSucceed ?
+					'Entity successfully removed.' :
+					'There was an error removing the entity.'
 			);
 			setSelectedEntity('');
 			setShowModal(false);
-			if (didSucceed === true) {
-				setExistingEntities(existingEntities.filter((item) => item !== entity));
+			if (didSucceed) {
+				setExistingEntities(existingEntities.filter(item => item !== entity));
 			}
-		} catch (error) {
-			console.dir(error.stack || error);
+		} catch (error: unknown) {
+			console.dir(error);
 			setUpdateResult(false);
 			setUpdateMessage('There was an error removing the entity.');
 		}
+
 		setShowAlert(true);
 		return true;
 	}
@@ -272,7 +271,9 @@ function AccountSearch({
 				</Button>
 				<Button
 					variant="dark"
-					onClick={() => handleUnassignAccount(selectedEntity, assignedAccount)}
+					onClick={async () =>
+						handleUnassignAccount(selectedEntity, assignedAccount)
+					}
 				>
 					Unassign
 				</Button>
@@ -359,18 +360,18 @@ function AccountSearch({
 							}`
 						}
 						isInvalid={accountError}
-						onSearch={(query) => {
+						onSearch={async query => {
 							setIsLoading(true);
 							const accountTypeUrl =
 								accountType === undefined ? '' : accountType.toLowerCase();
-							fetch(`http://localhost:4000/${accountTypeUrl}/${query}`)
-								.then((resp) => resp.json())
-								.then((json) => {
-									setAccountOptions(json.recordset);
-									setIsLoading(false);
-								});
+							const response = await fetch(
+								`http://localhost:4000/${accountTypeUrl}/${query}`
+							);
+							const jsonResponse = await response.json();
+							setAccountOptions(jsonResponse.recordset);
+							setIsLoading(false);
 						}}
-						onChange={(selected) => {
+						onChange={selected => {
 							const selectedAccount = selected[0].id;
 							const selectedAccountStatus = 'TODO';
 							setAssignedAccount(selectedAccount);
@@ -399,7 +400,7 @@ function AccountSearch({
 							</Card.Subtitle>
 						</Card.Body>
 						<ListGroup variant="flush">
-							{existingEntities.map((entity) => (
+							{existingEntities.map(entity => (
 								<ListGroup.Item key={entity}>
 									{entity}
 									<Button
@@ -424,9 +425,9 @@ function AccountSearch({
 						options={entities}
 						placeholder="Look up an entity by name or entity ID"
 						minLength={2}
-						labelKey={(option) => `${option.Entity} - ${option.Description}`}
+						labelKey={option => `${option.Entity} - ${option.Description}`}
 						isInvalid={entityError}
-						onChange={(selected) => {
+						onChange={selected => {
 							const selectedEntity = selected[0];
 							setAssignedEntity(selectedEntity.Entity);
 						}}

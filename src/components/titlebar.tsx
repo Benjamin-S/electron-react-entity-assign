@@ -13,14 +13,14 @@ type TitlebarStates = {
 };
 
 class Titlebar extends React.Component<TitlebarProperties, TitlebarStates> {
+	state: TitlebarStates = {
+		maximized: false
+	};
+
 	constructor(properties: TitlebarProperties) {
 		super(properties);
 		this.restoreWindow = this.restoreWindow.bind(this);
 	}
-
-	state: TitlebarStates = {
-		maximized: false
-	};
 
 	minimizeWindow(): void {
 		BrowserWindow.getFocusedWindow().minimize();
@@ -46,7 +46,7 @@ class Titlebar extends React.Component<TitlebarProperties, TitlebarStates> {
 
 	render(): JSX.Element {
 		ipcRenderer.on('window_unmaximized', () => {
-			if (this.state.maximized === true) {
+			if (this.state.maximized) {
 				this.setState({
 					maximized: false
 				});
@@ -54,7 +54,7 @@ class Titlebar extends React.Component<TitlebarProperties, TitlebarStates> {
 		});
 
 		ipcRenderer.on('window_maximized', () => {
-			if (this.state.maximized === false) {
+			if (!this.state.maximized) {
 				this.setState({
 					maximized: true
 				});

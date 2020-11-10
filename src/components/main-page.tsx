@@ -39,7 +39,7 @@ const MainPage = (): JSX.Element => {
 							className="small"
 							type="checkbox"
 							checked={skipWelcome}
-							onChange={() => handleWelcomeCheck()}
+							onChange={async () => handleWelcomeCheck()}
 						/>
 						<FormCheckLabel className="small text-muted">
 							Do not show this window again

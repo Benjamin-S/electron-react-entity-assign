@@ -20,14 +20,21 @@ import Footer from './components/footer';
 // Import SideToolbar from './components/side-toolbar';
 const {ipcRenderer: ipc} = window.require('electron-better-ipc');
 
-class App extends React.Component {
-	state = {skipWelcome: false};
+type ComponentState = {
+	skipWelcome: boolean;
+};
+
+class App extends React.Component<Record<string, unknown>, ComponentState> {
+	state: ComponentState = {skipWelcome: false};
 
 	async componentDidMount(): Promise<void> {
 		document.documentElement.classList.add('theme-dark');
-		const shouldSkipWelcome = await ipc.invoke('getStoreValue', 'skipWelcome');
+		const shouldSkipWelcome: boolean = await ipc.invoke(
+			'getStoreValue',
+			'skipWelcome'
+		);
 		this.setState({skipWelcome: shouldSkipWelcome});
-		console.log('skipWelcome: ' + shouldSkipWelcome);
+		console.log(`skipWelcome: ${shouldSkipWelcome.toString()}`);
 	}
 
 	render(): React.ReactElement {
