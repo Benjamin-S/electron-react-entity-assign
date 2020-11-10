@@ -2,7 +2,7 @@
 /* eslint import/extensions: off */
 
 import React from 'react';
-import icon from './images/icon.png';
+import icon from './icon.png';
 
 // Import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
@@ -10,53 +10,55 @@ import 'react-bootstrap-typeahead/css/Typeahead-bs4.css';
 import './styles/styles.scss';
 import './shared/codicon.css';
 
-import {HashRouter as Router, Route, Redirect, Switch} from 'react-router-dom';
+import {HashRouter as Router, Route} from 'react-router-dom';
 
 import MainPage from './components/main-page';
 import AccountSearch from './components/account-search';
 import Menu from './components/menu';
 import Titlebar from './components/titlebar';
 import Footer from './components/footer';
-// Import SideToolbar from './components/side-toolbar';
-const {ipcRenderer: ipc} = window.require('electron-better-ipc');
+
+const routes = [
+	{path: '/', name: 'Main', Component: MainPage},
+	{
+		path: '/creditors',
+		name: 'Creditors',
+		render: props => <AccountSearch {...props} icon={icon} accountType="Creditors"/>
+	},
+	{
+		path: '/debtors',
+		name: 'Debtors',
+		render: props => <AccountSearch {...props} icon={icon} accountType="Debtors"/>
+	}
+];
 
 class App extends React.Component {
-		state = {skipWelcome: false};
+	componentDidMount() {
+		document.documentElement.classList.add('theme-dark');
+	}
 
-		async componentDidMount() {
-			document.documentElement.classList.add('theme-dark');
-			const shouldSkipWelcome = await ipc.invoke('getStoreValue', 'skipWelcome');
-			this.setState({skipWelcome: shouldSkipWelcome});
-			console.log('skipWelcome: ' + shouldSkipWelcome);
-		}
-
-		render() {
-			return (
-				<Router basename="/">
-					<>
-						<Titlebar titletext="Entity Assign" icon={icon}/>
-						<div className="applicationView">
-							{/* <SideToolbar/> */}
-							<Menu/>
-							<div className="content">
-								<Switch>
-									<Route exact path="/">
-										{this.state.skipWelcome ? <Redirect to="/creditors"/> : <MainPage/>}
-									</Route>
-									<Route exact path="/creditors">
-										<AccountSearch icon={icon} accountType="Creditors"/>
-									</Route>
-									<Route exact path="/debtors">
-										<AccountSearch icon={icon} accountType="Debtors"/>
-									</Route>
-								</Switch>
-							</div>
-						</div>
-						<Footer/>
-					</>
-				</Router>
-			);
-		}
+	render() {
+		return (
+			<Router basename="/">
+				<>
+					<Titlebar titletext="Entity Assign" icon={icon}/>
+					<Menu/>
+					<div className="content">
+						{routes.map(route => (
+							<Route
+								key={route.path}
+								exact
+								path={route.path}
+								component={route.Component}
+								render={route.render}
+							/>
+						))}
+					</div>
+					<Footer/>
+				</>
+			</Router>
+		);
+	}
 }
 
 export default App;

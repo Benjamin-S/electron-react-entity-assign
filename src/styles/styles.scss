@@ -434,3 +434,35 @@ h2 {
 	width: 100%;
 	height: inherit;
 }
+.card {
+	margin-bottom: 10px;
+
+	& .card-body {
+		& .card-title {
+			font-weight: bold;
+		}
+
+		& .card-subtitle span.Active {
+			color: $green;
+		}
+
+		& .card-subtitle span.Inactive {
+			color: $red;
+		}
+	}
+}
+
+.toast-div {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	z-index: 100;
+	margin-right: 10px;
+	margin-bottom: 10px;
+
+	& .toast .toast-body p {
+		color: $gray-800;
+	}
+}
+
+@import "./boostrapOverride.scss";
