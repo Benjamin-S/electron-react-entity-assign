@@ -42,17 +42,20 @@ class App extends React.Component {
 			<Router basename="/">
 				<>
 					<Titlebar titletext="Entity Assign" icon={icon}/>
-					<Menu/>
-					<div className="content">
-						{routes.map(route => (
-							<Route
-								key={route.path}
-								exact
-								path={route.path}
-								component={route.Component}
-								render={route.render}
-							/>
-						))}
+					<div className="applicationView">
+
+						<Menu/>
+						<div className="content">
+							{routes.map(route => (
+								<Route
+									key={route.path}
+									exact
+									path={route.path}
+									component={route.Component}
+									render={route.render}
+								/>
+							))}
+						</div>
 					</div>
 					<Footer/>
 				</>

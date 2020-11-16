@@ -45,6 +45,6 @@ const poolPromise = new sql.ConnectionPool(config)
 		console.log('Connected to MSSQL');
 		return pool;
 	})
-	.catch(error => console.err('Database connection Failed! Bad config: ', error));
+	.catch(error => console.error('Database connection Failed! Bad config:', error));
 
 module.exports = {sql, poolPromise};
