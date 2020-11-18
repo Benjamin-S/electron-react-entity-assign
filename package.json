@@ -19,12 +19,12 @@
 		"lint": "xo",
 		"test": "yarn lint",
 		"start": "react-scripts start",
-		"elec-pack": "yarn reactbuild && electron-builder --c.extraMetadata.main=build/electron.js",
-		"dist": "electron-builder --windows --publish always",
+		"elec-pack": "yarn reactbuild && electron-builder --dir",
+		"dist": "electron-builder --windows --publish=always",
 		"release": "np",
 		"reldist": "yarn release && yarn dist",
 		"reactbuild": "react-scripts build",
-		"development": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\""
+		"development": "concurrently \"cross-env NODE_ENV=development BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\""
 	},
 	"dependencies": {
 		"body-parser": "^1.19.0",
@@ -116,17 +116,12 @@
 			}
 		],
 		"files": [
-			"build/**/*",
-			"node_modules/**/*",
-			"./src/**"
+			"**/*",
+			"!test${/*}"
 		],
 		"appId": "com.bensymons.mem-tool",
-		"directories": {
-			"buildResources": "assets"
-		},
 		"win": {
-			"target": "nsis",
-			"icon": "build/icon.png"
+			"icon": "./build/icon.png"
 		}
 	},
 	"homepage": ".",

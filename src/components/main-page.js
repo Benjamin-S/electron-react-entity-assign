@@ -11,8 +11,7 @@ const MainPage = () => {
 
 	const handleWelcomeCheck = async () => {
 		setSkipWelcome(!skipWelcome);
-		const updateStore = await ipc.invoke('setStoreValue', 'skipWelcome', !skipWelcome);
-		console.log(updateStore);
+		await ipc.invoke('setStoreValue', 'skipWelcome', !skipWelcome);
 	};
 
 	return (

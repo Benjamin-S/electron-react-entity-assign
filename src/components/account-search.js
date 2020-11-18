@@ -1,6 +1,6 @@
 /* eslint import/extensions: off */
 
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {asyncContainer, Typeahead} from 'react-bootstrap-typeahead';
 import entities from '../shared/entities';
 import Card from 'react-bootstrap/Card';
@@ -44,22 +44,38 @@ const AccountSearch = props => {
 		setAccountType(props.accountType);
 	}, [props]);
 
+	const accountTypeSingular = useCallback((capitalize = false) => {
+		if (accountType) {
+			let accountTypeString;
+			accountTypeString = accountType.toLowerCase().slice(0, -1);
+			if (capitalize === true) {
+				accountTypeString = toCap(accountTypeString);
+			}
+
+			return accountTypeString;
+		}
+	}, [accountType]);
+
+	function toCap(string) {
+		return string[0].toUpperCase() + string.slice(1);
+	}
+
 	useEffect(() => {
 		if (accountType !== null) {
-			fetch(
-				`http://localhost:4000/${accountType.toLowerCase()}/entities/${assignedAccount}`
-			)
-				.then(resp => resp.json())
-				.then(json => {
-					setExistingEntities(json.recordset.map(a => a.ENTITY));
-				});
+			if (assignedAccount === '') {
+				setExistingEntities('');
+			} else {
+				(async () => {
+					const result = await ipc.invoke('getEntities', accountTypeSingular(), assignedAccount);
+					setExistingEntities(result.recordset.map(entity => entity.ENTITY));
+				})();
+			}
 		}
-	}, [assignedAccount, accountType, assignedEntity]);
+	}, [assignedAccount, accountType, assignedEntity, accountTypeSingular]);
 
 	useEffect(() => {
 		if (accountType === 'Debtors') {
 			setModuleDict({
-				singular: 'Debtor',
 				variation: 'Customer',
 				id: 'CUSTNMBR',
 				name: 'CUSTNAME'
@@ -68,7 +84,6 @@ const AccountSearch = props => {
 
 		if (accountType === 'Creditors') {
 			setModuleDict({
-				singular: 'Creditor',
 				variation: 'Vendor',
 				id: 'VENDORID',
 				name: 'VENDNAME'
@@ -97,38 +112,25 @@ const AccountSearch = props => {
 
 		if (entityerror || accounterror) {
 			raiseAlert(
-				`You must enter both an ${moduleDict.singular} ID and an Entity number`,
+				`You must enter both an ${accountTypeSingular()} ID and an entity number`,
 				false
 			);
 			return false;
 		}
 
-		const postBody = {};
-		postBody[moduleDict.singular.toLowerCase()] = assignedAccount.toString();
-		postBody.entity = assignedEntity.toString();
-
-		fetch(`http://localhost:4000/${accountType.toLowerCase()}/`, {
-			method: 'POST',
-			body: JSON.stringify(postBody),
-			headers: new Headers({'Content-Type': 'application/json'})
-		})
-			.then(result => result.json())
-			.then(json => {
-				const didSucceed = json.O_iErrorState === 0;
-				setUpdateResult(didSucceed);
-				setUpdateMessage(
-					didSucceed ?
-						`Successfully assigned ${assignedAccount} to entity ${assignedEntity}` :
-						`Failed to assign ${assignedAccount} to entity ${assignedEntity}`
-				);
-			})
-			.then(setAssignedEntity(''))
-			.then(ref.current.clear())
-			.catch(error => {
-				console.error(error.stack || error);
-				setUpdateResult(false);
-			})
-			.finally(setShowAlert(true));
+		(async () => {
+			const result = await ipc.invoke('assignEntity', accountTypeSingular(), assignedAccount, assignedEntity);
+			const didSucceed = result.output.O_iErrorState === 0;
+			setUpdateResult(didSucceed);
+			setUpdateMessage(
+				didSucceed ?
+					`Successfully assigned ${assignedAccount} to entity ${assignedEntity}` :
+					`Failed to assign ${assignedAccount} to entity ${assignedEntity}`
+			);
+			setAssignedEntity('');
+			ref.current.clear();
+			setShowAlert(true);
+		})();
 
 		return true;
 	}
@@ -140,41 +142,28 @@ const AccountSearch = props => {
 	}
 
 	function handleUnassignAccount(entity, account) {
-		const deleteBody = {};
 		let didSucceed;
-		deleteBody[moduleDict.singular.toLowerCase()] = account.toString();
-		deleteBody.entity = entity.toString();
 
-		console.dir('Calling delete on ' + entity + ' for ' + account);
-		fetch(`http://localhost:4000/${accountType.toLowerCase()}/`, {
-			method: 'DELETE',
-			body: JSON.stringify(deleteBody),
-			headers: new Headers({'Content-Type': 'application/json'})
-		})
-			.then(result => result.json())
-			.then(json => {
-				didSucceed = json.O_iErrorState === 0;
-				setUpdateResult(didSucceed);
-				setUpdateMessage(
-					didSucceed ?
-						'Entity successfully removed.' :
-						'There was an error removing the entity.'
+		(async () => {
+			const result = await ipc.invoke('removeEntity', accountTypeSingular(), account, entity);
+			didSucceed = result.output.O_iErrorState === 0;
+			setUpdateResult(didSucceed);
+			setUpdateMessage(
+				didSucceed ?
+					'Entity successfully removed.' :
+					'There was an error removing the entity.'
+			);
+			setSelectedEntity('');
+			setShowModal(false);
+			if (didSucceed === true) {
+				setExistingEntities(
+					existingEntities.filter(item => item !== entity)
 				);
-			})
-			.then(setSelectedEntity(''), setShowModal(false))
-			.then(() => {
-				if (didSucceed === true) {
-					setExistingEntities(
-						existingEntities.filter(item => item !== entity)
-					);
-				}
-			})
-			.catch(error => {
-				console.dir(error.stack || error);
-				setUpdateResult(false);
-				setUpdateMessage('There was an error removing the entity.');
-			})
-			.finally(setShowAlert(true));
+			}
+
+			setShowAlert(true);
+		})();
+
 		return true;
 	}
 
@@ -260,7 +249,7 @@ const AccountSearch = props => {
 				{appToastMessage && updateToast}
 				{appDownloadMessage && downloadToast}
 			</div>
-			<h2 style={{marginTop: 10}}>Assign {moduleDict.singular} to Entity</h2>
+			<h2 style={{marginTop: 10}}>Assign {accountTypeSingular(true)} to Entity</h2>
 			<Alert
 				dismissible
 				variant={updateResult ? 'success' : 'danger'}
@@ -274,11 +263,11 @@ const AccountSearch = props => {
 			</Alert>
 			<Form noValidate style={{marginTop: 10}} onSubmit={onSubmit}>
 				<Form.Group controlId="accountAsyncForm">
-					<Form.Label>{moduleDict.singular}</Form.Label>
+					<Form.Label>{accountTypeSingular(true)}</Form.Label>
 					<AsyncTypeahead
 						clearButton
 						id="account-typeahead"
-						placeholder={'Enter ' + moduleDict.singular + ' code'}
+						placeholder={'Enter ' + accountTypeSingular() + ' code'}
 						isLoading={isLoading}
 						options={accountOptions}
 						searchText="Searching..."
@@ -287,23 +276,20 @@ const AccountSearch = props => {
 						isInvalid={accountError}
 						onSearch={query => {
 							setIsLoading(true);
-							fetch(
-								`http://localhost:4000/${accountType.toLowerCase()}/${query}`
-							)
-								.then(resp => resp.json())
-								.then(json => {
-									setAccountOptions(json.recordset);
-									setIsLoading(false);
-								});
+							(async () => {
+								const result = await ipc.invoke('getAccounts', accountTypeSingular(), query);
+								setAccountOptions(result.recordset);
+								setIsLoading(false);
+							})();
 						}}
 						onChange={selected => {
-							setAssignedAccount(selected.map(a => a[moduleDict.id]));
+							setAssignedAccount(selected.map(a => a[moduleDict.id])[0]);
 							setAccountStatus(selected.map(a => a.STATUS));
 						}}
 					/>
 					{accountError ? (
 						<div className="invalid-feedback forced-feedback d-block">
-							Please enter a valid {accountType.singular} code.
+							Please enter a valid {accountTypeSingular()} code.
 						</div>
 					) : null}
 				</Form.Group>

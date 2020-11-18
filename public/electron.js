@@ -9,10 +9,6 @@ const {autoUpdater} = require('electron-updater');
 const unhandled = require('electron-unhandled');
 const Store = require('electron-store');
 
-const port = 4000;
-
-const router = require('../src/routes');
-const {poolPromise} = require('../src/connect');
 const config = require('../src/prodconfig');
 
 const store = new Store();
@@ -43,22 +39,8 @@ if (!isDev) {
 
 // Prevent window from being garbage collected
 let mainWindow;
-let server;
 
 const createMainWindow = async () => {
-	const express = require('express');
-	const bodyParser = require('body-parser');
-	const cors = require('cors');
-	const expressApp = express();
-
-	expressApp.use(cors());
-	expressApp.use(bodyParser.json());
-	expressApp.use('/', router);
-
-	server = expressApp.listen(process.env.PORT || port, () => {
-		logger.log(`Express server listening on port ${port}`);
-	});
-
 	const win = new BrowserWindow({
 		width: 1200,
 		height: 800,
@@ -83,9 +65,9 @@ const createMainWindow = async () => {
 	});
 
 	// Emitted when the window is closed.
-	win.on('closed', () => {
+	win.on('closed', async () => {
 		logger.log('Closing Application');
-		server.close();
+		await sqlService.closeServer();
 		mainWindow = undefined;
 	});
 
@@ -109,8 +91,7 @@ const createMainWindow = async () => {
 	return win;
 };
 
-// No point allowing a user to open a second instance. Will cause issues anyway because
-// the express server will attempt to launch on the same PORT again.
+// No point allowing a user to open a second instance.
 if (!app.requestSingleInstanceLock()) {
 	app.quit();
 }
@@ -123,17 +104,6 @@ app.on('second-instance', () => {
 
 		mainWindow.show();
 	}
-});
-
-ipc.answerRenderer('get-sql-info', async () => {
-	const result = await poolPromise;
-	logger.log('SQL server is: ' + result.config.server);
-	return result.config.server;
-});
-
-ipc.answerRenderer('get-express-info', async () => {
-	const result = await server.listening;
-	return result;
 });
 
 ipc.answerRenderer('app_version', async () => {
@@ -150,6 +120,33 @@ ipc.handle('setStoreValue', (event, key, value) => {
 	return store.get(key);
 });
 
+const sqlService = require('../src/services/sqlservice');
+
+ipc.handle('getAccounts', async (event, ...args) => {
+	const result = await sqlService.getAccounts(...args);
+	return result;
+});
+
+ipc.handle('assignEntity', async (event, ...args) => {
+	const result = await sqlService.assignEntity(...args);
+	return result;
+});
+
+ipc.handle('getEntities', async (event, ...args) => {
+	const result = await sqlService.getEntities(...args);
+	return result;
+});
+
+ipc.handle('removeEntity', async (event, ...args) => {
+	const result = await sqlService.removeEntity(...args);
+	return result;
+});
+
+ipc.handle('getSqlServer', async () => {
+	const result = await sqlService.getSqlServer();
+	return result;
+});
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -160,8 +157,8 @@ ipc.handle('setStoreValue', (event, key, value) => {
 // });
 
 // Quit when all windows are closed.
-app.on('window-all-closed', () => {
-	server.close();
+app.on('window-all-closed', async () => {
+	await sqlService.closeServer();
 	app.quit();
 });
 

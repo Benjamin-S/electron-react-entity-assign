@@ -4,7 +4,6 @@ const {electronVersion, chromeVersion} = window.require('electron-util');
 
 const Footer = () => {
 	const [sqlServer, setSqlServer] = useState(null);
-	const [expressInfo, setExpressInfo] = useState(null);
 	const [appVersion, setAppVersion] = useState(null);
 
 	function changeTheme(theme) {
@@ -20,13 +19,8 @@ const Footer = () => {
 		}
 	}
 
-	async function isServerActive() {
-		const serverStatus = await ipc.callMain('get-express-info');
-		setExpressInfo(serverStatus);
-	}
-
 	async function getSqlDatabase() {
-		const sqlDatabase = await ipc.callMain('get-sql-info');
+		const sqlDatabase = await ipc.invoke('getSqlServer');
 		setSqlServer(sqlDatabase);
 	}
 
@@ -37,7 +31,6 @@ const Footer = () => {
 
 	useEffect(() => {
 		getSqlDatabase();
-		isServerActive();
 		getAppVersion();
 	}, []);
 
@@ -49,7 +42,7 @@ const Footer = () => {
 						<span className="codicon codicon-color-mode"/>
 					</button>
 				</div>
-				<div className="footer-item">
+				{/* <div className="footer-item">
 					<button type="button">
 						Express Server Status:{' '}
 						{expressInfo === null && (
@@ -62,7 +55,7 @@ const Footer = () => {
 							<span className="codicon codicon-error"/>
 						)}
 					</button>
-				</div>
+				</div> */}
 				<div className="footer-item">
 					<button type="button">
 						SQL Server: {sqlServer}
