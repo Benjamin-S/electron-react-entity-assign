@@ -1,18 +1,18 @@
-console.time("init");
+console.time('init');
 
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require("electron");
-const logger = require("electron-timber");
-const isDev = require("electron-is-dev");
-const { ipcMain: ipc } = require("electron-better-ipc");
-const { autoUpdater } = require("electron-updater");
-const unhandled = require("electron-unhandled");
-const Store = require("electron-store");
+const {app, BrowserWindow} = require('electron');
+const logger = require('electron-timber');
+const isDev = require('electron-is-dev');
+const {ipcMain: ipc} = require('electron-better-ipc');
+const {autoUpdater} = require('electron-updater');
+const unhandled = require('electron-unhandled');
+const Store = require('electron-store');
 
 const store = new Store();
 unhandled();
 
-app.setAppUserModelId("com.bensymons.mem-tool");
+app.setAppUserModelId('com.bensymons.mem-tool');
 
 if (!isDev) {
 	const ONE_HOUR = 1000 * 60 * 60;
@@ -32,47 +32,47 @@ const createMainWindow = async () => {
 		height: 800,
 		minWidth: 1068,
 		minHeight: 500,
-		backgroundColor: "#2c2f33",
+		backgroundColor: '#2c2f33',
 		frame: false,
-		icon: "./icon.png",
+		icon: './icon.png',
 		webPreferences: {
 			enableRemoteModule: true,
 			nodeIntegration: true,
-			webSecurity: false,
+			webSecurity: false
 		},
-		show: false,
+		show: false
 	});
 
-	const path = require("path");
+	const path = require('path');
 
-	win.on("ready-to-show", () => {
-		logger.log("Ready to show");
+	win.on('ready-to-show', () => {
+		logger.log('Ready to show');
 		win.show();
 	});
 
 	// Emitted when the window is closed.
-	win.on("closed", async () => {
-		logger.log("Closing Application");
+	win.on('closed', async () => {
+		logger.log('Closing Application');
 		await sqlService.closeServer();
 		mainWindow = undefined;
 	});
 
-	win.on("unmaximize", () => {
-		win.webContents.send("window_unmaximized", "Window is unmaximized!");
+	win.on('unmaximize', () => {
+		win.webContents.send('window_unmaximized', 'Window is unmaximized!');
 	});
 
-	win.on("maximize", () => {
-		win.webContents.send("window_maximized", "Window is maximized!");
+	win.on('maximize', () => {
+		win.webContents.send('window_maximized', 'Window is maximized!');
 	});
 
 	// Built is passed as an argument when serving static built files without the
 	// need to also run the react dev server (faster to restart electron for troubleshooting)
 	await win.loadURL(
-		isDev && process.argv[2] !== "Built"
-			? "http://localhost:3000/"
-			: `file://${path.join(__dirname, "../build/index.html")}`
+		isDev && process.argv[2] !== 'Built' ?
+			'http://localhost:3000/' :
+			`file://${path.join(__dirname, '../build/index.html')}`
 	);
-	console.timeEnd("init");
+	console.timeEnd('init');
 
 	return win;
 };
@@ -82,7 +82,7 @@ if (!app.requestSingleInstanceLock()) {
 	app.quit();
 }
 
-app.on("second-instance", () => {
+app.on('second-instance', () => {
 	if (mainWindow) {
 		if (mainWindow.isMinimized()) {
 			mainWindow.restore();
@@ -92,43 +92,43 @@ app.on("second-instance", () => {
 	}
 });
 
-ipc.answerRenderer("app_version", async () => {
+ipc.answerRenderer('app_version', async () => {
 	const version = app.getVersion();
 	return version;
 });
 
-ipc.handle("getStoreValue", (event, key) => {
+ipc.handle('getStoreValue', (event, key) => {
 	return store.get(key);
 });
 
-ipc.handle("setStoreValue", (event, key, value) => {
+ipc.handle('setStoreValue', (event, key, value) => {
 	store.set(key, value);
 	return store.get(key);
 });
 
-const sqlService = require("../src/services/sqlservice");
+const sqlService = require('../src/services/sqlservice');
 
-ipc.handle("getAccounts", async (event, ...args) => {
+ipc.handle('getAccounts', async (event, ...args) => {
 	const result = await sqlService.getAccounts(...args);
 	return result;
 });
 
-ipc.handle("assignEntity", async (event, ...args) => {
+ipc.handle('assignEntity', async (event, ...args) => {
 	const result = await sqlService.assignEntity(...args);
 	return result;
 });
 
-ipc.handle("getEntities", async (event, ...args) => {
+ipc.handle('getEntities', async (event, ...args) => {
 	const result = await sqlService.getEntities(...args);
 	return result;
 });
 
-ipc.handle("removeEntity", async (event, ...args) => {
+ipc.handle('removeEntity', async (event, ...args) => {
 	const result = await sqlService.removeEntity(...args);
 	return result;
 });
 
-ipc.handle("getSqlServer", async () => {
+ipc.handle('getSqlServer', async () => {
 	const result = await sqlService.getSqlServer();
 	return result;
 });
@@ -143,12 +143,12 @@ ipc.handle("getSqlServer", async () => {
 // });
 
 // Quit when all windows are closed.
-app.on("window-all-closed", async () => {
+app.on('window-all-closed', async () => {
 	await sqlService.closeServer();
 	app.quit();
 });
 
-app.on("activate", async () => {
+app.on('activate', async () => {
 	if (!mainWindow) {
 		mainWindow = await createMainWindow();
 	}
@@ -159,14 +159,14 @@ app.on("activate", async () => {
 	mainWindow = await createMainWindow();
 })();
 
-autoUpdater.on("update-available", () => {
-	mainWindow.webContents.send("update_available");
+autoUpdater.on('update-available', () => {
+	mainWindow.webContents.send('update_available');
 });
 
-autoUpdater.on("update-downloaded", () => {
-	mainWindow.webContents.send("update_downloaded");
+autoUpdater.on('update-downloaded', () => {
+	mainWindow.webContents.send('update_downloaded');
 });
 
-ipc.answerRenderer("restart_app", () => {
+ipc.answerRenderer('restart_app', () => {
 	autoUpdater.quitAndInstall();
 });
