@@ -10,7 +10,12 @@ import 'react-bootstrap-typeahead/css/Typeahead-bs4.css';
 import './styles/styles.scss';
 import './shared/codicon.css';
 
-import {HashRouter as Router, Route, Redirect, Switch} from 'react-router-dom';
+import {
+	HashRouter as Router,
+	Route,
+	Redirect,
+	Switch
+} from 'react-router-dom';
 
 import MainPage from './components/main-page';
 import AccountSearch from './components/account-search';
@@ -20,11 +25,26 @@ import Footer from './components/footer';
 const {ipcRenderer} = window.require('electron');
 
 class App extends React.Component {
-	state = {skipWelcome: false};
+	state = {skipWelcome: false, lastModule: ''};
 
 	async componentDidMount() {
 		document.documentElement.classList.add('theme-dark');
-		const shouldSkipWelcome = await ipcRenderer.invoke('getStoreValue', 'skipWelcome');
+		const shouldSkipWelcome = await ipcRenderer.invoke(
+			'getStoreValue',
+			'skipWelcome'
+		);
+		if (shouldSkipWelcome) {
+			let lastModuleSelected = await ipcRenderer.invoke(
+				'getStoreValue',
+				'lastModule'
+			);
+			if (lastModuleSelected === null || lastModuleSelected === undefined) {
+				lastModuleSelected = 'creditors';
+			}
+
+			this.setState({lastModule: lastModuleSelected});
+		}
+
 		this.setState({skipWelcome: shouldSkipWelcome});
 	}
 
@@ -39,7 +59,7 @@ class App extends React.Component {
 							<Switch>
 								<Route exact path="/">
 									{this.state.skipWelcome ? (
-										<Redirect to="/creditors"/>
+										<Redirect to={`/${this.state.lastModule}`}/>
 									) : (
 										<MainPage/>
 									)}

@@ -42,6 +42,7 @@ const AccountSearch = props => {
 	useEffect(() => {
 		// ResetState();
 		setAccountType(props.accountType);
+		ipc.invoke('setStoreValue', 'lastModule', props.accountType.toLowerCase());
 	}, [props]);
 
 	const accountTypeSingular = useCallback((capitalize = false) => {
