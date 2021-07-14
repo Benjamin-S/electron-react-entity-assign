@@ -27,6 +27,7 @@
 		"development": "concurrently \"cross-env NODE_ENV=development BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\""
 	},
 	"dependencies": {
+		"@electron/remote": "^1.2.0",
 		"bootstrap": "^4.3.1",
 		"electron-better-ipc": "^1.1.1",
 		"electron-is-dev": "^1.1.0",

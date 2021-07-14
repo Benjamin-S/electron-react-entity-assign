@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-const { remote } = window.require('electron')
-const { BrowserWindow } = remote
+const { BrowserWindow } = window.require('@electron/remote')
 const { ipcRenderer } = window.require('electron')
 
 export default class Titlebar extends React.Component {

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { FormCheck, Modal } from 'react-bootstrap'
-import FormCheckInput from 'react-bootstrap/esm/FormCheckInput.js'
-import FormCheckLabel from 'react-bootstrap/esm/FormCheckLabel.js'
+import FormCheckInput from 'react-bootstrap/esm/FormCheckInput'
+import FormCheckLabel from 'react-bootstrap/esm/FormCheckLabel'
 
 const { ipcRenderer: ipc } = window.require('electron')
 

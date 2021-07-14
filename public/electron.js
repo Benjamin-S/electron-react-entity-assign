@@ -9,6 +9,8 @@ const { autoUpdater } = require('electron-updater')
 const unhandled = require('electron-unhandled')
 const Store = require('electron-store')
 
+require('@electron/remote/main').initialize()
+
 const store = new Store()
 unhandled()
 
@@ -27,6 +29,7 @@ if (!isDev) {
 let mainWindow
 
 const createMainWindow = async () => {
+  const path = require('path')
   const win = new BrowserWindow({
     width: 1200,
     height: 800,
@@ -43,8 +46,6 @@ const createMainWindow = async () => {
     },
     show: false
   })
-
-  const path = require('path')
 
   win.on('ready-to-show', () => {
     logger.log('Ready to show')
