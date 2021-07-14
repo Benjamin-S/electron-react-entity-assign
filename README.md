@@ -1,6 +1,3 @@
-[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
-[![Build Status](https://travis-ci.com/Benjamin-S/electron-react-entity-assign.svg?token=CiVdrGhby17CVyNqo1pq&branch=master)](https://travis-ci.com/Benjamin-S/electron-react-entity-assign)
-
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 # Multi-Entity Management Tool - Entity Assignment
@@ -15,6 +12,6 @@ This limitation prevents specific assignment, and the user instead has to opt fo
 
 ## Deployment
 
-This application uses react as the user interface and creates a separate express server to act as the server for commands to be called against.
+This application uses react as the user interface and MSSQL to update and query the MEM database via stored procedures.
 
 - Yarn dist will build and package the electron application
